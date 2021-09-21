@@ -1,0 +1,21 @@
+openapi: 3.1.0
+info:
+  title: auth-api
+  version: '1.0'
+servers:
+  - url: 'http://localhost:8080/api'
+paths:
+  /register:
+    post:
+      summary: ''
+      operationId: post-register
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '409':
+          description: Conflict
+components:
+  schemas: {}
+  securitySchemes: {}
