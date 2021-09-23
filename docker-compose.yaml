@@ -40,10 +40,45 @@ services:
     networks:
       - web
       
+  auth-db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=DevPass0
+#      - POSTGRES_DB=postgres
+    volumes:
+      - ./auth-db:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  auth:
+    image: openjdk:11-jre-stretch
+    restart: always
+    depends_on:
+      - auth-db
+    command: "java -jar /usr/local/app/auth-0.0.1-SNAPSHOT.jar"
+    volumes:
+      - "./auth/target/auth-0.0.1-SNAPSHOT.jar:/usr/local/app/auth-0.0.1-SNAPSHOT.jar"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.auth.loadbalancer.server.port=8080"
+      - "traefik.http.routers.auth.entrypoints=web"
+      - "traefik.http.routers.auth.rule=PathPrefix(`/api`)"
+    networks:
+      - web
+      - backend
+
 networks:
   web:
     external: true
+  backend:
+    external: false
     
 volumes:
   static:
+    external: true
+  auth:
+    external: true
+  auth-db:
     external: true
