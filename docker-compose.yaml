@@ -28,6 +28,7 @@ services:
   static:
     image: httpd:2.4
     restart: always
+    container_name: static
     volumes:
       - ./social-site-frontend/dist/social-site-frontend/index.html:/usr/local/apache2/htdocs/index.html
       - ./social-site-frontend/dist/social-site-frontend:/usr/local/apache2/htdocs/static
@@ -43,10 +44,11 @@ services:
   auth-db:
     image: postgres
     restart: always
+    container_name: auth-db
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=DevPass0
-#      - POSTGRES_DB=postgres
+      - POSTGRES_DB=users
     volumes:
       - ./auth-db:/var/lib/postgresql/data
     networks:
@@ -55,6 +57,7 @@ services:
   auth:
     image: openjdk:11-jre-stretch
     restart: always
+    container_name: auth
     depends_on:
       - auth-db
     command: "java -jar /usr/local/app/auth-0.0.1-SNAPSHOT.jar"

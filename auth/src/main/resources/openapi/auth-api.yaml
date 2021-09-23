@@ -2,6 +2,9 @@ openapi: 3.0.0
 info:
   title: auth-api
   version: '1.0'
+  description: Authentication service
+  contact:
+    name: Balint Jeszenszky
 servers:
   - url: 'http://localhost:8080/api'
 paths:
@@ -12,10 +15,125 @@ paths:
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailsDto'
         '400':
           description: Bad Request
         '409':
           description: Conflict
+      tags:
+        - register
+      description: Register new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterDto'
+  '/user/{id}':
+    get:
+      summary: Your GET endpoint
+      tags:
+        - user-management
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailsDto'
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      operationId: get-user
+      description: Get user details
+      parameters: []
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    delete:
+      summary: ''
+      operationId: delete-user-id
+      responses:
+        '204':
+          description: No Content
+      description: Delete user
+      tags:
+        - user-management
+    put:
+      summary: ''
+      operationId: put-user-id
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailsDto'
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+      description: Edit user data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEditDto'
+      tags:
+        - user-management
 components:
-  schemas: {}
+  schemas:
+    UserDetailsDto:
+      title: UserDetailsDto
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+    UserEditDto:
+      title: UserEditDto
+      type: object
+      properties:
+        id:
+          type: integer
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    RegisterDto:
+      title: RegisterDto
+      type: object
+      properties:
+        username:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        confirmPassword:
+          type: string
   securitySchemes: {}
+tags:
+  - name: register
+  - name: user-management
