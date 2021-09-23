@@ -17,8 +17,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder; // TODO set encoder in security impl
+//    @Autowired
+//    private PasswordEncoder passwordEncoder; // TODO set encoder in security impl
 
 
     public void deleteUserById(Integer id) {
