@@ -26,6 +26,9 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "accepted_email", nullable = false)
+    private boolean acceptedEmail = false;
+
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -37,8 +40,10 @@ public class User {
 
     public User() { }
 
-    public User(String username, String email, String password) {
+    public User(String username, String firstname, String lastname, String email, String password) {
         this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
         this.password = password;
     }
@@ -81,6 +86,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isAcceptedEmail() {
+        return acceptedEmail;
+    }
+
+    public void setAcceptedEmail(boolean acceptedEmail) {
+        this.acceptedEmail = acceptedEmail;
     }
 
     public String getPassword() {

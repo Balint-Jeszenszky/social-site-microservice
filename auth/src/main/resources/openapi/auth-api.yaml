@@ -87,6 +87,24 @@ paths:
               $ref: '#/components/schemas/UpdateUserDto'
       tags:
         - user-management
+  '/register/validate/{key}':
+    get:
+      summary: Your GET endpoint
+      tags:
+        - register
+      responses:
+        '202':
+          description: Accepted
+        '400':
+          description: Bad Request
+      operationId: get-register-validate
+      description: Email verification
+    parameters:
+      - schema:
+          type: string
+        name: key
+        in: path
+        required: true
 components:
   schemas:
     UserDetailsDto:
@@ -102,20 +120,6 @@ components:
         lastname:
           type: string
         email:
-          type: string
-    UserEditDto:
-      title: UserEditDto
-      type: object
-      properties:
-        id:
-          type: integer
-        firstname:
-          type: string
-        lastname:
-          type: string
-        email:
-          type: string
-        password:
           type: string
     RegisterDto:
       title: RegisterDto
