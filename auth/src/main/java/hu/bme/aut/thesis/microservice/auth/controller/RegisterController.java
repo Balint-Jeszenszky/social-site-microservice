@@ -5,7 +5,7 @@ import hu.bme.aut.thesis.microservice.auth.mapper.UserMapper;
 import hu.bme.aut.thesis.microservice.auth.model.User;
 import hu.bme.aut.thesis.microservice.auth.models.RegisterDto;
 import hu.bme.aut.thesis.microservice.auth.models.UserDetailsDto;
-import hu.bme.aut.thesis.microservice.auth.service.EmailService;
+import hu.bme.aut.thesis.microservice.auth.service.EmailVerificationService;
 import hu.bme.aut.thesis.microservice.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +19,11 @@ public class RegisterController extends GlobalExceptionHandler implements Regist
     private UserService userService;
 
     @Autowired
-    private EmailService emailService;
+    private EmailVerificationService emailVerificationService;
 
     @Override
     public ResponseEntity<Void> getRegisterValidate(String key) {
-        emailService.validate(key);
+        emailVerificationService.validate(key);
 
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }

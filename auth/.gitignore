@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### email setup ###
+src/main/resources/application.yaml

@@ -28,7 +28,7 @@ public class UserService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private EmailService emailService;
+    private EmailVerificationService emailVerificationService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -101,9 +101,9 @@ public class UserService {
 
         user.setRoles(roles);
 
-        emailService.sendVerificationEmail(user);
-
         userRepository.save(user);
+
+        emailVerificationService.sendVerificationEmail(user);
 
         return user;
     }

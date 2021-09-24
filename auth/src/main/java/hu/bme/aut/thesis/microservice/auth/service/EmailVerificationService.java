@@ -5,6 +5,9 @@ import hu.bme.aut.thesis.microservice.auth.model.User;
 import hu.bme.aut.thesis.microservice.auth.repository.EmailVerificationRepository;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
@@ -12,13 +15,28 @@ import java.security.SecureRandom;
 import java.util.NoSuchElementException;
 
 @Service
-public class EmailService {
+public class EmailVerificationService {
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private EmailVerificationRepository emailVerificationRepository;
+
+    @Autowired
+    private JavaMailSender emailSender;
+
+    @Value("${auth.app.email}")
+    private String email;
+
+    private void sendSimpleMessage(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(email);
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        emailSender.send(message);
+    }
 
     public void validate(String key) {
         EmailVerification emailVerification = emailVerificationRepository.getEmailVerificationByKey(key).orElseThrow(() -> new NoSuchElementException("Email not found"));
@@ -49,7 +67,8 @@ public class EmailService {
                 user.getId(),
                 key
         );
+        emailVerificationRepository.save(emailVerification);
 
-        // TODO send mail
+        sendSimpleMessage(user.getEmail(), "Registration", key);
     }
 }

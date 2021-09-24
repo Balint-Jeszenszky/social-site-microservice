@@ -15,13 +15,13 @@ public class JwtUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${forum.app.jwtSecret}")
+    @Value("${auth.app.jwtSecret}")
     private String jwtSecret;
 
-    @Value("${forum.app.jwtRefreshSecret}")
+    @Value("${auth.app.jwtRefreshSecret}")
     private String jwtRefreshSecret;
 
-    @Value("${forum.app.jwtExpirationMs}")
+    @Value("${auth.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
     public String generateJwtToken(Authentication authentication) {
