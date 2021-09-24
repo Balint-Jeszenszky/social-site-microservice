@@ -84,7 +84,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserEditDto'
+              $ref: '#/components/schemas/UpdateUserDto'
       tags:
         - user-management
 components:
@@ -132,6 +132,24 @@ components:
         password:
           type: string
         confirmPassword:
+          type: string
+    UpdateUserDto:
+      title: UpdateUserDto
+      type: object
+      properties:
+        id:
+          type: integer
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        oldpassword:
+          type: string
+        newpassword:
+          type: string
+        confirmpassword:
           type: string
   securitySchemes: {}
 tags:

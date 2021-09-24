@@ -1,6 +1,7 @@
 package hu.bme.aut.thesis.microservice.auth.service;
 
 import hu.bme.aut.thesis.microservice.auth.model.User;
+import hu.bme.aut.thesis.microservice.auth.models.UpdateUserDto;
 import hu.bme.aut.thesis.microservice.auth.models.UserEditDto;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder; // TODO set encoder in security impl
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public void deleteUserById(Integer id) {
@@ -38,10 +39,10 @@ public class UserService {
             throw new NoSuchElementException("User not found");
         }
 
-        return null;
+        return user.get();
     }
 
-    public User editUser(Integer id, UserEditDto body) {
+    public User editUser(Integer id, UpdateUserDto updateUserDto) {
         return null;
     }
 }
