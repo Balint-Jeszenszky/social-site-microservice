@@ -87,7 +87,7 @@ paths:
               $ref: '#/components/schemas/UpdateUserDto'
       tags:
         - user-management
-  '/register/validate/{key}':
+  /register/validate:
     get:
       summary: Your GET endpoint
       tags:
@@ -99,12 +99,50 @@ paths:
           description: Bad Request
       operationId: get-register-validate
       description: Email verification
-    parameters:
-      - schema:
-          type: string
-        name: key
-        in: path
-        required: true
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: key
+    parameters: []
+  /login:
+    post:
+      summary: ''
+      operationId: post-login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginDetailsDto'
+        '400':
+          description: Bad Request
+      description: Send login information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginCredentialsDto'
+        description: Login credentials
+      tags:
+        - login
+  /forgotPassword:
+    post:
+      summary: ''
+      operationId: post-forgotPassword
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordDto'
+        description: Password reset by email
+      tags:
+        - forgot-password
+      description: Password reset by email
 components:
   schemas:
     UserDetailsDto:
@@ -155,7 +193,33 @@ components:
           type: string
         confirmpassword:
           type: string
+    LoginDetailsDto:
+      title: LoginDto
+      type: object
+      properties:
+        userDetails:
+          $ref: '#/components/schemas/UserDetailsDto'
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+    LoginCredentialsDto:
+      title: LoginCredentialsDto
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    ForgotPasswordDto:
+      title: ForgotPasswordDto
+      type: object
+      properties:
+        email:
+          type: string
   securitySchemes: {}
 tags:
   - name: register
   - name: user-management
+  - name: login
+  - name: forgot-password
