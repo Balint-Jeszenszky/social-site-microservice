@@ -6,7 +6,7 @@ info:
   contact:
     name: Balint Jeszenszky
 servers:
-  - url: 'http://localhost:8080/api/auth'
+  - url: 'http://localhost/api/auth'
 paths:
   /register:
     post:

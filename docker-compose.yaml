@@ -67,7 +67,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.auth.loadbalancer.server.port=8080"
       - "traefik.http.routers.auth.entrypoints=web"
-      - "traefik.http.routers.auth.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.auth.rule=PathPrefix(`/api/auth`)"
     networks:
       - web
       - backend
