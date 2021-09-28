@@ -6,7 +6,7 @@ info:
   contact:
     name: Balint Jeszenszky
 servers:
-  - url: 'http://localhost:8080/api'
+  - url: 'http://localhost:8080/api/auth'
 paths:
   /register:
     post:
@@ -104,6 +104,7 @@ paths:
             type: string
           in: query
           name: key
+          required: true
     parameters: []
   /login:
     post:
@@ -116,8 +117,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginDetailsDto'
-        '400':
-          description: Bad Request
+        '401':
+          description: Unauthorized
       description: Send login information
       requestBody:
         content:
@@ -132,8 +133,8 @@ paths:
       summary: ''
       operationId: post-forgotPassword
       responses:
-        '200':
-          description: OK
+        '204':
+          description: No Content
       requestBody:
         content:
           application/json:
@@ -143,6 +144,27 @@ paths:
       tags:
         - forgot-password
       description: Password reset by email
+  /login/refresh:
+    post:
+      summary: ''
+      operationId: post-login-refresh
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewTokenDto'
+        '401':
+          description: Unauthorized
+      description: Get new access token with refresh token
+      tags:
+        - login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenDto'
 components:
   schemas:
     UserDetailsDto:
@@ -179,8 +201,6 @@ components:
       title: UpdateUserDto
       type: object
       properties:
-        id:
-          type: integer
         firstname:
           type: string
         lastname:
@@ -194,7 +214,7 @@ components:
         confirmpassword:
           type: string
     LoginDetailsDto:
-      title: LoginDto
+      title: LoginDetailsDto
       type: object
       properties:
         userDetails:
@@ -203,6 +223,7 @@ components:
           type: string
         refreshToken:
           type: string
+      description: ''
     LoginCredentialsDto:
       title: LoginCredentialsDto
       type: object
@@ -216,6 +237,21 @@ components:
       type: object
       properties:
         email:
+          type: string
+    NewTokenDto:
+      title: NewTokenDto
+      type: object
+      description: ''
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+    RefreshTokenDto:
+      title: RefreshTokenDto
+      type: object
+      properties:
+        token:
           type: string
   securitySchemes: {}
 tags:

@@ -7,6 +7,7 @@ import hu.bme.aut.thesis.microservice.auth.models.RegisterDto;
 import hu.bme.aut.thesis.microservice.auth.models.UpdateUserDto;
 import hu.bme.aut.thesis.microservice.auth.repository.RoleRepository;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
+import hu.bme.aut.thesis.microservice.auth.security.service.LoggedInUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,9 +34,13 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private LoggedInUserService loggedInUserService;
 
     public void deleteUserById(Integer id) {
-        // TODO check user roles
+        if (!loggedInUserService.getLoggedInUser().getId().equals(id) && !loggedInUserService.getLoggedInUser().getAuthorities().contains(ERole.ROLE_ADMIN)) {
+            throw new IllegalArgumentException("Wrong userId");
+        }
 
         if (!userRepository.existsById(id)) {
             throw new NoSuchElementException("User not found");
@@ -47,7 +52,7 @@ public class UserService {
     public User getUserById(Integer id) {
         Optional<User> user = userRepository.findById(id);
 
-        if (user.isEmpty()) {
+        if (user.isEmpty() || !user.get().isAcceptedEmail()) {
             throw new NoSuchElementException("User not found");
         }
 
@@ -55,17 +60,46 @@ public class UserService {
     }
 
     public User editUser(Integer id, UpdateUserDto updateUserDto) {
-        // TODO
-        return null;
+        if (!loggedInUserService.getLoggedInUser().getId().equals(id) && !loggedInUserService.getLoggedInUser().getAuthorities().contains(ERole.ROLE_ADMIN)) {
+            throw new IllegalArgumentException("Wrong userId");
+        }
+
+        validateEmail(updateUserDto.getEmail());
+
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isEmpty() || !user.get().isAcceptedEmail()) {
+            throw new NoSuchElementException("User not found");
+        }
+
+        User userToUpdate = user.get();
+
+        if (updateUserDto.getOldpassword() != null && !updateUserDto.getOldpassword().isEmpty()) {
+            if (!updateUserDto.getNewpassword().equals(updateUserDto.getConfirmpassword())) {
+                throw new IllegalArgumentException("Passwords not match");
+            }
+
+            String encodedOldPassword = passwordEncoder.encode(updateUserDto.getOldpassword());
+
+            if (!userToUpdate.getPassword().equals(encodedOldPassword)) {
+                throw new IllegalArgumentException("Wrong password");
+            }
+        }
+
+        if (!userToUpdate.getEmail().equals(updateUserDto.getEmail())) {
+            emailVerificationService.sendVerificationEmail(userToUpdate);
+        }
+
+        userToUpdate.setFirstname(updateUserDto.getFirstname());
+        userToUpdate.setLastname(updateUserDto.getLastname());
+
+        userRepository.save(userToUpdate);
+
+        return userToUpdate;
     }
 
     public User registerUser(RegisterDto registerDto) {
-        Pattern emailPattern = Pattern.compile("^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
-        Matcher emailMatcher = emailPattern.matcher(registerDto.getEmail());
-
-        if (!emailMatcher.matches()) {
-            throw new IllegalArgumentException("Error: Email is invalid!");
-        }
+        validateEmail(registerDto.getEmail());
 
         if (userRepository.existsByEmail(registerDto.getEmail())) {
             throw new IllegalArgumentException("Error: Email is already in use!");
@@ -90,7 +124,7 @@ public class UserService {
                 registerDto.getFirstname(),
                 registerDto.getLastname(),
                 registerDto.getEmail(),
-                registerDto.getPassword()
+                passwordEncoder.encode(registerDto.getPassword())
         );
 
         Set<Role> roles = new HashSet<>();
@@ -106,5 +140,15 @@ public class UserService {
         emailVerificationService.sendVerificationEmail(user);
 
         return user;
+    }
+
+
+    private void validateEmail(String email) {
+        Pattern emailPattern = Pattern.compile("^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
+        Matcher emailMatcher = emailPattern.matcher(email);
+
+        if (!emailMatcher.matches()) {
+            throw new IllegalArgumentException("Error: Email is invalid!");
+        }
     }
 }
