@@ -39,7 +39,7 @@ public class EmailVerificationService {
         emailVerificationRepository.delete(emailVerification);
     }
 
-    public void sendVerificationEmail(User user) {
+    public void sendVerificationEmail(Integer userId, String email) {
         String chrs = "0123456789abcdefghijklmnopqrstuvwxyz-_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         SecureRandom secureRandom;
         try {
@@ -53,13 +53,13 @@ public class EmailVerificationService {
                 .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
 
         EmailVerification emailVerification = new EmailVerification(
-                user.getEmail(),
-                user.getId(),
+                email,
+                userId,
                 key
         );
 
         emailVerificationRepository.save(emailVerification);
 
-        sendMail.sendSimpleMessage(user.getEmail(), "Registration", baseUrl + "/register/validate?key=" + key);
+        sendMail.sendSimpleMessage(email, "Registration", baseUrl + "/register/validate?key=" + key);
     }
 }

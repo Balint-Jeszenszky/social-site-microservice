@@ -75,19 +75,26 @@ public class UserService {
         User userToUpdate = user.get();
 
         if (updateUserDto.getOldpassword() != null && !updateUserDto.getOldpassword().isEmpty()) {
+
+            if (passwordEncoder.matches(userToUpdate.getPassword(), updateUserDto.getOldpassword())) {
+                throw new IllegalArgumentException("Wrong password");
+            }
+
             if (!updateUserDto.getNewpassword().equals(updateUserDto.getConfirmpassword())) {
                 throw new IllegalArgumentException("Passwords not match");
             }
 
-            String encodedOldPassword = passwordEncoder.encode(updateUserDto.getOldpassword());
-
-            if (!userToUpdate.getPassword().equals(encodedOldPassword)) {
-                throw new IllegalArgumentException("Wrong password");
+            if (updateUserDto.getNewpassword().length() <8) {
+                throw new IllegalArgumentException("Passwords too sort");
             }
+
+            String encodedNewPassword = passwordEncoder.encode(updateUserDto.getNewpassword());
+
+            userToUpdate.setPassword(encodedNewPassword);
         }
 
         if (!userToUpdate.getEmail().equals(updateUserDto.getEmail())) {
-            emailVerificationService.sendVerificationEmail(userToUpdate);
+            emailVerificationService.sendVerificationEmail(userToUpdate.getId(), updateUserDto.getEmail());
         }
 
         userToUpdate.setFirstname(updateUserDto.getFirstname());
@@ -137,7 +144,7 @@ public class UserService {
 
         userRepository.save(user);
 
-        emailVerificationService.sendVerificationEmail(user);
+        emailVerificationService.sendVerificationEmail(user.getId(), user.getEmail());
 
         return user;
     }
