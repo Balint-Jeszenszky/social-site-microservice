@@ -181,6 +181,12 @@ components:
           type: string
         email:
           type: string
+      required:
+        - id
+        - username
+        - firstname
+        - lastname
+        - email
     RegisterDto:
       title: RegisterDto
       type: object
@@ -197,6 +203,13 @@ components:
           type: string
         confirmPassword:
           type: string
+      required:
+        - username
+        - firstname
+        - lastname
+        - email
+        - password
+        - confirmPassword
     UpdateUserDto:
       title: UpdateUserDto
       type: object
@@ -213,9 +226,14 @@ components:
           type: string
         confirmpassword:
           type: string
+      required:
+        - firstname
+        - lastname
+        - email
     LoginDetailsDto:
       title: LoginDetailsDto
       type: object
+      description: ''
       properties:
         userDetails:
           $ref: '#/components/schemas/UserDetailsDto'
@@ -223,7 +241,10 @@ components:
           type: string
         refreshToken:
           type: string
-      description: ''
+      required:
+        - userDetails
+        - accessToken
+        - refreshToken
     LoginCredentialsDto:
       title: LoginCredentialsDto
       type: object
@@ -232,12 +253,17 @@ components:
           type: string
         password:
           type: string
+      required:
+        - username
+        - password
     ForgotPasswordDto:
       title: ForgotPasswordDto
       type: object
       properties:
         email:
           type: string
+      required:
+        - email
     NewTokenDto:
       title: NewTokenDto
       type: object
@@ -247,12 +273,17 @@ components:
           type: string
         refreshToken:
           type: string
+      required:
+        - accessToken
+        - refreshToken
     RefreshTokenDto:
       title: RefreshTokenDto
       type: object
       properties:
         token:
           type: string
+      required:
+        - token
   securitySchemes: {}
 tags:
   - name: register

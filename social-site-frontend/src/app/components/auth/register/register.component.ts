@@ -32,11 +32,17 @@ export class RegisterComponent implements OnInit {
             }
         }).subscribe(res => {
             console.log(res);
-            this.snackBar.open('success', 'ok');
+            this.snackBar.open('Succesful registration!', 'Ok');
+            this.firstName = '';
+            this.lastName = '';
+            this.email = '';
+            this.username = '';
+            this.password = '';
+            this.confirmPassword = '';
         },
         err => {
             console.log(err);
-            this.snackBar.open(err.error, 'ok');
+            this.snackBar.open(err.error, 'Ok');
         });
     }
 

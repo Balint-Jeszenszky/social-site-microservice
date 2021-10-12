@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginService } from 'src/app/api/services';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
     selector: 'app-login',
@@ -11,7 +12,11 @@ export class LoginComponent implements OnInit {
     username: string = '';
     password: string = '';
 
-    constructor(private loginService: LoginService, private snackBar: MatSnackBar) { }
+    constructor(
+        private loginService: LoginService,
+        private snackBar: MatSnackBar,
+        private userService: UserService
+    ) { }
 
     ngOnInit(): void {
     }
@@ -25,10 +30,11 @@ export class LoginComponent implements OnInit {
         }).subscribe(res => {
             console.log(res);
             this.snackBar.open('success', 'ok');
+            this.userService.setCurrentUser(res.userDetails);
         },
         err => {
             console.log(err);
-            this.snackBar.open('error', 'ok');
+            this.snackBar.open('Wrong credentials', 'ok');
         });
     }
 

@@ -71,6 +71,37 @@ services:
     networks:
       - web
       - backend
+      
+  social-db:
+    image: postgres
+    restart: always
+    container_name: social-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=DevPass0
+      - POSTGRES_DB=users
+    volumes:
+      - ./social-db:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  social:
+    image: openjdk:11-jre-stretch
+    restart: always
+    container_name: social
+    depends_on:
+      - social-db
+    command: "java -jar /usr/local/app/social-0.0.1-SNAPSHOT.jar"
+    volumes:
+      - "./social/target/social-0.0.1-SNAPSHOT.jar:/usr/local/app/social-0.0.1-SNAPSHOT.jar"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.social.loadbalancer.server.port=8080"
+      - "traefik.http.routers.social.entrypoints=web"
+      - "traefik.http.routers.social.rule=PathPrefix(`/api/social`)"
+    networks:
+      - web
+      - backend
 
 networks:
   web:
@@ -84,4 +115,8 @@ volumes:
   auth:
     external: true
   auth-db:
+    external: true
+  social:
+    external: true
+  social-db:
     external: true
