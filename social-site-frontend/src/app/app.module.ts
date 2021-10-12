@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MaterialModule } from './modules/material/material.module';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +12,9 @@ import { PostComponent } from './components/posts/post/post.component';
 import { FeedComponent } from './components/posts/feed/feed.component';
 import { NewPostComponent } from './components/posts/new-post/new-post.component';
 import { AuthComponent } from './components/auth/auth.component';
+import { ApiModule } from './api/api.module';
+import { LoginComponent } from './components/auth/login/login.component';
+import { RegisterComponent } from './components/auth/register/register.component';
 
 @NgModule({
   declarations: [
@@ -18,13 +23,18 @@ import { AuthComponent } from './components/auth/auth.component';
     PostComponent,
     FeedComponent,
     NewPostComponent,
-    AuthComponent
+    AuthComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule,
+    HttpClientModule,
+    ApiModule.forRoot({ rootUrl: '/api/auth' })
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,46 +1,10 @@
 <div class="auth-center">
     <mat-tab-group mat-stretch-tabs>
         <mat-tab label="Login">
-            <form>
-                <mat-form-field appearance="fill" class="input-full-width">
-                    <mat-label>Username</mat-label>
-                    <input matInput placeholder="Username" value="">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="input-full-width">
-                    <mat-label>Password</mat-label>
-                    <input matInput="password" placeholder="Password" value="">
-                </mat-form-field>
-                <button mat-raised-button color="primary">Login</button>
-            </form>
+            <app-login></app-login>
         </mat-tab>
         <mat-tab label="Register">
-            <form>
-                <mat-form-field appearance="fill" class="input-full-width">
-                    <mat-label>First name</mat-label>
-                    <input matInput placeholder="First name" value="">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="input-full-width">
-                    <mat-label>Last name</mat-label>
-                    <input matInput placeholder="Last name" value="">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="input-full-width">
-                    <mat-label>Email</mat-label>
-                    <input matInput placeholder="Email" value="">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="input-full-width">
-                    <mat-label>Username</mat-label>
-                    <input matInput placeholder="Username" value="">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="input-full-width">
-                    <mat-label>Password</mat-label>
-                    <input matInput="password" placeholder="Password" value="">
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="input-full-width">
-                    <mat-label>Confirm password</mat-label>
-                    <input matInput="password" placeholder="Password" value="">
-                </mat-form-field>
-                <button mat-raised-button color="primary">Login</button>
-            </form>
+            <app-register></app-register>
         </mat-tab>
     </mat-tab-group>
 </div>

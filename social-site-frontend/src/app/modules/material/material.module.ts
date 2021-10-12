@@ -6,23 +6,24 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
+const material = [
+    MatToolbarModule,
+    MatCardModule,
+    MatInputModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatTabsModule,
+    MatSnackBarModule
+];
 
 @NgModule({
   imports: [
-    MatToolbarModule,
-    MatCardModule,
-    MatInputModule,
-    MatSidenavModule,
-    MatButtonModule,
-    MatTabsModule
+    material
   ],
   exports: [
-    MatToolbarModule,
-    MatCardModule,
-    MatInputModule,
-    MatSidenavModule,
-    MatButtonModule,
-    MatTabsModule
+    material
   ]
 })
 export class MaterialModule { }
