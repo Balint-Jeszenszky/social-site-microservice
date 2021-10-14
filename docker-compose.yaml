@@ -79,7 +79,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=DevPass0
-      - POSTGRES_DB=users
+      - POSTGRES_DB=social
     volumes:
       - ./social-db:/var/lib/postgresql/data
     networks:
