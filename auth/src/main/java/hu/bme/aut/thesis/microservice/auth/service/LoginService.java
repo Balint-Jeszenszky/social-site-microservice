@@ -2,13 +2,12 @@ package hu.bme.aut.thesis.microservice.auth.service;
 
 import hu.bme.aut.thesis.microservice.auth.mapper.UserMapper;
 import hu.bme.aut.thesis.microservice.auth.model.User;
-import hu.bme.aut.thesis.microservice.auth.models.LoginCredentialsDto;
-import hu.bme.aut.thesis.microservice.auth.models.LoginDetailsDto;
-import hu.bme.aut.thesis.microservice.auth.models.NewTokenDto;
+import hu.bme.aut.thesis.microservice.auth.models.*;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
 import hu.bme.aut.thesis.microservice.auth.security.jwt.JwtUtils;
 import hu.bme.aut.thesis.microservice.auth.security.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -70,5 +69,17 @@ public class LoginService {
         newTokenDto.setRefreshToken(refreshJwt);
 
         return newTokenDto;
+    }
+
+    public UserDetailsDto getUserDetailsByAccessToken(AccessTokenDto body) {
+        if (!jwtUtils.validateJwtToken(body.getAccessToken())) {
+            throw new IllegalArgumentException();
+        }
+
+        String username = jwtUtils.getUserNameFromJwtToken(body.getAccessToken());
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
+
+        return UserMapper.INSTANCE.userToUserDetailsDto(user);
     }
 }

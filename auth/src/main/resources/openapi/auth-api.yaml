@@ -165,6 +165,48 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RefreshTokenDto'
+  '/publicUser/{id}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicUserDetailsDto'
+        '404':
+          description: Not Found
+      operationId: get-publicUser
+      description: Get public user details
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+  /login/details:
+    post:
+      summary: ''
+      operationId: post-login-details
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailsDto'
+        '401':
+          description: Unauthorized
+      description: Get user details by token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessTokenDto'
+      tags:
+        - login
 components:
   schemas:
     UserDetailsDto:
@@ -284,6 +326,31 @@ components:
           type: string
       required:
         - token
+    PublicUserDetailsDto:
+      title: PublicUserDetailsDto
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+        - id
+        - username
+        - firstName
+        - lastName
+    AccessTokenDto:
+      title: AccessTokenDto
+      type: object
+      properties:
+        accessToken:
+          type: string
+      required:
+        - accessToken
   securitySchemes: {}
 tags:
   - name: register

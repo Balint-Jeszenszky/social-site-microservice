@@ -1,10 +1,7 @@
 package hu.bme.aut.thesis.microservice.auth.controller;
 
 import hu.bme.aut.thesis.microservice.auth.api.LoginApi;
-import hu.bme.aut.thesis.microservice.auth.models.LoginCredentialsDto;
-import hu.bme.aut.thesis.microservice.auth.models.LoginDetailsDto;
-import hu.bme.aut.thesis.microservice.auth.models.NewTokenDto;
-import hu.bme.aut.thesis.microservice.auth.models.RefreshTokenDto;
+import hu.bme.aut.thesis.microservice.auth.models.*;
 import hu.bme.aut.thesis.microservice.auth.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +19,13 @@ public class LoginController extends GlobalExceptionHandler implements LoginApi 
         LoginDetailsDto loginDetailsDto = loginService.login(body);
 
         return new ResponseEntity(loginDetailsDto, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<UserDetailsDto> postLoginDetails(AccessTokenDto body) {
+        UserDetailsDto userDetails = loginService.getUserDetailsByAccessToken(body);
+
+        return new ResponseEntity(userDetails, HttpStatus.OK);
     }
 
     @Override
