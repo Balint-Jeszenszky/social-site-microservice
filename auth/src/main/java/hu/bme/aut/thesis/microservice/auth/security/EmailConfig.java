@@ -22,6 +22,7 @@ public class EmailConfig {
 
     @Value("${auth.app.port}")
     private Integer port;
+
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

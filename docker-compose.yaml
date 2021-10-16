@@ -105,18 +105,18 @@ services:
 
 networks:
   web:
-    external: true
+    driver: bridge
   backend:
     external: false
     
 volumes:
   static:
-    external: true
+    driver: local
   auth:
-    external: true
+    driver: local
   auth-db:
-    external: true
+    driver: local
   social:
-    external: true
+    driver: local
   social-db:
-    external: true
+    driver: local
