@@ -2,8 +2,89 @@ openapi: 3.0.0
 info:
   title: social-api
   version: '1.0'
+  contact:
+    name: Balint Jeszenszky
+  description: Social service
 servers:
-  - url: 'http://localhost:3000'
-paths: {}
+  - url: 'http://localhost:3000/api/social'
+paths:
+  /posts:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - post
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostsDto'
+      operationId: get-posts
+      description: Get all friends
+    post:
+      summary: ''
+      operationId: post-posts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewPostDto'
+      description: Create new post
+      tags:
+        - post
+  '/posts/{userId}':
+    parameters:
+      - schema:
+          type: string
+        name: userId
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags:
+        - post
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostsDto'
+        '403':
+          description: Forbidden
+      operationId: get-posts-userId
+      description: Get posts from user
 components:
-  schemas: {}
+  schemas:
+    NewPostDto:
+      title: NewPostDto
+      type: object
+      properties:
+        text:
+          type: string
+      required:
+        - text
+    PostDto:
+      title: PostDto
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        text:
+          type: string
+      required:
+        - id
+        - userId
+        - text
+    PostsDto:
+      title: PostsDto
+      type: array
+      items:
+        $ref: '#/components/schemas/PostDto'
+tags:
+  - name: post
