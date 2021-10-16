@@ -30,14 +30,13 @@ services:
     restart: always
     container_name: static
     volumes:
-      - ./social-site-frontend/dist/social-site-frontend/index.html:/usr/local/apache2/htdocs/index.html
-      - ./social-site-frontend/dist/social-site-frontend:/usr/local/apache2/htdocs/static
+      - ./social-site-frontend/dist/social-site-frontend:/usr/local/apache2/htdocs
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.root.entrypoints=web"
       - "traefik.http.routers.root.rule=Path(`/`)"
       - "traefik.http.routers.static.entrypoints=web"
-      - "traefik.http.routers.static.rule=PathPrefix(`/static`)"
+      - "traefik.http.routers.static.rule=PathPrefix(`/{[\\.a-zA-Z0-9]+\\.{1}(js|css|ico|html){1}}`)"
     networks:
       - web
       
