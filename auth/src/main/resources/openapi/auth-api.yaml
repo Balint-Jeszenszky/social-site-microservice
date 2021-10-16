@@ -7,6 +7,9 @@ info:
     name: Balint Jeszenszky
 servers:
   - url: 'http://localhost/api/auth'
+    description: docker
+  - url: 'http://localhost:8080/api/auth'
+    description: local
 paths:
   /register:
     post:
@@ -334,15 +337,15 @@ components:
           type: integer
         username:
           type: string
-        firstName:
+        firstname:
           type: string
-        lastName:
+        lastname:
           type: string
       required:
         - id
         - username
-        - firstName
-        - lastName
+        - firstname
+        - lastname
     AccessTokenDto:
       title: AccessTokenDto
       type: object

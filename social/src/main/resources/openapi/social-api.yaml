@@ -6,7 +6,10 @@ info:
     name: Balint Jeszenszky
   description: Social service
 servers:
-  - url: 'http://localhost:3000/api/social'
+  - url: 'http://localhost/api/social'
+    description: docker
+  - url: 'http://localhost:8081/api/social'
+    description: local
 paths:
   /posts:
     get:
@@ -22,6 +25,7 @@ paths:
                 $ref: '#/components/schemas/PostsDto'
       operationId: get-posts
       description: Get all friends
+      parameters: []
     post:
       summary: ''
       operationId: post-posts
@@ -86,5 +90,25 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/PostDto'
+    UserDetailsDto:
+      title: UserDetailsDto
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+      required:
+        - id
+        - username
+        - firstname
+        - lastname
+        - email
 tags:
   - name: post

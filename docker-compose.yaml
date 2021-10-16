@@ -7,7 +7,7 @@ services:
     container_name: traefik
     ports:
       - "80:80"
-      - "8080:8080"
+      - "8085:8080"
     command:
       - --api.insecure=true
       - --api.dashboard=true
@@ -96,7 +96,7 @@ services:
       - "./social/target/social-0.0.1-SNAPSHOT.jar:/usr/local/app/social-0.0.1-SNAPSHOT.jar"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.social.loadbalancer.server.port=8080"
+      - "traefik.http.services.social.loadbalancer.server.port=8081"
       - "traefik.http.routers.social.entrypoints=web"
       - "traefik.http.routers.social.rule=PathPrefix(`/api/social`)"
     networks:
@@ -105,7 +105,7 @@ services:
 
 networks:
   web:
-    driver: bridge
+    external: true
   backend:
     external: false
     

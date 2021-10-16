@@ -136,9 +136,14 @@ public class UserService {
 
         Set<Role> roles = new HashSet<>();
 
-        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        roles.add(userRole);
+        Optional<Role> role = roleRepository.findByName(ERole.ROLE_USER);
+
+        if (role.isEmpty()) {
+            createDefaultRoles();
+        }
+
+        roles.add(roleRepository.findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
 
         user.setRoles(roles);
 
@@ -149,6 +154,10 @@ public class UserService {
         return user;
     }
 
+    private void createDefaultRoles() {
+        roleRepository.save(new Role(ERole.ROLE_ADMIN));
+        roleRepository.save(new Role(ERole.ROLE_USER));
+    }
 
     private void validateEmail(String email) {
         Pattern emailPattern = Pattern.compile("^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
