@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" class="navbar">
     <div>Social site</div>
-    <div>
+    <div *ngIf="loggedIn">
         <a routerLink="/" mat-button>Feed</a>
         <a routerLink="/profile" mat-button>My profile</a>
         <button mat-button (click)="onLogout()">Log out</button>
