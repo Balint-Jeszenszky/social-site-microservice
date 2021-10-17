@@ -1,7 +1,10 @@
 package hu.bme.aut.thesis.microservice.social.controller;
 
 import hu.bme.aut.thesis.microservice.social.api.PostsApi;
+import hu.bme.aut.thesis.microservice.social.mapper.PostMapper;
+import hu.bme.aut.thesis.microservice.social.model.Post;
 import hu.bme.aut.thesis.microservice.social.models.NewPostDto;
+import hu.bme.aut.thesis.microservice.social.models.PostDto;
 import hu.bme.aut.thesis.microservice.social.models.PostsDto;
 import hu.bme.aut.thesis.microservice.social.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +24,16 @@ public class PostController implements PostsApi {
     }
 
     @Override
-    public ResponseEntity<PostsDto> getPostsUserId(String userId) {
-        return null;
+    public ResponseEntity<PostsDto> getPostsUserId(Integer userId) {
+        return new ResponseEntity(postService.getPostsByUserId(userId), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<NewPostDto> postPosts() {
-        return null;
+    public ResponseEntity<PostDto> postPosts(NewPostDto body) {
+        Post post = postService.createPost(body);
+
+        PostDto postDto = PostMapper.INSTANCE.postToPostDto(post);
+
+        return new ResponseEntity(postDto, HttpStatus.OK);
     }
 }

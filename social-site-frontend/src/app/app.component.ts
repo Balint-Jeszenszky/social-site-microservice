@@ -10,7 +10,6 @@ import { UserService } from './services/user.service';
 export class AppComponent {
   constructor(userService: UserService, router: Router) {
     userService.isLoggedIn().subscribe(loggedin => {
-      console.log(loggedin);
       if (!loggedin) {
         router.navigate(['auth'])
       }

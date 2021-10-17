@@ -35,14 +35,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NewPostDto'
+                $ref: '#/components/schemas/PostDto'
       description: Create new post
       tags:
         - post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPostDto'
   '/posts/{userId}':
     parameters:
       - schema:
-          type: string
+          type: integer
         name: userId
         in: path
         required: true

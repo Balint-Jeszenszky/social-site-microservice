@@ -19,6 +19,7 @@ export class UserService {
         this.user.next(user.userDetails);
         this.accessToken = user.accessToken;
         this.refreshToken = user.refreshToken;
+        console.log(this.accessToken);
         this.loggedIn.next(true);
     }
 
