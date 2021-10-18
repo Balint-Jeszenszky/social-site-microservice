@@ -19,7 +19,8 @@ export class UserService {
         this.user.next(user.userDetails);
         this.accessToken = user.accessToken;
         this.refreshToken = user.refreshToken;
-        console.log(this.accessToken);
+        console.log('accessToken:', this.accessToken);
+        console.log('refreshToken:', this.refreshToken);
         this.loggedIn.next(true);
     }
 
@@ -32,7 +33,13 @@ export class UserService {
     }
 
     logout(): void {
+        this.accessToken = undefined;
+        this.refreshToken = undefined;
         this.loggedIn.next(false);
         this.user.next(undefined);
+    }
+
+    getAccessToken(): string | undefined {
+        return this.accessToken;
     }
 }

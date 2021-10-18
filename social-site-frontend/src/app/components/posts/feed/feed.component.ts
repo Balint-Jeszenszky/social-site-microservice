@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PostsDto } from 'src/app/api/social/models';
+import { PostDto } from 'src/app/api/social/models';
 import { PostService } from 'src/app/api/social/services';
 
 @Component({
@@ -8,12 +8,13 @@ import { PostService } from 'src/app/api/social/services';
     styleUrls: ['./feed.component.css']
 })
 export class FeedComponent implements OnInit {
-    posts: PostsDto = [];
+    posts: PostDto[] = [];
 
     constructor(private postService: PostService) { }
 
     ngOnInit(): void {
         this.postService.getPosts().subscribe(posts => {
+            console.log(posts);
             this.posts = posts;
         });
     }

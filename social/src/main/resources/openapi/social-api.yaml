@@ -22,7 +22,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostsDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostDto'
       operationId: get-posts
       description: Get all friends
       parameters: []
@@ -61,7 +63,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostsDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostDto'
         '403':
           description: Forbidden
       operationId: get-posts-userId
@@ -90,11 +94,6 @@ components:
         - id
         - userId
         - text
-    PostsDto:
-      title: PostsDto
-      type: array
-      items:
-        $ref: '#/components/schemas/PostDto'
     UserDetailsDto:
       title: UserDetailsDto
       type: object
@@ -115,5 +114,6 @@ components:
         - firstname
         - lastname
         - email
+  securitySchemes: {}
 tags:
   - name: post

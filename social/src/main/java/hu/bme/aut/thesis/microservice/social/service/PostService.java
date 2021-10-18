@@ -2,7 +2,6 @@ package hu.bme.aut.thesis.microservice.social.service;
 
 import hu.bme.aut.thesis.microservice.social.model.Post;
 import hu.bme.aut.thesis.microservice.social.models.NewPostDto;
-import hu.bme.aut.thesis.microservice.social.models.PostsDto;
 import hu.bme.aut.thesis.microservice.social.repository.PostRepository;
 import hu.bme.aut.thesis.microservice.social.security.LoggedInUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +18,8 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    public PostsDto getPosts() {
-        PostsDto postDtos = new PostsDto();
-
-        return postDtos;
+    public List<Post> getPosts() {
+        return postRepository.findAll();
     }
 
     public List<Post> getPostsByUserId(Integer userId) {

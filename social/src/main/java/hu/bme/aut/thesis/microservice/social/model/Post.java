@@ -14,7 +14,7 @@ public class Post {
     @Column(name = "user_id", nullable = false, updatable = false)
     private Integer userId;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "text", nullable = false)
     private String text;
 
     public Post() {}

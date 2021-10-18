@@ -11,7 +11,6 @@ import { map, filter } from 'rxjs/operators';
 
 import { NewPostDto } from '../models/new-post-dto';
 import { PostDto } from '../models/post-dto';
-import { PostsDto } from '../models/posts-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +39,7 @@ export class PostService extends BaseService {
    * This method doesn't expect any request body.
    */
   getPosts$Response(params?: {
-  }): Observable<StrictHttpResponse<PostsDto>> {
+  }): Observable<StrictHttpResponse<Array<PostDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, PostService.GetPostsPath, 'get');
     if (params) {
@@ -52,7 +51,7 @@ export class PostService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PostsDto>;
+        return r as StrictHttpResponse<Array<PostDto>>;
       })
     );
   }
@@ -68,10 +67,10 @@ export class PostService extends BaseService {
    * This method doesn't expect any request body.
    */
   getPosts(params?: {
-  }): Observable<PostsDto> {
+  }): Observable<Array<PostDto>> {
 
     return this.getPosts$Response(params).pipe(
-      map((r: StrictHttpResponse<PostsDto>) => r.body as PostsDto)
+      map((r: StrictHttpResponse<Array<PostDto>>) => r.body as Array<PostDto>)
     );
   }
 
@@ -142,7 +141,7 @@ export class PostService extends BaseService {
    */
   getPostsUserId$Response(params: {
     userId: number;
-  }): Observable<StrictHttpResponse<PostsDto>> {
+  }): Observable<StrictHttpResponse<Array<PostDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, PostService.GetPostsUserIdPath, 'get');
     if (params) {
@@ -155,7 +154,7 @@ export class PostService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PostsDto>;
+        return r as StrictHttpResponse<Array<PostDto>>;
       })
     );
   }
@@ -172,10 +171,10 @@ export class PostService extends BaseService {
    */
   getPostsUserId(params: {
     userId: number;
-  }): Observable<PostsDto> {
+  }): Observable<Array<PostDto>> {
 
     return this.getPostsUserId$Response(params).pipe(
-      map((r: StrictHttpResponse<PostsDto>) => r.body as PostsDto)
+      map((r: StrictHttpResponse<Array<PostDto>>) => r.body as Array<PostDto>)
     );
   }
 

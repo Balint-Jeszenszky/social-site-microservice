@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
+import { forwardRef, NgModule, Provider } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MaterialModule } from './modules/material/material.module';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,10 +14,17 @@ import { NewPostComponent } from './components/posts/new-post/new-post.component
 import { AuthComponent } from './components/auth/auth.component';
 import { ApiModule as AuthApiModule } from './api/auth/api.module';
 import { ApiModule as SocialApiModule } from './api/social/api.module';
+import { ApiInterceptor } from './api/api-interceptor';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ValidateRegistrationComponent } from './components/validate-registration/validate-registration.component';
+
+const API_INTERCEPTOR_PROVIDER: Provider = {
+  provide: HTTP_INTERCEPTORS,
+  useExisting: forwardRef(() => ApiInterceptor),
+  multi: true
+};
 
 @NgModule({
   declarations: [
@@ -42,7 +49,10 @@ import { ValidateRegistrationComponent } from './components/validate-registratio
     AuthApiModule.forRoot({ rootUrl: '/api/auth' }),
     SocialApiModule.forRoot({ rootUrl: '/api/social' })
   ],
-  providers: [],
+  providers: [
+    ApiInterceptor,
+    API_INTERCEPTOR_PROVIDER
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
