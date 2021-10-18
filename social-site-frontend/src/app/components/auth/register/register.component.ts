@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RegisterService } from 'src/app/api/services';
+import { RegisterService } from 'src/app/api/auth/services';
 
 @Component({
     selector: 'app-register',

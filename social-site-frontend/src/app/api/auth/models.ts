@@ -6,3 +6,5 @@ export { LoginCredentialsDto } from './models/login-credentials-dto';
 export { ForgotPasswordDto } from './models/forgot-password-dto';
 export { NewTokenDto } from './models/new-token-dto';
 export { RefreshTokenDto } from './models/refresh-token-dto';
+export { PublicUserDetailsDto } from './models/public-user-details-dto';
+export { AccessTokenDto } from './models/access-token-dto';

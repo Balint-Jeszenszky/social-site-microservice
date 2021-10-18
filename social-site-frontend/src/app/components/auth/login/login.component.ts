@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { LoginDetailsDto } from 'src/app/api/models';
-import { LoginService } from 'src/app/api/services';
+import { LoginService } from 'src/app/api/auth/services';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({

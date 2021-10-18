@@ -8,6 +8,7 @@ import { RegisterService } from './services/register.service';
 import { UserManagementService } from './services/user-management.service';
 import { LoginService } from './services/login.service';
 import { ForgotPasswordService } from './services/forgot-password.service';
+import { ApiService } from './services/api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -21,6 +22,7 @@ import { ForgotPasswordService } from './services/forgot-password.service';
     UserManagementService,
     LoginService,
     ForgotPasswordService,
+    ApiService,
     ApiConfiguration
   ],
 })

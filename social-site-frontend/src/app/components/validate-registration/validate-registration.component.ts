@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RegisterService } from 'src/app/api/services';
+import { RegisterService } from 'src/app/api/auth/services';
 
 @Component({
     selector: 'app-validate-registration',
