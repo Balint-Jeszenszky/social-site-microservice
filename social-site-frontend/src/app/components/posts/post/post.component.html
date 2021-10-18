@@ -1,5 +1,5 @@
-<mat-card class="post-card">
-    <h2>Example Name</h2>
-    <p>Post content</p>
+<mat-card *ngIf="post" class="post-card">
+    <h2>{{ post.userId }}</h2>
+    <p>{{ post.text }}</p>
     <img src="https://via.placeholder.com/400x300?text=Photo" alt="">
 </mat-card>

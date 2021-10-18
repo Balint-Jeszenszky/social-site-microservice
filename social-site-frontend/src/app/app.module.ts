@@ -13,7 +13,7 @@ import { FeedComponent } from './components/posts/feed/feed.component';
 import { NewPostComponent } from './components/posts/new-post/new-post.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { ApiModule as AuthApiModule } from './api/auth/api.module';
-import { ApiModule as SocialApiModule } from './api/auth/api.module';
+import { ApiModule as SocialApiModule } from './api/social/api.module';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
