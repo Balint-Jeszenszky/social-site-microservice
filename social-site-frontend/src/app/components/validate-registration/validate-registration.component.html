@@ -1,0 +1,11 @@
+<div>
+    <h1 *ngIf="!activated && !failed" class="text-center">Activating...</h1>
+    <h1 *ngIf="activated" class="text-center">Account successfully activated!</h1>
+    <h1 *ngIf="failed" class="text-center">Activation failed!</h1>
+    <div class="center">
+        <div>
+            <mat-spinner *ngIf="!activated && !failed" class="spinner"></mat-spinner>
+        </div>
+        <a *ngIf="activated || failed" routerLink='/auth' mat-raised-button color="primary">Go to authentication page</a>
+    </div>
+</div>

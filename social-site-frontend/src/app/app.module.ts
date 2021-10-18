@@ -16,6 +16,7 @@ import { ApiModule } from './api/api.module';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ValidateRegistrationComponent } from './components/validate-registration/validate-registration.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     AuthComponent,
     LoginComponent,
     RegisterComponent,
-    ProfileComponent
+    ProfileComponent,
+    ValidateRegistrationComponent
   ],
   imports: [
     BrowserModule,

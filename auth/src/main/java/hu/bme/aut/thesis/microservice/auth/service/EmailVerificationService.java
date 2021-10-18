@@ -60,6 +60,6 @@ public class EmailVerificationService {
 
         emailVerificationRepository.save(emailVerification);
 
-        sendMail.sendSimpleMessage(email, "Registration", baseUrl + "/register/validate?key=" + key);
+        sendMail.sendSimpleMessage(email, "Registration", baseUrl + "/#/validate/" + key);
     }
 }
