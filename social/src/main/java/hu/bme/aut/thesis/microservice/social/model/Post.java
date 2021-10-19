@@ -1,6 +1,7 @@
 package hu.bme.aut.thesis.microservice.social.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity(name = "post")
 @Table(name = "post")
@@ -16,6 +17,9 @@ public class Post {
 
     @Column(name = "text", nullable = false)
     private String text;
+
+    @Column(name = "created", nullable = false, updatable = false)
+    private Date created = new Date();
 
     public Post() {}
 
