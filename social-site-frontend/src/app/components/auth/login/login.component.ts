@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
         }).subscribe(
             res => {
                 this.userService.setCurrentUserDetails(res);
-                this.router.navigate(['']);
+                this.router.navigate(['/']);
             },
             err => {
                 console.log(err);

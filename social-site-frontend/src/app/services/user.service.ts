@@ -10,9 +10,15 @@ export class UserService {
     private loggedIn: ReplaySubject<boolean> = new ReplaySubject();
     private accessToken?: string;
     private refreshToken?: string;
+    private userDetailsKey = 'userDetails';
 
     constructor() {
         this.loggedIn.next(false);
+        const userDetails = localStorage.getItem(this.userDetailsKey);
+        if (userDetails) {
+            const user: LoginDetailsDto = JSON.parse(userDetails);
+            this.setCurrentUserDetails(user);
+        }
     }
 
     setCurrentUserDetails(user: LoginDetailsDto): void {
@@ -22,6 +28,7 @@ export class UserService {
         console.log('accessToken:', this.accessToken);
         console.log('refreshToken:', this.refreshToken);
         this.loggedIn.next(true);
+        localStorage.setItem(this.userDetailsKey, JSON.stringify(user));
     }
 
     getCurrentUser(): Observable<UserDetailsDto | undefined> {
@@ -33,6 +40,7 @@ export class UserService {
     }
 
     logout(): void {
+        localStorage.removeItem(this.userDetailsKey);
         this.accessToken = undefined;
         this.refreshToken = undefined;
         this.loggedIn.next(false);

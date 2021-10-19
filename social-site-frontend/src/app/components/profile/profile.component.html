@@ -1,1 +1,6 @@
-<p>profile works!</p>
+<div>
+    <pre>
+        {{ user?.firstname }}{{ user?.lastname }}{{ user?.username }}{{ user?.id }}{{ user?.email }}
+    </pre>
+    <app-feed [userId]="user?.id"></app-feed>
+</div>

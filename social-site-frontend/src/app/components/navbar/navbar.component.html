@@ -2,7 +2,7 @@
     <div>Social site</div>
     <div *ngIf="loggedIn">
         <a routerLink="/" mat-button>Feed</a>
-        <a routerLink="/profile" mat-button>My profile</a>
+        <a routerLink="/profile" mat-button>{{ username }}'s profile</a>
         <button mat-button (click)="onLogout()">Log out</button>
     </div>
 </mat-toolbar>
