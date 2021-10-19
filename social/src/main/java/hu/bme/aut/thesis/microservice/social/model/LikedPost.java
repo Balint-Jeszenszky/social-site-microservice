@@ -2,9 +2,9 @@ package hu.bme.aut.thesis.microservice.social.model;
 
 import javax.persistence.*;
 
-@Entity(name = "Like")
-@Table(name = "like")
-public class Like {
+@Entity(name = "LikedPost")
+@Table(name = "liked_post")
+public class LikedPost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,10 +17,10 @@ public class Like {
     @Column(name = "post_id", updatable = false, nullable = false)
     private Integer postId;
 
-    public Like() {
+    public LikedPost() {
     }
 
-    public Like(Integer userId, Integer postId) {
+    public LikedPost(Integer userId, Integer postId) {
         this.userId = userId;
         this.postId = postId;
     }

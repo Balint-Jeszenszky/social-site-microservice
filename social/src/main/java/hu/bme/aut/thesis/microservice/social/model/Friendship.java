@@ -11,16 +11,16 @@ public class Friendship {
     @Column(name = "id", updatable = false)
     private Integer id;
 
-    @Column(name = "user_id", nullable = false, updatable = false)
+    @Column(name = "first_user_id", nullable = false, updatable = false)
     private Integer firstUserId;
 
-    @Column(name = "user_id", nullable = false, updatable = false)
+    @Column(name = "second_user_id", nullable = false, updatable = false)
     private Integer secondUserId;
 
     @Column(name = "pending", nullable = false)
     private Boolean pending = true;
 
-    Friendship() {}
+    public Friendship() {}
 
     public Friendship(Integer firstUserId, Integer secondUser) {
         this.firstUserId = firstUserId;
