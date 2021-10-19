@@ -3,7 +3,7 @@ package hu.bme.aut.thesis.microservice.social.model;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "post")
+@Entity(name = "Post")
 @Table(name = "post")
 public class Post {
 

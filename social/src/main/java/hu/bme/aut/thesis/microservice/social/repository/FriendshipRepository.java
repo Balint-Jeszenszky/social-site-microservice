@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface FriendshipRepository extends JpaRepository<Friendship, Integer> {
 
-//    @Query("select f.firstUserId ")
-//    List<Integer> findUserFriendsById(@Param("userId") Integer userId);
+    @Query("select case when f.firstUserId = :userId then f.secondUserId else f.firstUserId end from Friendship f where f.firstUserId = :userId or f.secondUserId = :userId")
+    List<Integer> findUserFriendsById(@Param("userId") Integer userId);
 }

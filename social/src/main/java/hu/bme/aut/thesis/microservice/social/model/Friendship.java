@@ -2,7 +2,7 @@ package hu.bme.aut.thesis.microservice.social.model;
 
 import javax.persistence.*;
 
-@Entity(name = "friendship")
+@Entity(name = "Friendship")
 @Table(name = "friendship")
 public class Friendship {
 
