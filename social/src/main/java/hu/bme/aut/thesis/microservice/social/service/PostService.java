@@ -2,6 +2,7 @@ package hu.bme.aut.thesis.microservice.social.service;
 
 import hu.bme.aut.thesis.microservice.social.model.Post;
 import hu.bme.aut.thesis.microservice.social.models.NewPostDto;
+import hu.bme.aut.thesis.microservice.social.repository.FriendshipRepository;
 import hu.bme.aut.thesis.microservice.social.repository.PostRepository;
 import hu.bme.aut.thesis.microservice.social.security.LoggedInUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,12 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private FriendshipRepository friendshipRepository;
+
     public List<Post> getPosts() {
-        return postRepository.findAll();
+        Integer userId = loggedInUserService.getLoggedInUser().getId();
+        return postRepository.findAllFriendsPosts(userId, friendshipRepository.findUserFriendsById(userId));
     }
 
     public List<Post> getPostsByUserId(Integer userId) {

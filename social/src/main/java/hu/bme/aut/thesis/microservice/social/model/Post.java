@@ -52,4 +52,11 @@ public class Post {
         this.text = text;
     }
 
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
 }
