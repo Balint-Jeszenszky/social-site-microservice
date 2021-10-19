@@ -7,7 +7,9 @@ import hu.bme.aut.thesis.microservice.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 public class PublicUserDetailsController extends GlobalExceptionHandler implements PublicUserApi {
 
     @Autowired

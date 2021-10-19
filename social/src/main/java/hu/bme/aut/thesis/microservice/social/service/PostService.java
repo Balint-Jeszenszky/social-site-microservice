@@ -28,7 +28,7 @@ public class PostService {
     }
 
     public List<Post> getPostsByUserId(Integer userId) {
-        return postRepository.getPostsByUserId(userId);
+        return postRepository.getPostsByUserIdOrderByCreatedDesc(userId);
     }
 
     public Post createPost(NewPostDto newPost) {

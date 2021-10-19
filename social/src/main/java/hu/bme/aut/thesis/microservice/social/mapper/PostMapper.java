@@ -9,5 +9,5 @@ import org.mapstruct.factory.Mappers;
 public interface PostMapper {
     PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
 
-    PostDto postToPostDto(Post user);
+    PostDto postToPostDto(Post post);
 }

@@ -86,14 +86,18 @@ components:
       properties:
         id:
           type: integer
-        userId:
-          type: integer
         text:
           type: string
+        user:
+          $ref: '#/components/schemas/UserDetailsDto'
+        created:
+          type: string
+          format: date-time
       required:
         - id
-        - userId
         - text
+        - user
+        - created
     UserDetailsDto:
       title: UserDetailsDto
       type: object

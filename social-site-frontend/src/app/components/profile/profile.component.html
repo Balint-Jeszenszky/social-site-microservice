@@ -1,6 +1,8 @@
 <div>
-    <pre>
-        {{ user?.firstname }}{{ user?.lastname }}{{ user?.username }}{{ user?.id }}{{ user?.email }}
-    </pre>
+    <div class="center">
+        <img class="profile-img" src="https://via.placeholder.com/300x300?text=Profile+pic" alt="">
+        <h1>{{ user?.firstname }} {{ user?.lastname }}</h1>
+        <p>{{ user?.username }}</p>
+    </div>
     <app-feed [userId]="user?.id"></app-feed>
 </div>

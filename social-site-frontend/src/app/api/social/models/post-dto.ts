@@ -1,7 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
+import { UserDetailsDto } from './user-details-dto';
 export interface PostDto {
+  created: string;
   id: number;
   text: string;
-  userId: number;
+  user: UserDetailsDto;
 }

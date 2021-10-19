@@ -119,6 +119,7 @@
 							<modelPackage>hu.bme.aut.thesis.microservice.social.models</modelPackage>
 							<configOptions>
 								<interfaceOnly>true</interfaceOnly>
+								<dateLibrary>legacy</dateLibrary>
 							</configOptions>
 						</configuration>
 					</execution>

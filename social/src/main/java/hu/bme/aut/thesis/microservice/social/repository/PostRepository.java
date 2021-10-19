@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-    @Query("select p from Post p where p.userId = :userId or p.userId in :friends")
+    @Query("select p from Post p where p.userId = :userId or p.userId in :friends order by p.created desc")
     List<Post> findAllFriendsPosts(Integer userId, List<Integer> friends);
 
-    List<Post> getPostsByUserId(Integer userId);
+    List<Post> getPostsByUserIdOrderByCreatedDesc(Integer userId);
 }

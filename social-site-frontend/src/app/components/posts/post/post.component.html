@@ -1,5 +1,6 @@
 <mat-card *ngIf="post" class="post-card">
-    <h2>{{ post.userId }}</h2>
+    <h2 class="username">{{ post.user.firstname }} {{ post.user.lastname }} ({{ post.user.username }})</h2>
+    <small>{{ post.created | date : 'yyyy. MM. dd. HH:mm' }}</small>
     <p>{{ post.text }}</p>
     <img src="https://via.placeholder.com/400x300?text=Photo" alt="">
 </mat-card>

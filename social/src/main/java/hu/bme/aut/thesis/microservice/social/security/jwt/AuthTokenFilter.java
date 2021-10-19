@@ -35,7 +35,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private RestTemplateBuilder restTemplateBuilder;
 
-    @Value("${social.app.auth-url}")
+    @Value("${social.app.auth-login-url}")
     private String authUrl;
 
     @Override
