@@ -2,7 +2,7 @@ package hu.bme.aut.thesis.microservice.auth.model;
 
 import javax.persistence.*;
 
-@Entity(name = "email")
+@Entity(name = "Email")
 @Table(name = "email_verification")
 public class EmailVerification {
 

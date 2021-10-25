@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { UserDetailsDto } from 'src/app/api/auth/models';
 import { UserService } from 'src/app/services/user.service';
 
@@ -10,12 +11,18 @@ import { UserService } from 'src/app/services/user.service';
 export class ProfileComponent implements OnInit {
     user?: UserDetailsDto;
 
-    constructor(private userService: UserService) { }
+    constructor(private userService: UserService, private route: ActivatedRoute) { }
 
     ngOnInit(): void {
-        this.userService.getCurrentUser().subscribe(user => {
-            this.user = user;
+        this.route.params.subscribe(params => {
+            const username: string | undefined = params['username'];
+            if (username) {
+                // TODO find user
+            } else {
+                this.userService.getCurrentUser().subscribe(user => {
+                    this.user = user;
+                });
+            }
         });
     }
-
 }

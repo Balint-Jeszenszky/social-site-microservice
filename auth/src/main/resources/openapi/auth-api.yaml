@@ -171,7 +171,8 @@ paths:
   '/publicUser/{id}':
     get:
       summary: Your GET endpoint
-      tags: []
+      tags:
+        - user-management
       responses:
         '200':
           description: OK
@@ -210,6 +211,54 @@ paths:
               $ref: '#/components/schemas/AccessTokenDto'
       tags:
         - login
+  '/publicUser/find/{username}':
+    parameters:
+      - schema:
+          type: string
+        name: username
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicUserDetailsDto'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicUserDetailsDto'
+      operationId: get-publicUser-find-username
+      description: get user by name
+      tags:
+        - user-management
+  '/publicUser/search/{query}':
+    parameters:
+      - schema:
+          type: string
+        name: query
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags:
+        - user-management
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicUserDetailsDto'
+      operationId: get-publicUser-search-query
+      description: search for users by name
 components:
   schemas:
     UserDetailsDto:

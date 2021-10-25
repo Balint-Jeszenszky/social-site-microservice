@@ -18,7 +18,7 @@ import { ApiInterceptor } from './api/api-interceptor';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { ValidateRegistrationComponent } from './components/validate-registration/validate-registration.component';
+import { ValidateRegistrationComponent } from './components/auth/validate-registration/validate-registration.component';
 import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
 
 const API_INTERCEPTOR_PROVIDER: Provider = {

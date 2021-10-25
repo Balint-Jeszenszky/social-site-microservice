@@ -3,19 +3,18 @@ package hu.bme.aut.thesis.microservice.auth.service;
 import hu.bme.aut.thesis.microservice.auth.model.ERole;
 import hu.bme.aut.thesis.microservice.auth.model.Role;
 import hu.bme.aut.thesis.microservice.auth.model.User;
+import hu.bme.aut.thesis.microservice.auth.models.PublicUserDetailsDto;
 import hu.bme.aut.thesis.microservice.auth.models.RegisterDto;
 import hu.bme.aut.thesis.microservice.auth.models.UpdateUserDto;
 import hu.bme.aut.thesis.microservice.auth.repository.RoleRepository;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
 import hu.bme.aut.thesis.microservice.auth.security.service.LoggedInUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -170,5 +169,19 @@ public class UserService {
         if (!emailMatcher.matches()) {
             throw new IllegalArgumentException("Error: Email is invalid!");
         }
+    }
+
+    public User getUserByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if (user.isEmpty()) {
+            throw new NoSuchElementException("User not found");
+        }
+
+        return user.get();
+    }
+
+    public List<User> searchUsers(String query) {
+        return userRepository.searchUser(query);
     }
 }

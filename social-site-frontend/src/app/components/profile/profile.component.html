@@ -3,7 +3,7 @@
         <img class="profile-img" src="https://via.placeholder.com/300x300?text=Profile+pic" alt="">
         <h1>{{ user?.firstname }} {{ user?.lastname }}</h1>
         <p>{{ user?.username }}</p>
-        <a routerLink="/profile/edit">Edit profile<mat-icon class="small-icon">edit</mat-icon></a>
+        <a routerLink="/editProfile">Edit profile<mat-icon class="small-icon">edit</mat-icon></a>
     </div>
     <app-feed [userId]="user?.id"></app-feed>
 </div>
