@@ -15,12 +15,12 @@ export class FeedComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.userId) {
-            this.postService.getPostsUserId({userId: this.userId}).subscribe(posts => {
+            this.postService.getPostAllUserId({userId: this.userId}).subscribe(posts => {
                 console.log(posts);
                 this.posts = posts;
             });
         } else {
-            this.postService.getPosts().subscribe(posts => {
+            this.postService.getPostAll().subscribe(posts => {
                 console.log(posts);
                 this.posts = posts;
             });

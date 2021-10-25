@@ -1,6 +1,18 @@
 <mat-card *ngIf="post" class="post-card">
-    <h2 class="username">{{ post.user.firstname }} {{ post.user.lastname }} ({{ post.user.username }})</h2>
+    <div class="flex-space-between">
+        <h2 class="username">{{ post.user.firstname }} {{ post.user.lastname }} ({{ post.user.username }})</h2>
+        <div>
+            <mat-icon *ngIf="editable && !editing" class="pointer" (click)="editPost()">edit</mat-icon>
+            <mat-icon *ngIf="editable && !editing" class="pointer" (click)="deletePost()">delete</mat-icon>
+            <mat-icon *ngIf="editable && editing" class="pointer" (click)="savePost()">save</mat-icon>
+            <mat-icon *ngIf="editable && editing" class="pointer" (click)="cancelEditPost()">cancel</mat-icon>
+        </div>
+    </div>
     <small>{{ post.created | date : 'yyyy. MM. dd. HH:mm' }}</small>
-    <p>{{ post.text }}</p>
+    <p *ngIf="!editing">{{ post.text }}</p>
+    <mat-form-field *ngIf="editing" class="full-width" appearance="fill">
+        <mat-label>Edit post</mat-label>
+        <textarea matInput placeholder="Write the post here" [(ngModel)]="text"></textarea>
+    </mat-form-field>
     <img src="https://via.placeholder.com/400x300?text=Photo" alt="">
 </mat-card>

@@ -5,3 +5,16 @@
 .username {
     margin: 0;
 }
+
+.flex-space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.full-width {
+    width: 100%;
+}

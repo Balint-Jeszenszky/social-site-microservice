@@ -75,7 +75,8 @@ paths:
   /post/all:
     get:
       summary: Your GET endpoint
-      tags: []
+      tags:
+        - post
       responses:
         '200':
           description: OK
