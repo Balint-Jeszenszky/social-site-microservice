@@ -11,11 +11,71 @@ servers:
   - url: 'http://localhost:8081/api/social'
     description: local
 paths:
-  /posts:
-    get:
-      summary: Your GET endpoint
+  '/post/{postId}':
+    parameters:
+      - schema:
+          type: integer
+        name: postId
+        in: path
+        required: true
+    put:
+      summary: ''
+      operationId: put-post-postId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostDto'
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+      description: edit post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPostDto'
       tags:
         - post
+    delete:
+      summary: ''
+      operationId: delete-post-postId
+      responses:
+        '204':
+          description: No Content
+        '403':
+          description: Forbidden
+      description: delete post
+      tags:
+        - post
+  /post:
+    post:
+      summary: ''
+      operationId: post-post
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostDto'
+        '400':
+          description: Bad Request
+      description: Create new post
+      tags:
+        - post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPostDto'
+  /post/all:
+    get:
+      summary: Your GET endpoint
+      tags: []
       responses:
         '200':
           description: OK
@@ -25,28 +85,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PostDto'
-      operationId: get-posts
-      description: Get all friends
-      parameters: []
-    post:
-      summary: ''
-      operationId: post-posts
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PostDto'
-      description: Create new post
-      tags:
-        - post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NewPostDto'
-  '/posts/{userId}':
+      operationId: get-post-all
+      description: Get all friends posts
+  '/post/all/{userId}':
     parameters:
       - schema:
           type: integer
@@ -66,9 +107,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PostDto'
-        '403':
-          description: Forbidden
-      operationId: get-posts-userId
+      operationId: get-post-all-userId
       description: Get posts from user
 components:
   schemas:

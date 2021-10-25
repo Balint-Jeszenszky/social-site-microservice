@@ -1,6 +1,6 @@
 package hu.bme.aut.thesis.microservice.social.controller;
 
-import hu.bme.aut.thesis.microservice.social.api.PostsApi;
+import hu.bme.aut.thesis.microservice.social.api.PostApi;
 import hu.bme.aut.thesis.microservice.social.mapper.PostMapper;
 import hu.bme.aut.thesis.microservice.social.model.Post;
 import hu.bme.aut.thesis.microservice.social.models.NewPostDto;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-public class PostController implements PostsApi {
+public class PostController extends GlobalExceptionHandler implements PostApi {
 
     @Autowired
     private PostService postService;
@@ -25,20 +25,40 @@ public class PostController implements PostsApi {
     private UserDetailsService userDetailsService;
 
     @Override
-    public ResponseEntity<List<PostDto>> getPosts() {
+    public ResponseEntity<Void> deletePostPostId(Integer postId) {
+        postService.deletePost(postId);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    public ResponseEntity<List<PostDto>> getPostAll() {
         return new ResponseEntity(mapUsersToPosts(postService.getPosts()), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<PostDto>> getPostsUserId(Integer userId) {
+    public ResponseEntity<List<PostDto>> getPostAllUserId(Integer userId) {
         return new ResponseEntity(mapUsersToPosts(postService.getPostsByUserId(userId)), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<PostDto> postPosts(NewPostDto body) {
+    public ResponseEntity<PostDto> postPost(NewPostDto body) {
         Post post = postService.createPost(body);
 
         PostDto postDto = PostMapper.INSTANCE.postToPostDto(post);
+
+        postDto.setUser(userDetailsService.getUserDetailsById(post.getUserId()));
+
+        return new ResponseEntity(postDto, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<PostDto> putPostPostId(Integer postId, NewPostDto body) {
+        Post post = postService.editPost(postId, body);
+
+        PostDto postDto = PostMapper.INSTANCE.postToPostDto(post);
+
+        postDto.setUser(userDetailsService.getUserDetailsById(post.getUserId()));
 
         return new ResponseEntity(postDto, HttpStatus.OK);
     }
