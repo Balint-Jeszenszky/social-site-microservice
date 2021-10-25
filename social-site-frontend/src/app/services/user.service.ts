@@ -17,18 +17,26 @@ export class UserService {
         const userDetails = localStorage.getItem(this.userDetailsKey);
         if (userDetails) {
             const user: LoginDetailsDto = JSON.parse(userDetails);
-            this.setCurrentUserDetails(user);
+            this.setCurrentUser(user);
         }
     }
 
-    setCurrentUserDetails(user: LoginDetailsDto): void {
+    setCurrentUser(user: LoginDetailsDto): void {
         this.user.next(user.userDetails);
         this.accessToken = user.accessToken;
         this.refreshToken = user.refreshToken;
-        console.log('accessToken:', this.accessToken);
-        console.log('refreshToken:', this.refreshToken);
         this.loggedIn.next(true);
         localStorage.setItem(this.userDetailsKey, JSON.stringify(user));
+    }
+
+    setCurrentUserDetails(user: UserDetailsDto) {
+        this.user.next(user);
+        const userDetails = localStorage.getItem(this.userDetailsKey);
+        if (userDetails) {
+            const parserUser: LoginDetailsDto = JSON.parse(userDetails);
+            parserUser.userDetails = user;
+            localStorage.setItem(this.userDetailsKey, JSON.stringify(user));
+        }
     }
 
     getCurrentUser(): Observable<UserDetailsDto | undefined> {

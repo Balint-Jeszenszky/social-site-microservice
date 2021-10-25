@@ -1,0 +1,12 @@
+.input-full-width {
+    width: 100%;
+}
+
+.container {
+    max-width: 800px;
+    margin: 1rem auto;
+}
+
+.btn-margin {
+    margin-left: 10px;
+}

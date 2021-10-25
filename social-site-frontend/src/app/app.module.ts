@@ -19,6 +19,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ValidateRegistrationComponent } from './components/validate-registration/validate-registration.component';
+import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
 
 const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -37,7 +38,8 @@ const API_INTERCEPTOR_PROVIDER: Provider = {
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
-    ValidateRegistrationComponent
+    ValidateRegistrationComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,

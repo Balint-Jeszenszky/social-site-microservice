@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
             } 
         }).subscribe(
             res => {
-                this.userService.setCurrentUserDetails(res);
+                this.userService.setCurrentUser(res);
                 this.router.navigate(['/']);
             },
             err => {

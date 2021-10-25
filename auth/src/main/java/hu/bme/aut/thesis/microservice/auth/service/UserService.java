@@ -74,6 +74,10 @@ public class UserService {
 
         User userToUpdate = user.get();
 
+        if (!userToUpdate.getEmail().equals(updateUserDto.getEmail()) && userRepository.existsByEmail(updateUserDto.getEmail())) {
+            throw new IllegalArgumentException("Error: Email is already in use!");
+        }
+
         if (updateUserDto.getOldpassword() != null && !updateUserDto.getOldpassword().isEmpty()) {
 
             if (passwordEncoder.matches(userToUpdate.getPassword(), updateUserDto.getOldpassword())) {

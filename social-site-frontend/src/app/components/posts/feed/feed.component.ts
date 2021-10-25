@@ -9,19 +9,17 @@ import { PostService } from 'src/app/api/social/services';
 })
 export class FeedComponent implements OnInit {
     @Input() userId?: number;
-    posts: PostDto[] = [];
+    posts?: PostDto[];
 
     constructor(private postService: PostService) { }
 
     ngOnInit(): void {
         if (this.userId) {
             this.postService.getPostAllUserId({userId: this.userId}).subscribe(posts => {
-                console.log(posts);
                 this.posts = posts;
             });
         } else {
             this.postService.getPostAll().subscribe(posts => {
-                console.log(posts);
                 this.posts = posts;
             });
         }
