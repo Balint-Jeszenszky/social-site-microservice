@@ -153,8 +153,30 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDetailsDto'
       operationId: get-friend-list-userId
       description: list friends of a user
+  /friend/requests:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - friends
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDetailsDto'
+      operationId: get-friend-requests
+      description: List of pending requests
 components:
   schemas:
     NewPostDto:

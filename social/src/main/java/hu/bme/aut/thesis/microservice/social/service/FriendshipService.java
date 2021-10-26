@@ -79,4 +79,13 @@ public class FriendshipService {
                 .map(i -> userDetailsService.getUserDetailsById(i).orElse(null))
                 .filter(f -> f != null).collect(Collectors.toList());
     }
+
+    public List<UserDetailsDto> getPendingRequests() {
+        Integer loggedInUserId = loggedInUserService.getLoggedInUser().getId();
+        List<Friendship> pendingRequests = friendshipRepository.findPendingForUser(loggedInUserId);
+        return pendingRequests.stream().map(r -> {
+            Integer userId = (loggedInUserId.equals(r.getFirstUserId())) ? r.getSecondUserId() : r.getFirstUserId();
+            return userDetailsService.getUserDetailsById(userId).orElse(null);
+        }).filter(f -> f != null).collect(Collectors.toList());
+    }
 }

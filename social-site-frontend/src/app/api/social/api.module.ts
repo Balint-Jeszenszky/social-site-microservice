@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { PostService } from './services/post.service';
+import { FriendsService } from './services/friends.service';
 
 /**
  * Module that provides all services and configuration.
@@ -15,6 +16,7 @@ import { PostService } from './services/post.service';
   declarations: [],
   providers: [
     PostService,
+    FriendsService,
     ApiConfiguration
   ],
 })

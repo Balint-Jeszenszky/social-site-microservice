@@ -24,10 +24,17 @@ public class FriendshipController implements FriendApi {
     }
 
     @Override
-    public ResponseEntity<Void> getFriendListUserId(Integer userId) {
+    public ResponseEntity<List<UserDetailsDto>> getFriendListUserId(Integer userId) {
         List<UserDetailsDto> friendListForUser = friendshipService.getFriendListForUser(userId);
 
         return new ResponseEntity(friendListForUser, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<UserDetailsDto>> getFriendRequests() {
+        List<UserDetailsDto> pendingRequests = friendshipService.getPendingRequests();
+
+        return new ResponseEntity(pendingRequests, HttpStatus.OK);
     }
 
     @Override

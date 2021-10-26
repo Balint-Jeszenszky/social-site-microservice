@@ -23,6 +23,7 @@ import { EditProfileComponent } from './components/profile/edit-profile/edit-pro
 import { FindFriendsComponent } from './components/friends/find-friends/find-friends.component';
 import { ListFriendsComponent } from './components/friends/list-friends/list-friends.component';
 import { FriendsComponent } from './components/friends/friends.component';
+import { PendingFriendsComponent } from './components/friends/pending-friends/pending-friends.component';
 
 const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -45,7 +46,8 @@ const API_INTERCEPTOR_PROVIDER: Provider = {
     EditProfileComponent,
     FindFriendsComponent,
     ListFriendsComponent,
-    FriendsComponent
+    FriendsComponent,
+    PendingFriendsComponent
   ],
   imports: [
     BrowserModule,

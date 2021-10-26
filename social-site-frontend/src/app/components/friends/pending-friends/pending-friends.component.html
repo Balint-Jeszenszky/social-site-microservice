@@ -1,10 +1,5 @@
 <div>
-    <mat-form-field appearance="fill" class="input-full-width">
-        <mat-label>Username</mat-label>
-        <input matInput placeholder="Username" name="username" [(ngModel)]="query" (keydown)="search()">
-    </mat-form-field>
-
-    <table mat-table [dataSource]="users">
+    <table *ngIf="users.length" mat-table [dataSource]="users">
 
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
@@ -19,12 +14,12 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let user">
-                <mat-icon class="pointer" (click)="addUser(user.id)">add_circle</mat-icon>
+                <mat-icon class="pointer" (click)="acceptFriend(user.id)">add_circle</mat-icon>
             </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="['name', 'username', 'actions']"></tr>
         <tr mat-row *matRowDef="let row; columns: ['name', 'username', 'actions']"></tr>
     </table>
-    <h1 *ngIf="!users.length" class="text-center">No results</h1>
+    <h1 *ngIf="!users.length" class="text-center">No pending requests</h1>
 </div>

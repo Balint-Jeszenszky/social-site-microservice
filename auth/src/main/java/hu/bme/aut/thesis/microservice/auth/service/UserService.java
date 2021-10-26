@@ -182,6 +182,9 @@ public class UserService {
     }
 
     public List<User> searchUsers(String query) {
+        if (query.length() < 3) {
+            return Collections.emptyList();
+        }
         return userRepository.searchUser(query);
     }
 }
