@@ -3,6 +3,7 @@
     <div *ngIf="loggedIn">
         <a routerLink="/" mat-button>Feed</a>
         <a routerLink="/profile" mat-button>{{ username }}'s profile</a>
+        <a routerLink="/friends" mat-button>Friends</a>
         <button mat-button (click)="onLogout()">Log out</button>
     </div>
 </mat-toolbar>

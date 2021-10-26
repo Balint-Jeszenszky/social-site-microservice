@@ -1,4 +1,4 @@
-.center {
+.text-center {
     text-align: center;
 }
 
@@ -11,4 +11,9 @@
 
 .small-icon {
     font-size: 1rem;
+}
+
+.spinner {
+    zoom: 0.5;
+    margin: 1rem auto;
 }

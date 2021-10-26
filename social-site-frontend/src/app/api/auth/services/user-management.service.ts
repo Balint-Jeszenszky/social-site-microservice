@@ -9,6 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { PublicUserDetailsDto } from '../models/public-user-details-dto';
 import { UpdateUserDto } from '../models/update-user-dto';
 import { UserDetailsDto } from '../models/user-details-dto';
 
@@ -177,6 +178,168 @@ export class UserManagementService extends BaseService {
 
     return this.deleteUserId$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
+    );
+  }
+
+  /**
+   * Path part for operation getPublicUser
+   */
+  static readonly GetPublicUserPath = '/publicUser/{id}';
+
+  /**
+   * Your GET endpoint.
+   *
+   * Get public user details
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getPublicUser()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getPublicUser$Response(params: {
+    id: number;
+  }): Observable<StrictHttpResponse<PublicUserDetailsDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, UserManagementService.GetPublicUserPath, 'get');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<PublicUserDetailsDto>;
+      })
+    );
+  }
+
+  /**
+   * Your GET endpoint.
+   *
+   * Get public user details
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `getPublicUser$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getPublicUser(params: {
+    id: number;
+  }): Observable<PublicUserDetailsDto> {
+
+    return this.getPublicUser$Response(params).pipe(
+      map((r: StrictHttpResponse<PublicUserDetailsDto>) => r.body as PublicUserDetailsDto)
+    );
+  }
+
+  /**
+   * Path part for operation getPublicUserFindUsername
+   */
+  static readonly GetPublicUserFindUsernamePath = '/publicUser/find/{username}';
+
+  /**
+   * Your GET endpoint.
+   *
+   * get user by name
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getPublicUserFindUsername()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getPublicUserFindUsername$Response(params: {
+    username: string;
+  }): Observable<StrictHttpResponse<PublicUserDetailsDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, UserManagementService.GetPublicUserFindUsernamePath, 'get');
+    if (params) {
+      rb.path('username', params.username, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<PublicUserDetailsDto>;
+      })
+    );
+  }
+
+  /**
+   * Your GET endpoint.
+   *
+   * get user by name
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `getPublicUserFindUsername$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getPublicUserFindUsername(params: {
+    username: string;
+  }): Observable<PublicUserDetailsDto> {
+
+    return this.getPublicUserFindUsername$Response(params).pipe(
+      map((r: StrictHttpResponse<PublicUserDetailsDto>) => r.body as PublicUserDetailsDto)
+    );
+  }
+
+  /**
+   * Path part for operation getPublicUserSearchQuery
+   */
+  static readonly GetPublicUserSearchQueryPath = '/publicUser/search/{query}';
+
+  /**
+   * Your GET endpoint.
+   *
+   * search for users by name
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getPublicUserSearchQuery()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getPublicUserSearchQuery$Response(params: {
+    query: string;
+  }): Observable<StrictHttpResponse<Array<PublicUserDetailsDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, UserManagementService.GetPublicUserSearchQueryPath, 'get');
+    if (params) {
+      rb.path('query', params.query, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<PublicUserDetailsDto>>;
+      })
+    );
+  }
+
+  /**
+   * Your GET endpoint.
+   *
+   * search for users by name
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `getPublicUserSearchQuery$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getPublicUserSearchQuery(params: {
+    query: string;
+  }): Observable<Array<PublicUserDetailsDto>> {
+
+    return this.getPublicUserSearchQuery$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<PublicUserDetailsDto>>) => r.body as Array<PublicUserDetailsDto>)
     );
   }
 

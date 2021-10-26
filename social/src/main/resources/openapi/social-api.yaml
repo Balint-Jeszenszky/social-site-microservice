@@ -110,6 +110,51 @@ paths:
                   $ref: '#/components/schemas/PostDto'
       operationId: get-post-all-userId
       description: Get posts from user
+  '/friend/{id}':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-friend-id
+      responses:
+        '201':
+          description: Created
+        '404':
+          description: Not Found
+      description: send or accept friend request
+      tags:
+        - friends
+    delete:
+      summary: ''
+      operationId: delete-friend-id
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      description: delete friend or friend request
+      tags:
+        - friends
+  '/friend/list/{userId}':
+    parameters:
+      - schema:
+          type: integer
+        name: userId
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags:
+        - friends
+      responses:
+        '200':
+          description: OK
+      operationId: get-friend-list-userId
+      description: list friends of a user
 components:
   schemas:
     NewPostDto:
@@ -161,3 +206,4 @@ components:
   securitySchemes: {}
 tags:
   - name: post
+  - name: friends

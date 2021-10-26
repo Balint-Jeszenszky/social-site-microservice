@@ -47,7 +47,7 @@ public class PostController extends GlobalExceptionHandler implements PostApi {
 
         PostDto postDto = PostMapper.INSTANCE.postToPostDto(post);
 
-        postDto.setUser(userDetailsService.getUserDetailsById(post.getUserId()));
+        postDto.setUser(userDetailsService.getUserDetailsById(post.getUserId()).get());
 
         return new ResponseEntity(postDto, HttpStatus.OK);
     }
@@ -58,7 +58,7 @@ public class PostController extends GlobalExceptionHandler implements PostApi {
 
         PostDto postDto = PostMapper.INSTANCE.postToPostDto(post);
 
-        postDto.setUser(userDetailsService.getUserDetailsById(post.getUserId()));
+        postDto.setUser(userDetailsService.getUserDetailsById(post.getUserId()).get());
 
         return new ResponseEntity(postDto, HttpStatus.OK);
     }
@@ -66,7 +66,7 @@ public class PostController extends GlobalExceptionHandler implements PostApi {
     private List<PostDto> mapUsersToPosts(List<Post> posts) {
         return posts.stream().map(p -> {
             PostDto postDto = PostMapper.INSTANCE.postToPostDto(p);
-            postDto.setUser(userDetailsService.getUserDetailsById(p.getUserId()));
+            postDto.setUser(userDetailsService.getUserDetailsById(p.getUserId()).get());
             return postDto;
         }).collect(Collectors.toList());
     }

@@ -20,6 +20,9 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { ProfileComponent } from './components/profile/profile.component';
 import { ValidateRegistrationComponent } from './components/auth/validate-registration/validate-registration.component';
 import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
+import { FindFriendsComponent } from './components/friends/find-friends/find-friends.component';
+import { ListFriendsComponent } from './components/friends/list-friends/list-friends.component';
+import { FriendsComponent } from './components/friends/friends.component';
 
 const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -39,7 +42,10 @@ const API_INTERCEPTOR_PROVIDER: Provider = {
     RegisterComponent,
     ProfileComponent,
     ValidateRegistrationComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    FindFriendsComponent,
+    ListFriendsComponent,
+    FriendsComponent
   ],
   imports: [
     BrowserModule,

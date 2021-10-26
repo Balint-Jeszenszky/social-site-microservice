@@ -1,9 +1,17 @@
 <div>
-    <div class="center">
-        <img class="profile-img" src="https://via.placeholder.com/300x300?text=Profile+pic" alt="">
-        <h1>{{ user?.firstname }} {{ user?.lastname }}</h1>
-        <p>{{ user?.username }}</p>
-        <a routerLink="/editProfile">Edit profile<mat-icon class="small-icon">edit</mat-icon></a>
+    <div *ngIf="user">
+        <div class="text-center">
+            <img class="profile-img" src="https://via.placeholder.com/300x300?text=Profile+pic" alt="">
+            <h1>{{ user?.firstname }} {{ user?.lastname }}</h1>
+            <p>{{ user?.username }}</p>
+            <a *ngIf="personalProfile" routerLink="/editProfile">Edit profile<mat-icon class="small-icon">edit</mat-icon></a>
+        </div>
+        <app-feed [userId]="user?.id"></app-feed>
     </div>
-    <app-feed [userId]="user?.id"></app-feed>
+    <div *ngIf="!user && !userNotFound">
+        <mat-spinner class="spinner"></mat-spinner>
+    </div>
+    <div *ngIf="userNotFound">
+        <h1 class="text-center">User not found!</h1>
+    </div>
 </div>

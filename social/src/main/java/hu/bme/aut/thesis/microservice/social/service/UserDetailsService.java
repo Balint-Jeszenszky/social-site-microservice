@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+
+import java.util.Optional;
 
 @Service
 public class UserDetailsService {
@@ -15,7 +18,12 @@ public class UserDetailsService {
     @Value("${social.app.auth-public-details-url}")
     private String publicUserDetailsUrl;
 
-    public UserDetailsDto getUserDetailsById(Integer userId) {
-        return restTemplateBuilder.build().getForEntity(publicUserDetailsUrl + "/" + userId, UserDetailsDto.class).getBody();
+    public Optional<UserDetailsDto> getUserDetailsById(Integer userId) {
+        try {
+            UserDetailsDto userDetailsDto = restTemplateBuilder.build().getForEntity(publicUserDetailsUrl + "/" + userId, UserDetailsDto.class).getBody();
+            return Optional.of(userDetailsDto);
+        } catch (RestClientException e) {
+            return Optional.empty();
+        }
     }
 }
