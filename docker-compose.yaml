@@ -41,7 +41,7 @@ services:
       - web
       
   auth-db:
-    image: postgres
+    image: postgres:14
     restart: always
     container_name: auth-db
     environment:
@@ -72,7 +72,7 @@ services:
       - backend
       
   social-db:
-    image: postgres
+    image: postgres:14
     restart: always
     container_name: social-db
     environment:
@@ -98,6 +98,32 @@ services:
       - "traefik.http.services.social.loadbalancer.server.port=8081"
       - "traefik.http.routers.social.entrypoints=web"
       - "traefik.http.routers.social.rule=PathPrefix(`/api/social`)"
+    networks:
+      - web
+      - backend
+  
+  media-db:
+    image: mongo:5
+    restart: always
+    container_name: media-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: DevPass0
+    volumes:
+      - ./media-db:/data/
+    networks:
+      - backend
+  
+  media:
+    image: node:16.13
+    restart: always
+    container_name: media
+    build: ./media/build
+    command: npm start
+    depends_on:
+      - media-db
+    volumes:
+      - ./media/build:/usr/app/
     networks:
       - web
       - backend
