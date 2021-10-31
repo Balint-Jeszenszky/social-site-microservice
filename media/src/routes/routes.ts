@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import upload from '../services/upload';
+import mediaHandler from '../middleware/mediaHandler';
 
 const router = Router();
 
-router.post('/upload', upload, (req, res) => {
-    console.log(req.file);
-    res.sendStatus(202);
-});
+router.post(
+    '/upload',
+    upload,
+    mediaHandler
+);
 
 export default router;

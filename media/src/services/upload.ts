@@ -17,7 +17,7 @@ const upload = multer({
     },
     fileFilter: (req, file, cb) => {
         const ext = path.extname(file.originalname);
-        const fileTypes = /jpeg|jpg|png|gif/; // TODO video
+        const fileTypes = /jpeg|jpg|png|gif|mp4|mov/; // TODO video
         const valid = fileTypes.test(ext.toLowerCase()) && fileTypes.test(file.mimetype);
         cb(null, valid);
     }
