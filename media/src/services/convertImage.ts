@@ -1,7 +1,7 @@
 import sharp from 'sharp';
 import path from "path";
 
-export default async function convertImage(filepath: string) {
+export default async function convertImage(filepath: string, dest: string) {
     try {
         const {width, height} = await sharp(filepath).metadata();
 
@@ -25,7 +25,7 @@ export default async function convertImage(filepath: string) {
             image = image.resize(w, h);
         }
 
-        await image.toFile(`media/images/${path.parse(filepath).name}.jpg`);
+        await image.toFile(`${dest}/${path.parse(filepath).name}.jpg`);
         
         return true;
     } catch (e) {

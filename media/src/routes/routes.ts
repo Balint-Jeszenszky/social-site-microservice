@@ -7,7 +7,7 @@ const router = Router();
 router.post(
     '/upload',
     upload,
-    mediaHandler
+    mediaHandler()
 );
 
 export default router;
