@@ -115,15 +115,25 @@ services:
       - backend
   
   media:
-    image: node:16.13
+    image: node:16
     restart: always
     container_name: media
-    build: ./media/build
-    command: npm start
+    working_dir: /usr/app
+    environment:
+      - NODE_ENV=production
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - npm install && npm start
     depends_on:
       - media-db
     volumes:
       - ./media/build:/usr/app/
+      - ./media/package.json:/usr/app/package.json
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.media.loadbalancer.server.port=3000"
+      - "traefik.http.routers.media.entrypoints=web"
+      - "traefik.http.routers.media.rule=PathPrefix(`/api/media`)"
     networks:
       - web
       - backend
@@ -144,4 +154,8 @@ volumes:
   social:
     driver: local
   social-db:
+    driver: local
+  media:
+    driver: local
+  media-db:
     driver: local
