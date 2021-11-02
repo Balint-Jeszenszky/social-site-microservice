@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import convertImage from "../services/convertImage";
+import convertVideo from "../services/convertVideo";
 import fs, { promises as fs_promises } from "fs";
 
 export default function mediaHandler() {
@@ -23,7 +24,7 @@ export default function mediaHandler() {
                 return res.sendStatus(406);
             }
         } else {
-            console.log('video');
+            await convertVideo(req.file.path, VIDEO_PATH);
         }
         await fs_promises.rm(req.file.path);
         res.sendStatus(202);

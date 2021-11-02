@@ -1,5 +1,8 @@
 import express, { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import router from './routes/routes';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 
