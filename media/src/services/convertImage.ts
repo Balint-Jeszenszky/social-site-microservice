@@ -1,5 +1,6 @@
 import sharp from 'sharp';
 import path from "path";
+import { promises as fs } from 'fs';
 
 export default async function convertImage(filepath: string, dest: string) {
     try {
@@ -26,6 +27,8 @@ export default async function convertImage(filepath: string, dest: string) {
         }
 
         await image.toFile(`${dest}/${path.parse(filepath).name}.jpg`);
+
+        await fs.rm(filepath);
         
         return true;
     } catch (e) {
