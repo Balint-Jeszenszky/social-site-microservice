@@ -4,7 +4,7 @@ import ffprobeStatic from 'ffprobe-static';
 import Ffmpeg, { FfprobeStream } from "fluent-ffmpeg";
 import { promises as fs } from 'fs';
 
-export default async function convertVideo(filepath: string, dest: string) {
+export default function convertVideo(filepath: string, dest: string, postId: number) {
 
     Ffmpeg.setFfmpegPath(ffmpegStatic);
     Ffmpeg.setFfprobePath(ffprobeStatic.path);
@@ -44,12 +44,12 @@ export default async function convertVideo(filepath: string, dest: string) {
             .on('progress', function (progress) {
                 console.log('Processing: ' + progress.percent + '% done');
             })
-            .on('end', async (stdout, stderr) => {
+            .on('end', async () => {
                 clearTimeout(tid);
                 await fs.rm(filepath);
                 console.log('Transcoding succeeded !');
             })
-            .on('error', async (err, stdout, stderr) => {
+            .on('error', async (err) => {
                 clearTimeout(tid);
                 await fs.rm(filepath);
                 console.log('Cannot process video: ' + err.message);

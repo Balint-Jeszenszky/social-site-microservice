@@ -24,8 +24,13 @@ export default function mediaHandler() {
                 return res.sendStatus(406);
             }
         } else {
-            await convertVideo(req.file.path, VIDEO_PATH);
+            try {
+                convertVideo(req.file.path, VIDEO_PATH, 1);
+            } catch (e) {
+                res.status(406).send(e);
+            }
         }
+
         res.sendStatus(202);
     }
 }
