@@ -40,6 +40,11 @@ public class PostService {
                 newPost.getText()
         );
 
+        post.setHasMedia(newPost.isMedia());
+        if (newPost.isMedia()) {
+            post.setProcessedMedia(false);
+        }
+
         postRepository.save(post);
 
         return post;

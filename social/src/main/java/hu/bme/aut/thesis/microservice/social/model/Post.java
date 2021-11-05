@@ -21,6 +21,12 @@ public class Post {
     @Column(name = "created", nullable = false, updatable = false)
     private Date created = new Date();
 
+    @Column(name = "hasMedia", nullable = false)
+    private Boolean hasMedia = Boolean.FALSE;
+
+    @Column(name = "media_processed")
+    private Boolean processedMedia;
+
     public Post() {}
 
     public Post(Integer userId, String text) {
@@ -54,6 +60,22 @@ public class Post {
 
     public Date getCreated() {
         return created;
+    }
+
+    public Boolean getHasMedia() {
+        return hasMedia;
+    }
+
+    public void setHasMedia(Boolean hasMedia) {
+        this.hasMedia = hasMedia;
+    }
+
+    public Boolean getProcessedMedia() {
+        return processedMedia;
+    }
+
+    public void setProcessedMedia(Boolean processedMedia) {
+        this.processedMedia = processedMedia;
     }
 
     public void setCreated(Date created) {

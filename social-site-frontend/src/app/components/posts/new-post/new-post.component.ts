@@ -15,7 +15,7 @@ export class NewPostComponent implements OnInit {
     }
 
     post() {
-        this.postService.postPost({body:{text: this.text}}).subscribe(res => {
+        this.postService.postPost({body:{text: this.text, media: false}}).subscribe(res => {
             this.text = '';
         });
     }

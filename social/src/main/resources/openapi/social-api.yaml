@@ -185,8 +185,11 @@ components:
       properties:
         text:
           type: string
+        media:
+          type: boolean
       required:
         - text
+        - media
     PostDto:
       title: PostDto
       type: object

@@ -1,7 +1,15 @@
 <mat-card class="new-post-card">
-    <mat-form-field class="new-post-full-width" appearance="fill">
-        <mat-label>New post</mat-label>
-        <textarea matInput placeholder="Write the post here" [(ngModel)]="text"></textarea>
-    </mat-form-field>
-    <button mat-raised-button color="primary" (click)="post()">Post</button>
+    <form>
+        <mat-form-field class="new-post-full-width" appearance="fill">
+            <mat-label>New post</mat-label>
+            <textarea matInput placeholder="Write the post here" name="text" [(ngModel)]="text"></textarea>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" class="margin-right">Post</button>
+        <input #input hidden type="file" id="file-input" />
+        <button mat-raised-button color="primary" type="button" (click)="input.click()">
+            <mat-icon class="pointer">attach_file</mat-icon>
+            Attach media
+        </button>
+        <p>TODO filename</p>
+    </form>
 </mat-card>

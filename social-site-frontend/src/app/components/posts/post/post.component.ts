@@ -28,7 +28,7 @@ export class PostComponent implements OnInit {
     }
 
     savePost() {
-        this.postService.putPostPostId({postId: this.post!.id, body: { text: this.text }}).subscribe(res => {
+        this.postService.putPostPostId({postId: this.post!.id, body: { text: this.text, media: false }}).subscribe(res => {
             this.editing = false;
             this.post!.text = this.text;
         });

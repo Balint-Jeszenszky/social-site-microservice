@@ -5,3 +5,11 @@
 .new-post-card {
     margin-bottom: 1rem;
 }
+
+.margin-right {
+    margin-right: 15px;
+}
+
+.pointer {
+    cursor: pointer;
+}
