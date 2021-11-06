@@ -14,5 +14,5 @@
         <mat-label>Edit post</mat-label>
         <textarea matInput placeholder="Write the post here" [(ngModel)]="text"></textarea>
     </mat-form-field>
-    <img src="https://via.placeholder.com/400x300?text=Photo" alt="">
+    <img *ngIf="mediaUrl" src="https://via.placeholder.com/400x300?text=Photo" alt="">
 </mat-card>

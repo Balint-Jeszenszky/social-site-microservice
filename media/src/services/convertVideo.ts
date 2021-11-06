@@ -3,6 +3,7 @@ import ffmpegStatic from 'ffmpeg-static'
 import ffprobeStatic from 'ffprobe-static';
 import Ffmpeg, { FfprobeStream } from "fluent-ffmpeg";
 import { promises as fs } from 'fs';
+import { setFailed, setProcessed, setProcessingStarted } from './postService';
 
 export default function convertVideo(filepath: string, dest: string, postId: number) {
 
@@ -40,6 +41,7 @@ export default function convertVideo(filepath: string, dest: string, postId: num
             .output(`${dest}/${path.parse(filepath).name}.mp4`)
             .on('start', function (commandLine) {
                 console.log('Spawned Ffmpeg with command: ' + commandLine);
+                setProcessingStarted(postId, `${path.parse(filepath).name}.mp4`);
             })
             .on('progress', function (progress) {
                 console.log('Processing: ' + progress.percent + '% done');
@@ -48,11 +50,13 @@ export default function convertVideo(filepath: string, dest: string, postId: num
                 clearTimeout(tid);
                 await fs.rm(filepath);
                 console.log('Transcoding succeeded !');
+                setProcessed(postId);
             })
             .on('error', async (err) => {
                 clearTimeout(tid);
                 await fs.rm(filepath);
                 console.log('Cannot process video: ' + err.message);
+                setFailed(postId);
             });
 
         command.run();

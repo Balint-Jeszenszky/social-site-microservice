@@ -107,8 +107,7 @@ services:
     restart: always
     container_name: media-db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: mongo
-      MONGO_INITDB_ROOT_PASSWORD: DevPass0
+      MONGO_INITDB_DATABASE: media
     volumes:
       - ./media-db:/data/
     networks:
@@ -129,6 +128,7 @@ services:
     volumes:
       - ./media/build:/usr/app/
       - ./media/package.json:/usr/app/package.json
+      - ./media/.env:/usr/app/.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.media.loadbalancer.server.port=3000"

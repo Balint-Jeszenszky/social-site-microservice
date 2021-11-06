@@ -1,9 +1,12 @@
 import sharp from 'sharp';
 import path from "path";
 import { promises as fs } from 'fs';
+import { setFailed, setProcessed, setProcessingStarted } from './postService';
 
-export default async function convertImage(filepath: string, dest: string) {
+export default async function convertImage(filepath: string, dest: string, postId: number) {
     try {
+        setProcessingStarted(postId, `${path.parse(filepath).name}.jpg`);
+
         const {width, height} = await sharp(filepath).metadata();
 
         if (!width || !height) {
@@ -29,10 +32,13 @@ export default async function convertImage(filepath: string, dest: string) {
         await image.toFile(`${dest}/${path.parse(filepath).name}.jpg`);
 
         await fs.rm(filepath);
+
+        setProcessed(postId);
         
         return true;
     } catch (e) {
         console.log(e);
+        setFailed(postId);
         return false;
     }
 }

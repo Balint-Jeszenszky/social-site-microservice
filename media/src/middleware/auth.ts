@@ -20,8 +20,8 @@ export default function auth() {
         }
 
         try {
-            const response: UserDetails = await axios.post(AUTH_URL, token);
-            console.log(response);
+            const response = await axios.post(AUTH_URL, {accessToken: token});
+            res.locals.userDetails = response.data;
             return next();
         } catch (e) {
             console.log(e);

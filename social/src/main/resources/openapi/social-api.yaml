@@ -177,6 +177,31 @@ paths:
                   $ref: '#/components/schemas/UserDetailsDto'
       operationId: get-friend-requests
       description: List of pending requests
+  '/media/{id}':
+    put:
+      summary: ''
+      operationId: put-media
+      responses:
+        '200':
+          description: OK
+      description: Notify of status change
+      tags:
+        - media
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: ''
+      operationId: get-media-id
+      responses:
+        '200':
+          description: OK
+      description: Get url with key for media
+      tags:
+        - media
 components:
   schemas:
     NewPostDto:
@@ -232,3 +257,4 @@ components:
 tags:
   - name: post
   - name: friends
+  - name: media

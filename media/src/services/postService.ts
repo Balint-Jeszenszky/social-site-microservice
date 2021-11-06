@@ -29,6 +29,10 @@ export async function setFailed(postId: number) {
     }
 }
 
+export async function getStatus(postId: number) {
+    return await Post.findOne({postId});
+}
+
 async function notifySocialService(postId: number) {
     await axios.put(`${process.env.SOCIAL_SERVER}/${postId}`);
 }

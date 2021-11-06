@@ -18,7 +18,7 @@ export default function mediaHandler() {
         }
 
         if (req.file.mimetype.startsWith('image/')) {
-            const success = await convertImage(req.file.path, IMAGE_PATH);
+            const success = await convertImage(req.file.path, IMAGE_PATH, 1);
             if (!success) {
                 console.log('failed image conversion');
                 return res.sendStatus(406);
