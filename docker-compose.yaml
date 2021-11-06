@@ -51,7 +51,7 @@ services:
     volumes:
       - ./auth-db:/var/lib/postgresql/data
     networks:
-      - backend
+      - internal
 
   auth:
     image: openjdk:11-jre-stretch
@@ -67,9 +67,10 @@ services:
       - "traefik.http.services.auth.loadbalancer.server.port=8080"
       - "traefik.http.routers.auth.entrypoints=web"
       - "traefik.http.routers.auth.rule=PathPrefix(`/api/auth`)"
+      - "traefik.docker.network=social-web"
     networks:
       - web
-      - backend
+      - internal
       
   social-db:
     image: postgres:14
@@ -82,7 +83,7 @@ services:
     volumes:
       - ./social-db:/var/lib/postgresql/data
     networks:
-      - backend
+      - internal
 
   social:
     image: openjdk:11-jre-stretch
@@ -98,9 +99,10 @@ services:
       - "traefik.http.services.social.loadbalancer.server.port=8081"
       - "traefik.http.routers.social.entrypoints=web"
       - "traefik.http.routers.social.rule=PathPrefix(`/api/social`)"
+      - "traefik.docker.network=social-web"
     networks:
       - web
-      - backend
+      - internal
   
   media-db:
     image: mongo:5
@@ -111,7 +113,7 @@ services:
     volumes:
       - ./media-db:/data/
     networks:
-      - backend
+      - internal
   
   media:
     image: node:16
@@ -134,15 +136,18 @@ services:
       - "traefik.http.services.media.loadbalancer.server.port=3000"
       - "traefik.http.routers.media.entrypoints=web"
       - "traefik.http.routers.media.rule=PathPrefix(`/api/media`)"
+      - "traefik.docker.network=social-web"
     networks:
       - web
-      - backend
+      - internal
 
 networks:
   web:
-    external: true
-  backend:
     external: false
+    name: social-web
+  internal:
+    external: false
+    name: social-internal
     
 volumes:
   static:
