@@ -235,6 +235,8 @@ components:
         created:
           type: string
           format: date-time
+        mediaName:
+          type: string
       required:
         - id
         - text
@@ -270,6 +272,8 @@ components:
             - PROCESSING
             - FAILED
             - AVAILABLE
+        name:
+          type: string
       required:
         - status
   securitySchemes: {}

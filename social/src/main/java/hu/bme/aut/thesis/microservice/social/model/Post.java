@@ -27,6 +27,9 @@ public class Post {
     @Column(name = "media_processed")
     private Boolean processedMedia;
 
+    @Column(name = "media_name")
+    private String mediaName;
+
     public Post() {}
 
     public Post(Integer userId, String text) {
@@ -80,5 +83,13 @@ public class Post {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public String getMediaName() {
+        return mediaName;
+    }
+
+    public void setMediaName(String mediaName) {
+        this.mediaName = mediaName;
     }
 }

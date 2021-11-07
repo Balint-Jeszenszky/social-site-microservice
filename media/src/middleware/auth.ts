@@ -1,6 +1,5 @@
 import axios from "axios";
 import { NextFunction, Request, Response } from "express";
-import { UserDetails } from "../model/UserDetails";
 
 
 export default function auth() {

@@ -81,7 +81,7 @@ public class PostService {
         return post.get();
     }
 
-    public void setPostMediaStatus(Integer id, MediaStatusDto.StatusEnum status) {
+    public void setPostMediaStatus(Integer id, MediaStatusDto.StatusEnum status, String name) {
 
         if (status == MediaStatusDto.StatusEnum.FAILED) {
             postRepository.deleteById(id);
@@ -96,6 +96,7 @@ public class PostService {
 
         if (status == MediaStatusDto.StatusEnum.AVAILABLE) {
             post.setProcessedMedia(true);
+            post.setMediaName(name);
             postRepository.save(post);
         }
     }

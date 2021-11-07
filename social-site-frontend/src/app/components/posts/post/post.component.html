@@ -14,5 +14,6 @@
         <mat-label>Edit post</mat-label>
         <textarea matInput placeholder="Write the post here" [(ngModel)]="text"></textarea>
     </mat-form-field>
-    <img *ngIf="mediaUrl" src="https://via.placeholder.com/400x300?text=Photo" alt="">
+    <img *ngIf="hasImage()" [src]="'/api/media/media/' + post.mediaName" class="w-100">
+    <video *ngIf="hasVideo()" [src]="'/api/media/media/' + post.mediaName" class="w-100" controls></video>
 </mat-card>

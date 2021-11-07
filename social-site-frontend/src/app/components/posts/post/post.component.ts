@@ -13,7 +13,6 @@ export class PostComponent implements OnInit {
     editable: boolean = false;
     editing: boolean = false;
     text: string = '';
-    mediaUrl?: string;
 
     constructor(private userService: UserService, private postService: PostService) { }
 
@@ -45,6 +44,14 @@ export class PostComponent implements OnInit {
                 this.post = undefined;
             });
         }
+    }
+
+    hasImage() {
+        return this.post?.mediaName?.endsWith('.jpg');
+    }
+
+    hasVideo() {
+        return this.post?.mediaName?.endsWith('.mp4');
     }
 
 }

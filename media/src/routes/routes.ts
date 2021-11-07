@@ -4,6 +4,7 @@ import mediaHandler from '../middleware/mediaHandler';
 import auth from '../middleware/auth';
 import mediaStatus from '../middleware/mediaStatus';
 import accessMedia from '../middleware/accessMedia';
+import getMedia from '../middleware/getMedia';
 
 const router = Router();
 
@@ -19,10 +20,15 @@ router.get(
     mediaStatus()
 );
 
-router.get(
-    '/media/:postId',
+router.post(
+    '/media/accessKey',
     auth(),
     accessMedia()
+);
+
+router.get(
+    '/media/:name',
+    getMedia()
 );
 
 export default router;
