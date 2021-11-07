@@ -26,6 +26,9 @@ public class PostService {
     @Autowired
     private FriendshipRepository friendshipRepository;
 
+    @Autowired
+    private MediaAccessService mediaAccessService;
+
     public List<Post> getPosts() {
         Integer userId = loggedInUserService.getLoggedInUser().getId();
         return postRepository.findAllFriendsPosts(userId, friendshipRepository.findUserFriendsById(userId));
@@ -53,6 +56,8 @@ public class PostService {
 
     public void deletePost(Integer postId) {
         Post post = getPost(postId);
+
+        mediaAccessService.deleteMedia(postId);
 
         postRepository.delete(post);
     }

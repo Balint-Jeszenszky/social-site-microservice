@@ -5,6 +5,7 @@ import auth from '../middleware/auth';
 import mediaStatus from '../middleware/mediaStatus';
 import accessMedia from '../middleware/accessMedia';
 import getMedia from '../middleware/getMedia';
+import deleteMedia from '../middleware/deleteMedia';
 
 const router = Router();
 
@@ -29,6 +30,11 @@ router.post(
 router.get(
     '/media/:name',
     getMedia()
+);
+
+router.delete(
+    '/:postId',
+    deleteMedia()
 );
 
 export default router;

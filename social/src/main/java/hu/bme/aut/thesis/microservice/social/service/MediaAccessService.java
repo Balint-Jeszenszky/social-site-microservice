@@ -19,8 +19,8 @@ public class MediaAccessService {
     @Autowired
     private RestTemplateBuilder restTemplateBuilder;
 
-    @Value("${social.app.media-access-url}")
-    private String mediaAccessUrl;
+    @Value("${social.app.media-service-url}")
+    private String mediaServiceUrl;
 
     public String getMediaAccessUrl(Integer userId, List<Integer> postIds) {
         HttpHeaders headers = new HttpHeaders();
@@ -30,10 +30,18 @@ public class MediaAccessService {
         HttpEntity<Map<String, Object>> entity = new HttpEntity(new MediaAccessDto(userId, postIds), headers);
 
         try {
-            String accessKey = restTemplateBuilder.build().postForEntity(mediaAccessUrl, entity, String.class).getBody();
+            String accessKey = restTemplateBuilder.build().postForEntity(mediaServiceUrl + "/accessKey", entity, String.class).getBody();
             return  accessKey;
         } catch (RestClientException e) {
             return null;
+        }
+    }
+
+    public void deleteMedia(Integer postId) {
+        try {
+            restTemplateBuilder.build().delete(mediaServiceUrl + '/' + postId);
+        } catch (RestClientException e) {
+
         }
     }
 

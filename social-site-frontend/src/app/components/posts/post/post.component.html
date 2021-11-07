@@ -15,5 +15,5 @@
         <textarea matInput placeholder="Write the post here" [(ngModel)]="text"></textarea>
     </mat-form-field>
     <img *ngIf="hasImage()" [src]="'/api/media/media/' + post.mediaName" class="w-100">
-    <video *ngIf="hasVideo()" [src]="'/api/media/media/' + post.mediaName" class="w-100" controls></video>
+    <video *ngIf="hasVideo()" [src]="'/api/media/media/' + post.mediaName" class="w-100" controls controlsList="nodownload"></video>
 </mat-card>
