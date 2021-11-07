@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public abstract class GlobalExceptionHandler {
 
     @ExceptionHandler(SocialServiceException.class)
-    public ResponseEntity<String> handleNotFound(SocialServiceException e) {
+    public ResponseEntity<String> handleExceptions(SocialServiceException e) {
         return new ResponseEntity(e.getMessage(), e.getHttpStatus());
     }
 }

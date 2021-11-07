@@ -18,17 +18,17 @@ export class NewPostComponent implements OnInit {
     }
 
     post() {
-        this.postService.postPost({body:{text: this.text, media: false}}).subscribe(res => {
+        this.postService.postPost({body:{text: this.text, media: !!this.selectedFile}}).subscribe(res => {
             if (this.selectedFile) {
                 const formData = new FormData();
                 formData.append('mediaUpload', this.selectedFile);
                 formData.append('postId', res.id.toString());
                 this.mediaService.uploadFile(formData).subscribe(
                     res => {
-
+                        console.log(res);
                     },
                     err => {
-
+                        console.log(err);
                     }
                 );
             }

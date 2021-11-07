@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { UploadResponseDto } from './dto/upload-response-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class MediaService {
 
   constructor(private http: HttpClient) { }
 
-  uploadFile(formData: FormData) {
-    return this.http.post(`${this.baseUrl}/upload`, formData);
+  uploadFile(formData: FormData): Observable<UploadResponseDto> {
+    return this.http.post<UploadResponseDto>(`${this.baseUrl}/upload`, formData);
   }
 }

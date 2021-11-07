@@ -182,14 +182,21 @@ paths:
       summary: ''
       operationId: put-media
       responses:
-        '200':
-          description: OK
+        '202':
+          description: Accepted
+        '404':
+          description: Not Found
       description: Notify of status change
       tags:
         - media
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MediaStatusDto'
     parameters:
       - schema:
-          type: string
+          type: integer
         name: id
         in: path
         required: true
@@ -253,6 +260,18 @@ components:
         - firstname
         - lastname
         - email
+    MediaStatusDto:
+      title: MediaStatusDto
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - PROCESSING
+            - FAILED
+            - AVAILABLE
+      required:
+        - status
   securitySchemes: {}
 tags:
   - name: post

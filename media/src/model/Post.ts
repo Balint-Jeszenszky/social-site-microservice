@@ -23,8 +23,8 @@ export function toPostDataDto(post: IPost) {
 const PostSchema: Schema = new Schema({
     postId: { type: Number, required: true, unique: true },
     filename: { type: String, required: true, unique: true },
-    createdAt: { type: Date, required: true, unique: true },
-    status: { type: String, enum: MediaStatusEnum, default: MediaStatusEnum.PROCESSING, required: true, unique: true }
+    createdAt: { type: Date, required: true },
+    status: { type: Number, enum: MediaStatusEnum, default: MediaStatusEnum.PROCESSING, required: true }
 });
 
 export default db.model<IPost>('Post', PostSchema);

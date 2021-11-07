@@ -13,25 +13,29 @@ export default function mediaHandler() {
     createDir(VIDEO_PATH);
 
     return async (req: Request, res: Response) => {
-        if (!req.file) {
+        if (!req.file || !req.body.postId) {
             return res.sendStatus(400);
         }
 
+        const postId = parseInt(req.body.postId);
+        let processed = false;
+
         if (req.file.mimetype.startsWith('image/')) {
-            const success = await convertImage(req.file.path, IMAGE_PATH, 1);
+            const success = await convertImage(req.file.path, IMAGE_PATH, postId);
+            processed = true;
             if (!success) {
                 console.log('failed image conversion');
                 return res.sendStatus(406);
             }
         } else {
             try {
-                convertVideo(req.file.path, VIDEO_PATH, 1);
+                convertVideo(req.file.path, VIDEO_PATH, postId);
             } catch (e) {
-                res.status(406).send(e);
+                return res.status(406).send(e);
             }
         }
 
-        res.sendStatus(202);
+        return res.status(202).json({processed});
     }
 }
 

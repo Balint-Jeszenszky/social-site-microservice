@@ -3,6 +3,7 @@ package hu.bme.aut.thesis.microservice.social.service;
 import hu.bme.aut.thesis.microservice.social.controller.exceptions.ForbiddenException;
 import hu.bme.aut.thesis.microservice.social.controller.exceptions.NotFoundException;
 import hu.bme.aut.thesis.microservice.social.model.Post;
+import hu.bme.aut.thesis.microservice.social.models.MediaStatusDto;
 import hu.bme.aut.thesis.microservice.social.models.NewPostDto;
 import hu.bme.aut.thesis.microservice.social.repository.FriendshipRepository;
 import hu.bme.aut.thesis.microservice.social.repository.PostRepository;
@@ -78,5 +79,24 @@ public class PostService {
         }
 
         return post.get();
+    }
+
+    public void setPostMediaStatus(Integer id, MediaStatusDto.StatusEnum status) {
+
+        if (status == MediaStatusDto.StatusEnum.FAILED) {
+            postRepository.deleteById(id);
+            return;
+        }
+
+        Post post = postRepository.getById(id);
+
+        if (post == null) {
+            throw new NotFoundException("Post not found");
+        }
+
+        if (status == MediaStatusDto.StatusEnum.AVAILABLE) {
+            post.setProcessedMedia(true);
+            postRepository.save(post);
+        }
     }
 }
