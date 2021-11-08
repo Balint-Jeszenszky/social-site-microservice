@@ -57,7 +57,9 @@ public class PostService {
     public void deletePost(Integer postId) {
         Post post = getPost(postId);
 
-        mediaAccessService.deleteMedia(postId);
+        if (post.getHasMedia()) {
+            mediaAccessService.deleteMedia(postId);
+        }
 
         postRepository.delete(post);
     }

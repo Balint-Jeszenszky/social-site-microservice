@@ -25,6 +25,8 @@ export class NewPostComponent implements OnInit {
                 formData.append('postId', res.id.toString());
                 this.mediaService.uploadFile(formData).subscribe(
                     res => {
+                        this.selectedFile = undefined;
+                        this.filename = '';
                         console.log(res);
                     },
                     err => {
