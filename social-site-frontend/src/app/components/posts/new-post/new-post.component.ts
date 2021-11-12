@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { PostDto } from 'src/app/api/social/models';
 import { PostService } from 'src/app/api/social/services';
 import { MediaService } from 'src/app/services/media.service';
 
@@ -11,6 +12,7 @@ export class NewPostComponent implements OnInit {
     text: string = '';
     filename: string = '';
     selectedFile?: File;
+    @Output() postCreated: EventEmitter<PostDto> = new EventEmitter<PostDto>();
 
     constructor(private postService: PostService, private mediaService: MediaService) { }
 
@@ -24,18 +26,21 @@ export class NewPostComponent implements OnInit {
                 formData.append('mediaUpload', this.selectedFile);
                 formData.append('postId', res.id.toString());
                 this.mediaService.uploadFile(formData).subscribe(
-                    res => {
+                    resMedia => {
                         this.selectedFile = undefined;
                         this.filename = '';
-                        console.log(res);
+                        this.text = '';
+                        this.postCreated.emit(res);
+                        console.log(resMedia);
                     },
                     err => {
                         console.log(err);
                     }
                 );
+            } else {
+                this.text = '';
+                this.postCreated.emit(res);
             }
-
-            this.text = '';
         });
     }
 

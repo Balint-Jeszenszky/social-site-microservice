@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-    @Query("select p from Post p where p.userId = :userId or p.userId in :friends order by p.created desc")
+    @Query("select p from Post p where p.userId = :userId or (p.processedMedia = true or p.hasMedia = false) and p.userId in :friends order by p.created desc")
     List<Post> findAllFriendsPosts(@Param("userId") Integer userId, @Param("friends") List<Integer> friends);
 
     List<Post> getPostsByUserIdOrderByCreatedDesc(Integer userId);

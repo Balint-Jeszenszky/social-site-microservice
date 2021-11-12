@@ -25,4 +25,8 @@ export class FeedComponent implements OnInit {
         }
     }
 
+    addNewPost(post: PostDto) {
+        this.posts?.unshift(post);
+    }
+
 }
