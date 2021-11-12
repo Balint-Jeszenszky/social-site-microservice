@@ -18,7 +18,8 @@ const upload = multer({
     fileFilter: (req, file, cb) => {
         const ext = path.extname(file.originalname);
         const fileTypes = /jpeg|jpg|png|mp4|mov/;
-        const valid = fileTypes.test(ext.toLowerCase()) && fileTypes.test(file.mimetype);
+        const mimeTypes = /jpeg|jpg|png|mp4|quicktime/;
+        const valid = fileTypes.test(ext.toLowerCase()) && mimeTypes.test(file.mimetype);
         cb(null, valid);
     }
 }).single('mediaUpload');

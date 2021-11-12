@@ -14,7 +14,7 @@ export default function mediaStatus() {
         const status = await getStatus(parseInt(postId));
 
         if (status) {
-            return res.json({status: MediaStatusEnum[status.status], progress: status.progress});
+            return res.json({status: MediaStatusEnum[status.status], progress: status.progress ?? 0});
         }
 
         return res.sendStatus(404);
