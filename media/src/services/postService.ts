@@ -30,7 +30,7 @@ export async function setFailed(postId: number) {
     }
 }
 
-export async function getStatus(postId: number) {
+export async function getPostMedia(postId: number) {
     return await Post.findOne({postId});
 }
 

@@ -101,10 +101,11 @@ public class PostService {
             throw new NotFoundException("Post not found");
         }
 
-        if (status == MediaStatusDto.StatusEnum.AVAILABLE) {
-            post.setProcessedMedia(true);
+        if (status == MediaStatusDto.StatusEnum.PROCESSING) {
             post.setMediaName(name);
-            postRepository.save(post);
+        } else if (status == MediaStatusDto.StatusEnum.AVAILABLE) {
+            post.setProcessedMedia(true);
         }
+        postRepository.save(post);
     }
 }

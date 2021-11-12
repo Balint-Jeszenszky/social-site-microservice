@@ -14,8 +14,8 @@
         <mat-label>Edit post</mat-label>
         <textarea matInput placeholder="Write the post here" [(ngModel)]="text"></textarea>
     </mat-form-field>
-    <img *ngIf="hasImage()" [src]="'/api/media/media/' + post.mediaName" class="w-100">
-    <video *ngIf="hasVideo()" [src]="'/api/media/media/' + post.mediaName" class="w-100" controls controlsList="nodownload"></video>
+    <img *ngIf="post.processedMedia && hasImage()" [src]="'/api/media/media/' + post.mediaName" class="w-100">
+    <video *ngIf="post.processedMedia && hasVideo()" [src]="'/api/media/media/' + post.mediaName" class="w-100" controls controlsList="nodownload"></video>
     <p *ngIf="post.processedMedia === false">Processing: {{ processingStatus.toFixed(2) }}%
         <mat-progress-bar mode="determinate" [value]="processingStatus"></mat-progress-bar>
     </p>

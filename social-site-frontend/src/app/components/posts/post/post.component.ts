@@ -30,7 +30,6 @@ export class PostComponent implements OnInit, OnDestroy {
         });
 
         if (this.post?.processedMedia === false) {
-            console.log('processing');
             this.timerId = setInterval(() => this.updateProcessingStatus(), 500);
         }
     }
@@ -43,9 +42,13 @@ export class PostComponent implements OnInit, OnDestroy {
 
     updateProcessingStatus() {
         if (this.post) {
-            this.mediaService.getStatus(this.post.id).subscribe(res => {
+            const needFilename = !this.post.mediaName;
+            this.mediaService.getStatus(this.post.id, needFilename).subscribe(res => {
                 this.post!.processedMedia = res.status === MediaStatusEnum[MediaStatusEnum.AVAILABLE];
                 this.processingStatus = res.progress;
+                if (res.name && this.post) {
+                    this.post.mediaName = res.name;
+                }
             });
             if (this.post!.processedMedia) {
                 clearInterval(this.timerId);
