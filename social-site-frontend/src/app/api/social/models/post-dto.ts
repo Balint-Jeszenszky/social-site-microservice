@@ -5,6 +5,7 @@ export interface PostDto {
   created: string;
   id: number;
   mediaName?: string;
+  processedMedia?: boolean;
   text: string;
   user: UserDetailsDto;
 }

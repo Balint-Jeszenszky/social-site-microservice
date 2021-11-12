@@ -14,7 +14,7 @@ import { MediaStatusDto } from '../models/media-status-dto';
 @Injectable({
   providedIn: 'root',
 })
-export class MediaService extends BaseService {
+export class MediaAccessService extends BaseService {
   constructor(
     config: ApiConfiguration,
     http: HttpClient
@@ -39,7 +39,7 @@ export class MediaService extends BaseService {
     id: number;
   }): Observable<StrictHttpResponse<void>> {
 
-    const rb = new RequestBuilder(this.rootUrl, MediaService.GetMediaIdPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, MediaAccessService.GetMediaIdPath, 'get');
     if (params) {
       rb.path('id', params.id, {});
     }
@@ -90,7 +90,7 @@ export class MediaService extends BaseService {
     body?: MediaStatusDto
   }): Observable<StrictHttpResponse<void>> {
 
-    const rb = new RequestBuilder(this.rootUrl, MediaService.PutMediaPath, 'put');
+    const rb = new RequestBuilder(this.rootUrl, MediaAccessService.PutMediaPath, 'put');
     if (params) {
       rb.path('id', params.id, {});
       rb.body(params.body, 'application/json');

@@ -16,4 +16,7 @@
     </mat-form-field>
     <img *ngIf="hasImage()" [src]="'/api/media/media/' + post.mediaName" class="w-100">
     <video *ngIf="hasVideo()" [src]="'/api/media/media/' + post.mediaName" class="w-100" controls controlsList="nodownload"></video>
+    <p *ngIf="post.processedMedia === false">Processing: {{ processingStatus.toFixed(2) }}%
+        <mat-progress-bar mode="determinate" [value]="processingStatus"></mat-progress-bar>
+    </p>
 </mat-card>

@@ -34,6 +34,14 @@ export async function getStatus(postId: number) {
     return await Post.findOne({postId});
 }
 
+export async function setProgress(postId: number, progress: number) {
+    const post = await Post.findOne({postId});
+    if (post) {
+        post.progress = progress;
+        await post.save();
+    }
+}
+
 async function notifySocialService(postId: number, status: MediaStatusEnum, name: string) {
     await axios.put(`${process.env.SOCIAL_SERVER}/${postId}`, { status: MediaStatusEnum[status], name });
 }

@@ -187,13 +187,13 @@ paths:
         '404':
           description: Not Found
       description: Notify of status change
-      tags:
-        - media
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/MediaStatusDto'
+      tags:
+        - media-access
     parameters:
       - schema:
           type: integer
@@ -208,7 +208,7 @@ paths:
           description: OK
       description: Get url with key for media
       tags:
-        - media
+        - media-access
 components:
   schemas:
     NewPostDto:
@@ -237,6 +237,8 @@ components:
           format: date-time
         mediaName:
           type: string
+        processedMedia:
+          type: boolean
       required:
         - id
         - text
@@ -280,4 +282,4 @@ components:
 tags:
   - name: post
   - name: friends
-  - name: media
+  - name: media-access

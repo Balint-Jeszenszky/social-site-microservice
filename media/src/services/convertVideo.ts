@@ -3,7 +3,7 @@ import ffmpegStatic from 'ffmpeg-static'
 import ffprobeStatic from 'ffprobe-static';
 import Ffmpeg, { FfprobeStream } from "fluent-ffmpeg";
 import { promises as fs } from 'fs';
-import { setFailed, setProcessed, setProcessingStarted } from './postService';
+import { setFailed, setProcessed, setProcessingStarted, setProgress } from './postService';
 
 export default function convertVideo(filepath: string, dest: string, postId: number) {
 
@@ -44,6 +44,7 @@ export default function convertVideo(filepath: string, dest: string, postId: num
                 setProcessingStarted(postId, `${path.parse(filepath).name}.mp4`);
             })
             .on('progress', function (progress) {
+                setProgress(postId, progress.percent);
                 console.log('Processing: ' + progress.percent + '% done');
             })
             .on('end', async () => {

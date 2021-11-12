@@ -1,6 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { PostDto } from 'src/app/api/social/models';
 import { PostService } from 'src/app/api/social/services';
+import { MediaStatusEnum } from 'src/app/services/dto/processing-status-dto';
+import { MediaService } from 'src/app/services/media.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -8,18 +10,47 @@ import { UserService } from 'src/app/services/user.service';
     templateUrl: './post.component.html',
     styleUrls: ['./post.component.css']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, OnDestroy {
     @Input() post?: PostDto;
     editable: boolean = false;
     editing: boolean = false;
     text: string = '';
+    processingStatus: number = 0;
+    private timerId?: number;
 
-    constructor(private userService: UserService, private postService: PostService) { }
+    constructor(
+        private userService: UserService,
+        private postService: PostService,
+        private mediaService: MediaService
+    ) { }
 
     ngOnInit(): void {
         this.userService.getCurrentUser().subscribe(u => {
             this.editable = u?.id === this.post?.user.id;
-        })
+        });
+
+        if (this.post?.processedMedia === false) {
+            console.log('processing');
+            this.timerId = setInterval(() => this.updateProcessingStatus(), 500);
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.timerId) {
+            clearInterval(this.timerId);
+        }
+    }
+
+    updateProcessingStatus() {
+        if (this.post) {
+            this.mediaService.getStatus(this.post.id).subscribe(res => {
+                this.post!.processedMedia = res.status === MediaStatusEnum[MediaStatusEnum.AVAILABLE];
+                this.processingStatus = res.progress;
+            });
+            if (this.post!.processedMedia) {
+                clearInterval(this.timerId);
+            }
+        }
     }
 
     editPost() {
