@@ -1,30 +1,27 @@
 package hu.bme.aut.thesis.microservice.auth.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import hu.bme.aut.thesis.microservice.auth.model.User;
+import hu.bme.aut.thesis.microservice.auth.models.AccessTokenDto;
 import hu.bme.aut.thesis.microservice.auth.models.LoginCredentialsDto;
-import hu.bme.aut.thesis.microservice.auth.models.LoginDetailsDto;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static hu.bme.aut.thesis.microservice.auth.util.TestHelper.asJsonString;
+import static hu.bme.aut.thesis.microservice.auth.util.TestHelper.getJsonNode;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -34,7 +31,7 @@ class LoginControllerTest {
     int port;
 
     @Autowired
-    TestRestTemplate restTemplate;
+    MockMvc mockMvc;
 
     @Autowired
     UserRepository userRepository;
@@ -42,42 +39,116 @@ class LoginControllerTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    static final String ADMIN_USERNAME = "admin";
+    static final String ADMIN_EMAIL = "admin";
+    static final String ADMIN_FIRSTNAME = "admin";
+    static final String ADMIN_LASTNAME = "admin";
+    static final String ADMIN_PASSWORD = "admin";
+
+    static final String USER_NOTREGISTERED = "nouser";
+
+    static final String USER_NOTACCEPTEDEMAIL_USERNAME = "user";
+    static final String USER_NOTACCEPTEDEMAIL_PASSWORD = "aaaaaaaaaa";
+
     @BeforeEach
     void setup() {
         userRepository.deleteAll();
 
         User user = new User(
-                "admin",
-                "Admin",
-                "Adin",
-                "mail@example.com",
-                passwordEncoder.encode("asdasdasd")
+                ADMIN_USERNAME,
+                ADMIN_FIRSTNAME,
+                ADMIN_LASTNAME,
+                ADMIN_EMAIL,
+                passwordEncoder.encode(ADMIN_PASSWORD)
         );
+        user.setAcceptedEmail(true);
         userRepository.save(user);
     }
 
     @Test
-    void postLogin() throws Exception {
-//        LoginCredentialsDto loginCredentialsDto = new LoginCredentialsDto();
-//        loginCredentialsDto.setUsername("admin");
-//        loginCredentialsDto.setPassword("asdasdasd");
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-//
-//        HttpEntity<Map<String, Object>> entity = new HttpEntity(loginCredentialsDto, headers);
-//
-//        ResponseEntity<LoginDetailsDto> result = restTemplate.postForEntity("http://localhost:" + port + "/api/auth/login", entity, LoginDetailsDto.class);
-//        assertEquals(result.getBody().getUserDetails().getUsername(), "admin");
-//        assertEquals(result.getBody().getUserDetails().getEmail(), "mail@example.com");
-//        assertEquals(result.getBody().getUserDetails().getFirstname(), "Admin");
-//        assertEquals(result.getBody().getUserDetails().getLastname(), "Admin");
-//        assertNotNull(result.getBody().getAccessToken());
-//        assertNotNull(result.getBody().getRefreshToken());
+    void postLoginSuccess() throws Exception {
+        LoginCredentialsDto loginCredentialsDto = new LoginCredentialsDto();
+        loginCredentialsDto.setUsername(ADMIN_USERNAME);
+        loginCredentialsDto.setPassword(ADMIN_PASSWORD);
+
+        RequestBuilder request = MockMvcRequestBuilders.post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(loginCredentialsDto));
+
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userDetails.username").value(ADMIN_USERNAME))
+                .andExpect(jsonPath("$.userDetails.email").value(ADMIN_EMAIL))
+                .andExpect(jsonPath("$.userDetails.firstname").value(ADMIN_FIRSTNAME))
+                .andExpect(jsonPath("$.userDetails.lastname").value(ADMIN_LASTNAME))
+                .andExpect(jsonPath("$.accessToken").isString())
+                .andExpect(jsonPath("$.refreshToken").isString());
     }
 
     @Test
-    void postLoginDetails() {
+    void postLoginNotRegistered() throws Exception {
+        LoginCredentialsDto loginCredentialsDto = new LoginCredentialsDto();
+        loginCredentialsDto.setUsername(USER_NOTREGISTERED);
+        loginCredentialsDto.setPassword("asdsadasda");
+
+        RequestBuilder request = MockMvcRequestBuilders.post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(loginCredentialsDto));
+
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void postLoginNotAcceptedEmail() throws Exception {
+        LoginCredentialsDto loginCredentialsDto = new LoginCredentialsDto();
+        loginCredentialsDto.setUsername(USER_NOTACCEPTEDEMAIL_USERNAME);
+        loginCredentialsDto.setPassword(USER_NOTACCEPTEDEMAIL_PASSWORD);
+
+        RequestBuilder request = MockMvcRequestBuilders.post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(loginCredentialsDto));
+
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void postLoginDetails() throws Exception {
+        LoginCredentialsDto loginCredentialsDto = new LoginCredentialsDto();
+        loginCredentialsDto.setUsername(ADMIN_USERNAME);
+        loginCredentialsDto.setPassword(ADMIN_PASSWORD);
+
+        RequestBuilder request = MockMvcRequestBuilders.post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(loginCredentialsDto));
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        String content = result.getResponse().getContentAsString();
+
+        JsonNode accessToken = getJsonNode(content, "/accessToken");
+
+        AccessTokenDto accessTokenDto = new AccessTokenDto();
+        accessTokenDto.setAccessToken(accessToken.asText());
+
+        request = MockMvcRequestBuilders.post("/login/details")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(accessTokenDto));
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value(ADMIN_USERNAME))
+                .andExpect(jsonPath("$.email").value(ADMIN_EMAIL))
+                .andExpect(jsonPath("$.firstname").value(ADMIN_FIRSTNAME))
+                .andExpect(jsonPath("$.lastname").value(ADMIN_LASTNAME));
     }
 }
