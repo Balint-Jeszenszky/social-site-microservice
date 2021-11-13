@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { PostDto } from 'src/app/api/social/models';
-import { PostService } from 'src/app/api/social/services';
+import { LikeService, PostService } from 'src/app/api/social/services';
 import { MediaStatusEnum } from 'src/app/services/dto/processing-status-dto';
 import { MediaService } from 'src/app/services/media.service';
 import { UserService } from 'src/app/services/user.service';
@@ -11,17 +11,19 @@ import { UserService } from 'src/app/services/user.service';
     styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit, OnDestroy {
+    private timerId?: number;
     @Input() post?: PostDto;
     editable: boolean = false;
     editing: boolean = false;
     text: string = '';
     processingStatus: number = 0;
-    private timerId?: number;
+    likeColor: string = '';
 
     constructor(
         private userService: UserService,
         private postService: PostService,
-        private mediaService: MediaService
+        private mediaService: MediaService,
+        private likeService: LikeService
     ) { }
 
     ngOnInit(): void {
@@ -31,6 +33,10 @@ export class PostComponent implements OnInit, OnDestroy {
 
         if (this.post?.processedMedia === false) {
             this.timerId = window.setInterval(() => this.updateProcessingStatus(), 500);
+        }
+
+        if (this.post?.liked) {
+            this.likeColor = 'primary';
         }
     }
 
@@ -86,6 +92,20 @@ export class PostComponent implements OnInit, OnDestroy {
 
     hasVideo() {
         return this.post?.mediaName?.endsWith('.mp4');
+    }
+
+    onLike() {
+        if (this.post) {
+            if (this.post.liked) {
+                this.likeService.deleteLikePostId({postId: this.post.id}).subscribe();
+                this.likeColor = '';
+                this.post.likes--;
+            } else {
+                this.likeService.postLikePostId({postId: this.post.id}).subscribe();
+                this.likeColor = 'primary';
+                this.post.likes++;
+            }
+        }
     }
 
 }

@@ -209,6 +209,35 @@ paths:
       description: Get url with key for media
       tags:
         - media-access
+  '/like/{postId}':
+    parameters:
+      - schema:
+          type: integer
+        name: postId
+        in: path
+        required: true
+    post:
+      summary: ''
+      operationId: post-like-postId
+      responses:
+        '201':
+          description: Created
+        '404':
+          description: Not Found
+      description: like a post
+      tags:
+        - like
+    delete:
+      summary: ''
+      operationId: delete-like-postId
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      description: remove like from post
+      tags:
+        - like
 components:
   schemas:
     NewPostDto:
@@ -235,6 +264,10 @@ components:
         created:
           type: string
           format: date-time
+        likes:
+          type: integer
+        liked:
+          type: boolean
         mediaName:
           type: string
         processedMedia:
@@ -244,6 +277,8 @@ components:
         - text
         - user
         - created
+        - likes
+        - liked
     UserDetailsDto:
       title: UserDetailsDto
       type: object
@@ -283,3 +318,4 @@ tags:
   - name: post
   - name: friends
   - name: media-access
+  - name: like

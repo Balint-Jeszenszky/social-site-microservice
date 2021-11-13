@@ -5,6 +5,7 @@ import hu.bme.aut.thesis.microservice.social.mapper.PostMapper;
 import hu.bme.aut.thesis.microservice.social.model.Post;
 import hu.bme.aut.thesis.microservice.social.models.NewPostDto;
 import hu.bme.aut.thesis.microservice.social.models.PostDto;
+import hu.bme.aut.thesis.microservice.social.service.LikeService;
 import hu.bme.aut.thesis.microservice.social.service.PostService;
 import hu.bme.aut.thesis.microservice.social.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class PostController implements PostApi {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private LikeService likeService;
+
     @Override
     public ResponseEntity<Void> deletePostPostId(Integer postId) {
         postService.deletePost(postId);
@@ -33,12 +37,12 @@ public class PostController implements PostApi {
 
     @Override
     public ResponseEntity<List<PostDto>> getPostAll() {
-        return new ResponseEntity(mapUsersToPosts(postService.getPosts()), HttpStatus.OK);
+        return new ResponseEntity(mapUsersAndLikesToPosts(postService.getPosts()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<PostDto>> getPostAllUserId(Integer userId) {
-        return new ResponseEntity(mapUsersToPosts(postService.getPostsByUserId(userId)), HttpStatus.OK);
+        return new ResponseEntity(mapUsersAndLikesToPosts(postService.getPostsByUserId(userId)), HttpStatus.OK);
     }
 
     @Override
@@ -63,10 +67,12 @@ public class PostController implements PostApi {
         return new ResponseEntity(postDto, HttpStatus.OK);
     }
 
-    private List<PostDto> mapUsersToPosts(List<Post> posts) {
+    private List<PostDto> mapUsersAndLikesToPosts(List<Post> posts) {
         return posts.stream().map(p -> {
             PostDto postDto = PostMapper.INSTANCE.postToPostDto(p);
             postDto.setUser(userDetailsService.getUserDetailsById(p.getUserId()).get());
+            postDto.setLikes(likeService.getLikesOfPost(p.getId()));
+            postDto.setLiked(likeService.isLikedByUser(p.getId()));
             return postDto;
         }).collect(Collectors.toList());
     }

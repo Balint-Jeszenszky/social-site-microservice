@@ -7,6 +7,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { PostService } from './services/post.service';
 import { FriendsService } from './services/friends.service';
 import { MediaAccessService } from './services/media-access.service';
+import { LikeService } from './services/like.service';
 
 /**
  * Module that provides all services and configuration.
@@ -19,6 +20,7 @@ import { MediaAccessService } from './services/media-access.service';
     PostService,
     FriendsService,
     MediaAccessService,
+    LikeService,
     ApiConfiguration
   ],
 })

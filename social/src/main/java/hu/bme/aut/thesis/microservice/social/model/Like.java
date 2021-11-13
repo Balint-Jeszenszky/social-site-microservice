@@ -2,9 +2,9 @@ package hu.bme.aut.thesis.microservice.social.model;
 
 import javax.persistence.*;
 
-@Entity(name = "LikedPost")
-@Table(name = "liked_post")
-public class LikedPost {
+@Entity(name = "Like")
+@Table(name = "like_post", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "post_id"}))
+public class Like {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,10 +17,10 @@ public class LikedPost {
     @Column(name = "post_id", updatable = false, nullable = false)
     private Integer postId;
 
-    public LikedPost() {
+    public Like() {
     }
 
-    public LikedPost(Integer userId, Integer postId) {
+    public Like(Integer userId, Integer postId) {
         this.userId = userId;
         this.postId = postId;
     }

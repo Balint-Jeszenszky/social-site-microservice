@@ -4,6 +4,8 @@ import { UserDetailsDto } from './user-details-dto';
 export interface PostDto {
   created: string;
   id: number;
+  liked: boolean;
+  likes: number;
   mediaName?: string;
   processedMedia?: boolean;
   text: string;
