@@ -30,7 +30,7 @@ export class PostComponent implements OnInit, OnDestroy {
         });
 
         if (this.post?.processedMedia === false) {
-            this.timerId = setInterval(() => this.updateProcessingStatus(), 500);
+            this.timerId = window.setInterval(() => this.updateProcessingStatus(), 500);
         }
     }
 

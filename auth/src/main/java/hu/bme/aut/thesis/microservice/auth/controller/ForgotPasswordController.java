@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class ForgotPasswordController extends GlobalExceptionHandler implements ForgotPasswordApi {
+public class ForgotPasswordController implements ForgotPasswordApi {
 
     @Autowired
     private PasswordResetService passwordResetService;

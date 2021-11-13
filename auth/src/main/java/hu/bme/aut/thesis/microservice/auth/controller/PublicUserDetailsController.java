@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-public class PublicUserDetailsController extends GlobalExceptionHandler implements PublicUserApi {
+public class PublicUserDetailsController implements PublicUserApi {
 
     @Autowired
     private UserService userService;

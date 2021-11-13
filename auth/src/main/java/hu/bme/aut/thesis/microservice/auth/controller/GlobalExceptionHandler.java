@@ -1,25 +1,16 @@
 package hu.bme.aut.thesis.microservice.auth.controller;
 
-import org.springframework.http.HttpStatus;
+import hu.bme.aut.thesis.microservice.auth.controller.exceptions.AuthServiceException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.NoSuchElementException;
 
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<String> handleNotFound(NoSuchElementException e) {
-        return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleBadRequest(IllegalArgumentException e) {
-        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleBadRequest(RuntimeException e) {
-        return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(AuthServiceException.class)
+    public ResponseEntity<String> handleExceptions(AuthServiceException e) {
+        return new ResponseEntity(e.getMessage(), e.getHttpStatus());
     }
 }

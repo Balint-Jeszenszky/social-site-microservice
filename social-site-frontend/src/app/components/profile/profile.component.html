@@ -6,7 +6,7 @@
             <p>{{ user?.username }}</p>
             <a *ngIf="personalProfile" routerLink="/editProfile">Edit profile<mat-icon class="small-icon">edit</mat-icon></a>
         </div>
-        <app-feed [userId]="user?.id"></app-feed>
+        <app-feed [userId]="user?.id" [allowPosting]="personalProfile"></app-feed>
     </div>
     <div *ngIf="!user && !userNotFound">
         <mat-spinner class="spinner"></mat-spinner>

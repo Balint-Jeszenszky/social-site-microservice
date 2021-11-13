@@ -1,5 +1,5 @@
 <div class="feed">
-    <app-new-post (postCreated)="addNewPost($event)"></app-new-post>
+    <app-new-post *ngIf="allowPosting" (postCreated)="addNewPost($event)"></app-new-post>
     <app-post *ngFor="let post of posts" [post]="post"></app-post>
     <mat-spinner *ngIf="!posts" class="spinner"></mat-spinner>
 </div>

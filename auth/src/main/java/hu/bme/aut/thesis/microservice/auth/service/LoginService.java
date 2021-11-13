@@ -1,5 +1,7 @@
 package hu.bme.aut.thesis.microservice.auth.service;
 
+import hu.bme.aut.thesis.microservice.auth.controller.exceptions.NotFoundException;
+import hu.bme.aut.thesis.microservice.auth.controller.exceptions.UnauthorizedException;
 import hu.bme.aut.thesis.microservice.auth.mapper.UserMapper;
 import hu.bme.aut.thesis.microservice.auth.model.User;
 import hu.bme.aut.thesis.microservice.auth.models.*;
@@ -35,7 +37,7 @@ public class LoginService {
             authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         } catch (AuthenticationException e) {
-            throw new NoSuchElementException("User not found");
+            throw new NotFoundException("User not found");
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -56,7 +58,7 @@ public class LoginService {
 
     public NewTokenDto refreshLogin(String token) {
         if (!jwtUtils.validateJwtRefreshToken(token)) {
-            throw new IllegalArgumentException("Wrong refresh token");
+            throw new UnauthorizedException("Wrong refresh token");
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -72,7 +74,7 @@ public class LoginService {
 
     public UserDetailsDto getUserDetailsByAccessToken(AccessTokenDto body) {
         if (!jwtUtils.validateJwtToken(body.getAccessToken())) {
-            throw new IllegalArgumentException();
+            throw new UnauthorizedException("Wrong access token");
         }
 
         String username = jwtUtils.getUserNameFromJwtToken(body.getAccessToken());

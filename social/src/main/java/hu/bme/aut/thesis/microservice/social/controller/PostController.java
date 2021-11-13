@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-public class PostController extends GlobalExceptionHandler implements PostApi {
+public class PostController implements PostApi {
 
     @Autowired
     private PostService postService;

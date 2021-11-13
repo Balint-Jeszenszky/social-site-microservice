@@ -1,5 +1,6 @@
 package hu.bme.aut.thesis.microservice.auth.service;
 
+import hu.bme.aut.thesis.microservice.auth.controller.exceptions.InternalServerErrorException;
 import hu.bme.aut.thesis.microservice.auth.model.EmailVerification;
 import hu.bme.aut.thesis.microservice.auth.model.User;
 import hu.bme.aut.thesis.microservice.auth.repository.EmailVerificationRepository;
@@ -45,7 +46,7 @@ public class EmailVerificationService {
         try {
             secureRandom = SecureRandom.getInstanceStrong();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new InternalServerErrorException(e.getMessage());
         }
 
         String key = secureRandom.ints(32, 0, chrs.length())

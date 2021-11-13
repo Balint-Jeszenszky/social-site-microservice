@@ -9,6 +9,7 @@ import { PostService } from 'src/app/api/social/services';
 })
 export class FeedComponent implements OnInit {
     @Input() userId?: number;
+    @Input() allowPosting: boolean = true;
     posts?: PostDto[];
 
     constructor(private postService: PostService) { }

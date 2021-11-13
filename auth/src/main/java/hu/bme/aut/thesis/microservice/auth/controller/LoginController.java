@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class LoginController extends GlobalExceptionHandler implements LoginApi {
+public class LoginController implements LoginApi {
 
     @Autowired
     private LoginService loginService;

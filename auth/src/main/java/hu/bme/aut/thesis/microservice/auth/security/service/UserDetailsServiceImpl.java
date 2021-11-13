@@ -1,5 +1,6 @@
 package hu.bme.aut.thesis.microservice.auth.security.service;
 
+import hu.bme.aut.thesis.microservice.auth.controller.exceptions.NotFoundException;
 import hu.bme.aut.thesis.microservice.auth.model.User;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<User> user = userRepository.findByUsername(username);
 
         if (user.isEmpty() || !user.get().isAcceptedEmail()) {
-            throw new NoSuchElementException("User not found");
+            throw new NotFoundException("User not found");
         }
 
         return UserDetailsImpl.build(user.get());

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class PostMediaController extends GlobalExceptionHandler implements MediaApi {
+public class PostMediaController implements MediaApi {
 
     @Autowired
     private PostService postService;

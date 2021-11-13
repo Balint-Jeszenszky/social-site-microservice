@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UserController extends GlobalExceptionHandler implements UserApi {
+public class UserController implements UserApi {
 
     @Autowired
     private UserService userService;
