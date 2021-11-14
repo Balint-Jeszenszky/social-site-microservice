@@ -238,6 +238,19 @@ paths:
       description: remove like from post
       tags:
         - like
+  /delete:
+    parameters: []
+    delete:
+      summary: ''
+      operationId: delete-delete-userId
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      tags:
+        - delete-social
+      description: Delete everithing connected to user
 components:
   schemas:
     NewPostDto:
@@ -319,3 +332,4 @@ tags:
   - name: friends
   - name: media-access
   - name: like
+  - name: delete-social

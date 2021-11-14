@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UserManagementService } from 'src/app/api/auth/services';
+import { DeleteSocialService } from 'src/app/api/social/services';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class EditProfileComponent implements OnInit {
         private userService: UserService, 
         private userManagementService: UserManagementService,
         private router: Router,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
+        private deleteSocialService: DeleteSocialService
     ) { }
 
     ngOnInit(): void {
@@ -60,16 +62,22 @@ export class EditProfileComponent implements OnInit {
 
     onDelete() {
         if (confirm('Delete profile?')) {
-            this.userManagementService.deleteUserId({ id: this.id }).subscribe(
+            this.deleteSocialService.deleteDeleteUserId().subscribe(
                 res => {
-                    this.userService.logout();
-                    this.router.navigate(['/auth']);
+                    this.userManagementService.deleteUserId({ id: this.id }).subscribe(
+                        res => {
+                            this.userService.logout();
+                            this.router.navigate(['/auth']);
+                        },
+                        err => {
+                            this.snackBar.open(err.error, 'Ok');
+                        }
+                    );
                 },
                 err => {
                     this.snackBar.open(err.error, 'Ok');
                 }
-            );
+            )
         }
     }
-
 }

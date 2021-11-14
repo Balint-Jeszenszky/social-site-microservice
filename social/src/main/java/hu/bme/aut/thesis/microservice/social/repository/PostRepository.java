@@ -13,4 +13,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findAllFriendsPosts(@Param("userId") Integer userId, @Param("friends") List<Integer> friends);
 
     List<Post> getPostsByUserIdOrderByCreatedDesc(Integer userId);
+
+    List<Post> getPostsByUserId(Integer userId);
 }

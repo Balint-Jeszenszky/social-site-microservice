@@ -55,4 +55,12 @@ public class LikeService {
 
         return like.isPresent();
     }
+
+    public void deleteAllLikesFromPost(Integer postId) {
+        likeRepository.deleteAllByPostId(postId);
+    }
+
+    public void deleteAllLikesFromUser(Integer userId) {
+        likeRepository.deleteAllByUserId(userId);
+    }
 }

@@ -29,6 +29,9 @@ public class PostService {
     @Autowired
     private MediaAccessService mediaAccessService;
 
+    @Autowired
+    private LikeService likeService;
+
     public List<Post> getPosts() {
         Integer userId = loggedInUserService.getLoggedInUser().getId();
         return postRepository.findAllFriendsPosts(userId, friendshipService.getFriendIdsForUser(userId));
@@ -68,6 +71,8 @@ public class PostService {
         }
 
         postRepository.delete(post);
+
+        likeService.deleteAllLikesFromPost(post.getId());
     }
 
     public Post editPost(Integer postId, NewPostDto body) {
@@ -113,5 +118,19 @@ public class PostService {
             post.setProcessedMedia(true);
         }
         postRepository.save(post);
+    }
+
+    public void deleteAllPostsForCurrentUser() {
+        Integer userId = loggedInUserService.getLoggedInUser().getId();
+
+        likeService.deleteAllLikesFromUser(userId);
+
+        List<Post> posts = postRepository.getPostsByUserId(userId);
+
+        for (Post post : posts) {
+            likeService.deleteAllLikesFromPost(post.getId());
+        }
+
+        postRepository.deleteAll(posts);
     }
 }
