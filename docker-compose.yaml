@@ -17,8 +17,10 @@ services:
       - --providers.docker.exposedbydefault=false
       - --providers.docker.network=web
       - --entrypoints.web.address=:80
+      - --accessLog.filePath=/traefik/access.log
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik:/traefik
     networks:
       - web
     labels:
