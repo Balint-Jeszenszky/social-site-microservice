@@ -24,17 +24,23 @@ public class PostService {
     private PostRepository postRepository;
 
     @Autowired
-    private FriendshipRepository friendshipRepository;
+    private FriendshipService friendshipService;
 
     @Autowired
     private MediaAccessService mediaAccessService;
 
     public List<Post> getPosts() {
         Integer userId = loggedInUserService.getLoggedInUser().getId();
-        return postRepository.findAllFriendsPosts(userId, friendshipRepository.findUserFriendsById(userId));
+        return postRepository.findAllFriendsPosts(userId, friendshipService.getFriendIdsForUser(userId));
     }
 
     public List<Post> getPostsByUserId(Integer userId) {
+        Integer loggedInUserId = loggedInUserService.getLoggedInUser().getId();
+
+        if (!loggedInUserId.equals(userId) && !friendshipService.areFriends(loggedInUserId, userId)) {
+            throw new ForbiddenException("Users not friends");
+        }
+
         return postRepository.getPostsByUserIdOrderByCreatedDesc(userId);
     }
 

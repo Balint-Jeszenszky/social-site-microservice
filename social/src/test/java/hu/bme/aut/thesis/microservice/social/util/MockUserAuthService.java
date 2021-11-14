@@ -9,15 +9,31 @@ import org.springframework.stereotype.Service;
 @Primary
 public class MockUserAuthService implements UserAuthService {
 
-    @Override
-    public UserDetailsDto checkAuth(String accessToken) {
-        UserDetailsDto userDetailsDto = new UserDetailsDto();
+    private static UserDetailsDto userDetailsDto;
+
+    public MockUserAuthService() {
+        userDetailsDto = new UserDetailsDto();
         userDetailsDto.setId(1);
         userDetailsDto.setEmail("asd@asd.asd");
         userDetailsDto.setUsername("user");
         userDetailsDto.setFirstname("Test");
         userDetailsDto.setLastname("User");
+    }
+
+    @Override
+    public UserDetailsDto checkAuth(String accessToken) {
+        if (!accessToken.equals("test")) {
+            return null;
+        }
 
         return userDetailsDto;
+    }
+
+    public static UserDetailsDto getUserDetailsDto() {
+        return userDetailsDto;
+    }
+
+    public static void setUserDetailsDto(UserDetailsDto userDetailsDto) {
+        MockUserAuthService.userDetailsDto = userDetailsDto;
     }
 }

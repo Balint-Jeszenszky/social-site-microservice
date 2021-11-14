@@ -88,4 +88,14 @@ public class FriendshipService {
             return userDetailsService.getUserDetailsById(userId).orElse(null);
         }).filter(f -> f != null).collect(Collectors.toList());
     }
+
+    public List<Integer> getFriendIdsForUser(Integer userId) {
+        return friendshipRepository.findUserFriendsById(userId);
+    }
+
+    public boolean areFriends(Integer firstUserId, Integer secondUserId) {
+        Optional<Friendship> friendship = friendshipRepository.findAcceptedByUserId(firstUserId, secondUserId);
+
+        return friendship.isPresent();
+    }
 }

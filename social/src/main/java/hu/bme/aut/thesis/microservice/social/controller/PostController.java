@@ -53,7 +53,7 @@ public class PostController implements PostApi {
 
         postDto.setUser(userDetailsService.getUserDetailsById(post.getUserId()).get());
 
-        return new ResponseEntity(postDto, HttpStatus.OK);
+        return new ResponseEntity(postDto, HttpStatus.CREATED);
     }
 
     @Override
