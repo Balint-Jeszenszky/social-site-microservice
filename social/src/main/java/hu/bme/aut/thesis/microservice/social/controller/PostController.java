@@ -5,6 +5,7 @@ import hu.bme.aut.thesis.microservice.social.mapper.PostMapper;
 import hu.bme.aut.thesis.microservice.social.model.Post;
 import hu.bme.aut.thesis.microservice.social.models.NewPostDto;
 import hu.bme.aut.thesis.microservice.social.models.PostDto;
+import hu.bme.aut.thesis.microservice.social.models.UserDetailsDto;
 import hu.bme.aut.thesis.microservice.social.service.LikeService;
 import hu.bme.aut.thesis.microservice.social.service.PostService;
 import hu.bme.aut.thesis.microservice.social.service.UserDetailsService;
@@ -70,7 +71,7 @@ public class PostController implements PostApi {
     private List<PostDto> mapUsersAndLikesToPosts(List<Post> posts) {
         return posts.stream().map(p -> {
             PostDto postDto = PostMapper.INSTANCE.postToPostDto(p);
-            postDto.setUser(userDetailsService.getUserDetailsById(p.getUserId()).get());
+            postDto.setUser(userDetailsService.getUserDetailsById(p.getUserId()).orElse(new UserDetailsDto().username("unknown user")));
             postDto.setLikes(likeService.getLikesOfPost(p.getId()));
             postDto.setLiked(likeService.isLikedByUser(p.getId()));
             return postDto;

@@ -59,15 +59,17 @@ export class EditProfileComponent implements OnInit {
     }
 
     onDelete() {
-        this.userManagementService.deleteUserId({ id: this.id }).subscribe(
-            res => {
-                this.userService.logout();
-                this.router.navigate(['/auth']);
-            },
-            err => {
-                this.snackBar.open(err.error, 'Ok');
-            }
-        );
+        if (confirm('Delete profile?')) {
+            this.userManagementService.deleteUserId({ id: this.id }).subscribe(
+                res => {
+                    this.userService.logout();
+                    this.router.navigate(['/auth']);
+                },
+                err => {
+                    this.snackBar.open(err.error, 'Ok');
+                }
+            );
+        }
     }
 
 }

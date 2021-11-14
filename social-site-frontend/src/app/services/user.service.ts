@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { LoginDetailsDto, UserDetailsDto } from '../api/auth/models';
+import { LoginService } from '../api/auth/services';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +13,7 @@ export class UserService {
     private refreshToken?: string;
     private userDetailsKey = 'userDetails';
 
-    constructor() {
+    constructor(private loginService: LoginService) {
         this.loggedIn.next(false);
         const userDetails = localStorage.getItem(this.userDetailsKey);
         if (userDetails) {
@@ -57,5 +58,31 @@ export class UserService {
 
     getAccessToken(): string | undefined {
         return this.accessToken;
+    }
+
+    getRefreshToken(): string | undefined {
+        return this.refreshToken;
+    }
+
+    refreshLogin(): Promise<void> {
+        const promise = new Promise<void>((resolve, reject) => {
+            if (this.refreshToken) {
+                this.loginService.postLoginRefresh({body: {token: this.refreshToken}}).subscribe(
+                    res => {
+                        this.refreshToken = res.refreshToken;
+                        this.accessToken = res.accessToken;
+                        resolve();
+                    },
+                    err => {
+                        this.logout();
+                        reject();
+                    }
+                );
+            } else {
+                reject();
+            }
+        });
+
+        return promise;
     }
 }

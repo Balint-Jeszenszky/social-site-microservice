@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import hu.bme.aut.thesis.microservice.auth.model.User;
 import hu.bme.aut.thesis.microservice.auth.models.AccessTokenDto;
 import hu.bme.aut.thesis.microservice.auth.models.LoginCredentialsDto;
+import hu.bme.aut.thesis.microservice.auth.models.RefreshTokenDto;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static hu.bme.aut.thesis.microservice.auth.util.TestHelper.asJsonString;
 import static hu.bme.aut.thesis.microservice.auth.util.TestHelper.getJsonNode;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -95,8 +97,7 @@ class LoginControllerTest {
                 .content(asJsonString(loginCredentialsDto));
 
 
-        mockMvc.perform(request)
-                .andExpect(status().isNotFound());
+        mockMvc.perform(request).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -111,8 +112,7 @@ class LoginControllerTest {
                 .content(asJsonString(loginCredentialsDto));
 
 
-        mockMvc.perform(request)
-                .andExpect(status().isNotFound());
+        mockMvc.perform(request).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -146,5 +146,36 @@ class LoginControllerTest {
                 .andExpect(jsonPath("$.email").value(ADMIN_EMAIL))
                 .andExpect(jsonPath("$.firstname").value(ADMIN_FIRSTNAME))
                 .andExpect(jsonPath("$.lastname").value(ADMIN_LASTNAME));
+    }
+
+    @Test
+    void postLoginRefresh() throws Exception {
+        LoginCredentialsDto loginCredentialsDto = new LoginCredentialsDto();
+        loginCredentialsDto.setUsername(ADMIN_USERNAME);
+        loginCredentialsDto.setPassword(ADMIN_PASSWORD);
+
+        RequestBuilder request = MockMvcRequestBuilders.post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(loginCredentialsDto));
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        String content = result.getResponse().getContentAsString();
+
+        JsonNode accessToken = getJsonNode(content, "/accessToken");
+        JsonNode refreshToken = getJsonNode(content, "/refreshToken");
+
+        RefreshTokenDto refreshTokenDto = new RefreshTokenDto().token(refreshToken.asText());
+
+        request = MockMvcRequestBuilders.post("/login/refresh")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(refreshTokenDto));
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessToken").value(not(accessToken)))
+                .andExpect(jsonPath("$.refreshToken").value(not(refreshToken)));
     }
 }

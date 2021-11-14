@@ -37,17 +37,18 @@ public class LoginService {
             authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         } catch (AuthenticationException e) {
-            throw new NotFoundException("User not found");
+            throw new UnauthorizedException("User not found");
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-        String refreshJwt = jwtUtils.generateJwtRefreshToken(authentication);
+        UserDetailsImpl userDetails =  (UserDetailsImpl) authentication.getPrincipal();
+        String jwt = jwtUtils.generateJwtToken(userDetails);
+        String refreshJwt = jwtUtils.generateJwtRefreshToken(userDetails);
 
         LoginDetailsDto loginDetailsDto = new LoginDetailsDto();
 
         User user = userRepository.findById(((UserDetailsImpl) authentication.getPrincipal()).getId())
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         loginDetailsDto.setUserDetails(UserMapper.INSTANCE.userToUserDetailsDto(user));
         loginDetailsDto.setAccessToken(jwt);
@@ -61,9 +62,14 @@ public class LoginService {
             throw new UnauthorizedException("Wrong refresh token");
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String jwt = jwtUtils.generateJwtToken(authentication);
-        String refreshJwt = jwtUtils.generateJwtRefreshToken(authentication);
+        String username = jwtUtils.getUserNameFromJwtRefreshToken(token);
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UnauthorizedException("User not fount"));
+
+        UserDetailsImpl userDetails = UserDetailsImpl.build(user);
+
+        String jwt = jwtUtils.generateJwtToken(userDetails);
+        String refreshJwt = jwtUtils.generateJwtRefreshToken(userDetails);
 
         NewTokenDto newTokenDto = new NewTokenDto();
         newTokenDto.setAccessToken(jwt);

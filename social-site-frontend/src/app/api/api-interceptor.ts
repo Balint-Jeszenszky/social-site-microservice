@@ -23,7 +23,15 @@ export class ApiInterceptor implements HttpInterceptor {
         // Also handle errors globally
         return next.handle(req).pipe(
             tap(x => x, err => {
-                console.error(`Error performing request, status code = ${err.status}`);
+                this.userService.refreshLogin()
+                    .then(() => {
+                        req = req.clone({
+                            setHeaders: {
+                                'Authorization': `Bearer ${this.userService.getAccessToken()}`
+                            }
+                        });
+                    })
+                    .catch(() => console.error(`Error performing request, status code = ${err.status}`))
             })
         );
     }
