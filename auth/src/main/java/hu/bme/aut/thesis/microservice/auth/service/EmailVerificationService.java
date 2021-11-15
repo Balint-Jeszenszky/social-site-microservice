@@ -1,6 +1,7 @@
 package hu.bme.aut.thesis.microservice.auth.service;
 
 import hu.bme.aut.thesis.microservice.auth.controller.exceptions.InternalServerErrorException;
+import hu.bme.aut.thesis.microservice.auth.controller.exceptions.NotFoundException;
 import hu.bme.aut.thesis.microservice.auth.model.EmailVerification;
 import hu.bme.aut.thesis.microservice.auth.model.User;
 import hu.bme.aut.thesis.microservice.auth.repository.EmailVerificationRepository;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.NoSuchElementException;
 
 @Service
 public class EmailVerificationService {
@@ -30,7 +30,7 @@ public class EmailVerificationService {
 
     public void validate(String key) {
         EmailVerification emailVerification = emailVerificationRepository.getEmailVerificationByKey(key)
-                .orElseThrow(() -> new NoSuchElementException("Email not found"));
+                .orElseThrow(() -> new NotFoundException("Email not found"));
 
         User user = userRepository.getById(emailVerification.getUserId());
 

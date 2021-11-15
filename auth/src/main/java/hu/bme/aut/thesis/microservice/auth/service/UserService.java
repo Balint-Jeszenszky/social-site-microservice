@@ -1,6 +1,7 @@
 package hu.bme.aut.thesis.microservice.auth.service;
 
 import hu.bme.aut.thesis.microservice.auth.controller.exceptions.BadRequestException;
+import hu.bme.aut.thesis.microservice.auth.controller.exceptions.ForbiddenException;
 import hu.bme.aut.thesis.microservice.auth.controller.exceptions.InternalServerErrorException;
 import hu.bme.aut.thesis.microservice.auth.controller.exceptions.NotFoundException;
 import hu.bme.aut.thesis.microservice.auth.model.ERole;
@@ -11,6 +12,7 @@ import hu.bme.aut.thesis.microservice.auth.models.UpdateUserDto;
 import hu.bme.aut.thesis.microservice.auth.repository.RoleRepository;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
 import hu.bme.aut.thesis.microservice.auth.security.service.LoggedInUserService;
+import hu.bme.aut.thesis.microservice.auth.security.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,8 +40,10 @@ public class UserService {
     private LoggedInUserService loggedInUserService;
 
     public void deleteUserById(Integer id) {
-        if (!loggedInUserService.getLoggedInUser().getId().equals(id) && !loggedInUserService.getLoggedInUser().getAuthorities().contains(ERole.ROLE_ADMIN)) {
-            throw new BadRequestException("Wrong userId");
+        UserDetailsImpl loggedInUser = loggedInUserService.getLoggedInUser();
+
+        if (!loggedInUser.getId().equals(id) && !loggedInUser.getAuthorities().contains(ERole.ROLE_ADMIN)) {
+            throw new ForbiddenException("Wrong userId");
         }
 
         if (!userRepository.existsById(id)) {
@@ -50,6 +54,12 @@ public class UserService {
     }
 
     public User getUserById(Integer id) {
+        UserDetailsImpl loggedInUser = loggedInUserService.getLoggedInUser();
+
+        if (!loggedInUser.getId().equals(id) && !loggedInUser.getAuthorities().contains(ERole.ROLE_ADMIN)) {
+            throw new ForbiddenException("Wrong userId");
+        }
+
         Optional<User> user = userRepository.findById(id);
 
         if (user.isEmpty() || !user.get().isAcceptedEmail()) {
@@ -60,8 +70,10 @@ public class UserService {
     }
 
     public User editUser(Integer id, UpdateUserDto updateUserDto) {
-        if (!loggedInUserService.getLoggedInUser().getId().equals(id) && !loggedInUserService.getLoggedInUser().getAuthorities().contains(ERole.ROLE_ADMIN)) {
-            throw new BadRequestException("Wrong userId");
+        UserDetailsImpl loggedInUser = loggedInUserService.getLoggedInUser();
+
+        if (!loggedInUser.getId().equals(id) && !loggedInUser.getAuthorities().contains(ERole.ROLE_ADMIN)) {
+            throw new ForbiddenException("Wrong userId");
         }
 
         validateEmail(updateUserDto.getEmail());
@@ -80,7 +92,7 @@ public class UserService {
 
         if (updateUserDto.getOldpassword() != null && !updateUserDto.getOldpassword().isEmpty()) {
 
-            if (passwordEncoder.matches(userToUpdate.getPassword(), updateUserDto.getOldpassword())) {
+            if (!passwordEncoder.matches(updateUserDto.getOldpassword(), userToUpdate.getPassword())) {
                 throw new BadRequestException("Wrong password");
             }
 
@@ -88,7 +100,7 @@ public class UserService {
                 throw new BadRequestException("Passwords not match");
             }
 
-            if (updateUserDto.getNewpassword().length() <8) {
+            if (updateUserDto.getNewpassword().length() < 8) {
                 throw new BadRequestException("Passwords too sort");
             }
 

@@ -6,6 +6,7 @@ import hu.bme.aut.thesis.microservice.auth.models.AccessTokenDto;
 import hu.bme.aut.thesis.microservice.auth.models.LoginCredentialsDto;
 import hu.bme.aut.thesis.microservice.auth.models.RefreshTokenDto;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,21 +38,19 @@ class LoginControllerTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    static final String ADMIN_USERNAME = "admin";
-    static final String ADMIN_EMAIL = "admin";
-    static final String ADMIN_FIRSTNAME = "admin";
-    static final String ADMIN_LASTNAME = "admin";
-    static final String ADMIN_PASSWORD = "admin";
+    final String ADMIN_USERNAME = "admin";
+    final String ADMIN_EMAIL = "admin";
+    final String ADMIN_FIRSTNAME = "admin";
+    final String ADMIN_LASTNAME = "admin";
+    final String ADMIN_PASSWORD = "admin";
 
-    static final String USER_NOTREGISTERED = "nouser";
+    final String USER_NOTREGISTERED = "nouser";
 
-    static final String USER_NOTACCEPTEDEMAIL_USERNAME = "user";
-    static final String USER_NOTACCEPTEDEMAIL_PASSWORD = "aaaaaaaaaa";
+    final String USER_NOTACCEPTEDEMAIL_USERNAME = "user";
+    final String USER_NOTACCEPTEDEMAIL_PASSWORD = "aaaaaaaaaa";
 
     @BeforeEach
     void setup() {
-        userRepository.deleteAll();
-
         User user = new User(
                 ADMIN_USERNAME,
                 ADMIN_FIRSTNAME,
@@ -61,6 +60,11 @@ class LoginControllerTest {
         );
         user.setAcceptedEmail(true);
         userRepository.save(user);
+    }
+
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAll();
     }
 
     @Test
@@ -177,5 +181,32 @@ class LoginControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").value(not(accessToken)))
                 .andExpect(jsonPath("$.refreshToken").value(not(refreshToken)));
+    }
+
+    @Test
+    void postLoginRefreshWithAccessToken() throws Exception {
+        LoginCredentialsDto loginCredentialsDto = new LoginCredentialsDto();
+        loginCredentialsDto.setUsername(ADMIN_USERNAME);
+        loginCredentialsDto.setPassword(ADMIN_PASSWORD);
+
+        RequestBuilder request = MockMvcRequestBuilders.post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(loginCredentialsDto));
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        String content = result.getResponse().getContentAsString();
+
+        JsonNode accessToken = getJsonNode(content, "/accessToken");
+
+        RefreshTokenDto refreshTokenDto = new RefreshTokenDto().token(accessToken.asText());
+
+        request = MockMvcRequestBuilders.post("/login/refresh")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(refreshTokenDto));
+
+        mockMvc.perform(request).andExpect(status().isUnauthorized());
     }
 }
