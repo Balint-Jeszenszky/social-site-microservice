@@ -1,17 +1,14 @@
 package hu.bme.aut.thesis.microservice.auth.service;
 
-import hu.bme.aut.thesis.microservice.auth.controller.exceptions.InternalServerErrorException;
 import hu.bme.aut.thesis.microservice.auth.controller.exceptions.NotFoundException;
 import hu.bme.aut.thesis.microservice.auth.model.EmailVerification;
 import hu.bme.aut.thesis.microservice.auth.model.User;
 import hu.bme.aut.thesis.microservice.auth.repository.EmailVerificationRepository;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
+import hu.bme.aut.thesis.microservice.auth.service.util.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 @Service
 public class EmailVerificationService {
@@ -41,17 +38,7 @@ public class EmailVerificationService {
     }
 
     public void sendVerificationEmail(Integer userId, String email) {
-        String chrs = "0123456789abcdefghijklmnopqrstuvwxyz-_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        SecureRandom secureRandom;
-        try {
-            secureRandom = SecureRandom.getInstanceStrong();
-        } catch (NoSuchAlgorithmException e) {
-            throw new InternalServerErrorException(e.getMessage());
-        }
-
-        String key = secureRandom.ints(32, 0, chrs.length())
-                .mapToObj(i -> chrs.charAt(i))
-                .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
+        String key = RandomStringGenerator.generate(32);
 
         EmailVerification emailVerification = new EmailVerification(
                 email,

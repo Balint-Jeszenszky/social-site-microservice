@@ -136,8 +136,8 @@ paths:
       summary: ''
       operationId: post-forgotPassword
       responses:
-        '204':
-          description: No Content
+        '202':
+          description: Accepted
       requestBody:
         content:
           application/json:
@@ -146,7 +146,24 @@ paths:
         description: Password reset by email
       tags:
         - forgot-password
-      description: Password reset by email
+      description: Send email with password reset link
+    put:
+      summary: ''
+      operationId: put-forgotPassword
+      responses:
+        '202':
+          description: Accepted
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+      description: Reset the password with the key
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetDto'
   /login/refresh:
     post:
       summary: ''
@@ -403,6 +420,20 @@ components:
           type: string
       required:
         - accessToken
+    PasswordResetDto:
+      title: PasswordResetDto
+      type: object
+      properties:
+        newPassword:
+          type: string
+        confirmPassword:
+          type: string
+        key:
+          type: string
+      required:
+        - newPassword
+        - confirmPassword
+        - key
   securitySchemes: {}
 tags:
   - name: register

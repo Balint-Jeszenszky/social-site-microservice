@@ -2,6 +2,7 @@ package hu.bme.aut.thesis.microservice.auth.controller;
 
 import hu.bme.aut.thesis.microservice.auth.api.ForgotPasswordApi;
 import hu.bme.aut.thesis.microservice.auth.models.ForgotPasswordDto;
+import hu.bme.aut.thesis.microservice.auth.models.PasswordResetDto;
 import hu.bme.aut.thesis.microservice.auth.service.PasswordResetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,15 @@ public class ForgotPasswordController implements ForgotPasswordApi {
 
     @Override
     public ResponseEntity<Void> postForgotPassword(ForgotPasswordDto body) {
-        passwordResetService.resetPassword(body.getEmail());
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        passwordResetService.sendResetMail(body.getEmail());
+
+        return new ResponseEntity(HttpStatus.ACCEPTED);
+    }
+
+    @Override
+    public ResponseEntity<Void> putForgotPassword(PasswordResetDto body) {
+        passwordResetService.resetPassword(body);
+
+        return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 }
