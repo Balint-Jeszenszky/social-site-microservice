@@ -19,7 +19,16 @@
     <p *ngIf="post.processedMedia === false">Processing: {{ processingStatus.toFixed(2) }}%
         <mat-progress-bar mode="determinate" [value]="processingStatus"></mat-progress-bar>
     </p>
-    <div class="flex-align-center margin-top">
-        <mat-icon class="pointer" (click)="onLike()" [color]="likeColor">thumb_up</mat-icon><span class="margin-left">{{ post.likes }} likes</span>
+    <div class="flex-content-between">
+        <div class="flex-align-center margin-top">
+            <mat-icon class="pointer" (click)="onLike()" [color]="likeColor">thumb_up</mat-icon><span class="margin-left">{{ post.likes }} likes</span>
+        </div>
+        <div class="flex-align-center margin-top">
+            <mat-icon>comment</mat-icon><span class="margin-left">{{ 'post.comments' }} comments</span>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <app-comment-section></app-comment-section>
     </div>
 </mat-card>

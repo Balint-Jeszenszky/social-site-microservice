@@ -30,6 +30,9 @@ public class Post {
     @Column(name = "media_name")
     private String mediaName;
 
+    @Column(name = "comments", nullable = false)
+    private Integer comments = 0;
+
     public Post() {}
 
     public Post(Integer userId, String text) {
@@ -91,5 +94,13 @@ public class Post {
 
     public void setMediaName(String mediaName) {
         this.mediaName = mediaName;
+    }
+
+    public Integer getComments() {
+        return comments;
+    }
+
+    public void setComments(Integer comments) {
+        this.comments = comments;
     }
 }

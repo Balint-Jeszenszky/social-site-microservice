@@ -251,6 +251,93 @@ paths:
       tags:
         - delete-social
       description: Delete everithing connected to user
+  '/comment/post/{postId}':
+    parameters:
+      - schema:
+          type: integer
+        name: postId
+        in: path
+        required: true
+    get:
+      summary: ''
+      operationId: get-comment-postId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentDto'
+        '404':
+          description: Not Found
+      description: Get comments for post
+      tags:
+        - comment
+  /comment:
+    post:
+      summary: ''
+      operationId: post-comment
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentDto'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+      description: Create a comment for a post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCommentDto'
+      tags:
+        - comment
+  '/comment/{commentId}':
+    parameters:
+      - schema:
+          type: integer
+        name: commentId
+        in: path
+        required: true
+    delete:
+      summary: ''
+      operationId: delete-comment-commentId
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      description: Delete comment
+      tags:
+        - comment
+    put:
+      summary: ''
+      operationId: put-comment-commentId
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentDto'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+      description: Edit comment
+      tags:
+        - comment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCommentDto'
 components:
   schemas:
     NewPostDto:
@@ -326,6 +413,34 @@ components:
           type: string
       required:
         - status
+    CommentDto:
+      title: CommentDto
+      type: object
+      properties:
+        text:
+          type: string
+        id:
+          type: integer
+        postId:
+          type: integer
+        userId:
+          type: integer
+      required:
+        - text
+        - id
+        - postId
+        - userId
+    NewCommentDto:
+      title: NewCommentDto
+      type: object
+      properties:
+        text:
+          type: string
+        postId:
+          type: integer
+      required:
+        - text
+        - postId
   securitySchemes: {}
 tags:
   - name: post
@@ -333,3 +448,4 @@ tags:
   - name: media-access
   - name: like
   - name: delete-social
+  - name: comment

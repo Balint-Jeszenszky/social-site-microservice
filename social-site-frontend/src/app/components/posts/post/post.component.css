@@ -36,3 +36,8 @@
 .margin-top {
     margin-top: 0.5rem;
 }
+
+.flex-content-between {
+    display: flex;
+    justify-content: space-between;
+}

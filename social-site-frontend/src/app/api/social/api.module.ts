@@ -9,6 +9,7 @@ import { FriendsService } from './services/friends.service';
 import { MediaAccessService } from './services/media-access.service';
 import { LikeService } from './services/like.service';
 import { DeleteSocialService } from './services/delete-social.service';
+import { CommentService } from './services/comment.service';
 
 /**
  * Module that provides all services and configuration.
@@ -23,6 +24,7 @@ import { DeleteSocialService } from './services/delete-social.service';
     MediaAccessService,
     LikeService,
     DeleteSocialService,
+    CommentService,
     ApiConfiguration
   ],
 })
