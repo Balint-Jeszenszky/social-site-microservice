@@ -1,3 +1,8 @@
 .navbar {
     justify-content: space-between;
 }
+
+.page-name {
+    text-decoration: none;
+    color: #ffffff;
+}

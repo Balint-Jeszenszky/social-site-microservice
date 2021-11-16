@@ -100,10 +100,12 @@ export class PostComponent implements OnInit, OnDestroy {
                 this.likeService.deleteLikePostId({postId: this.post.id}).subscribe();
                 this.likeColor = '';
                 this.post.likes--;
+                this.post.liked = false;
             } else {
                 this.likeService.postLikePostId({postId: this.post.id}).subscribe();
                 this.likeColor = 'primary';
                 this.post.likes++;
+                this.post.liked = true;
             }
         }
     }

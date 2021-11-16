@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="navbar">
-    <div>Social site</div>
+    <div><a routerLink="/" class="page-name">Social site</a></div>
     <div *ngIf="loggedIn">
         <a routerLink="/" mat-button>Feed</a>
         <a routerLink="/profile" mat-button>{{ username }}'s profile</a>

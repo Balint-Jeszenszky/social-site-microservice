@@ -2,10 +2,10 @@ package hu.bme.aut.thesis.microservice.auth.service;
 
 import hu.bme.aut.thesis.microservice.auth.controller.exceptions.BadRequestException;
 import hu.bme.aut.thesis.microservice.auth.controller.exceptions.NotFoundException;
-import hu.bme.aut.thesis.microservice.auth.model.ForgotPassword;
+import hu.bme.aut.thesis.microservice.auth.model.PasswordReset;
 import hu.bme.aut.thesis.microservice.auth.model.User;
 import hu.bme.aut.thesis.microservice.auth.models.PasswordResetDto;
-import hu.bme.aut.thesis.microservice.auth.repository.ForgotPasswordRepository;
+import hu.bme.aut.thesis.microservice.auth.repository.PasswordResetRepository;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
 import hu.bme.aut.thesis.microservice.auth.service.util.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class PasswordResetService {
     private UserRepository userRepository;
 
     @Autowired
-    private ForgotPasswordRepository forgotPasswordRepository;
+    private PasswordResetRepository passwordResetRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -39,28 +39,32 @@ public class PasswordResetService {
         Optional<User> user = userRepository.findByEmail(email);
 
         if (user.isPresent()) {
+            User foundUser = user.get();
 
-            new Thread(() -> {
-                User foundUser = user.get();
+            String key = RandomStringGenerator.generate(32);
 
-                String key = RandomStringGenerator.generate(32);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.MINUTE, 30);
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(new Date());
-                calendar.add(Calendar.DATE, 1);
+            PasswordReset passwordReset = new PasswordReset(foundUser.getId(), calendar.getTime(), key);
 
-                ForgotPassword forgotPassword = new ForgotPassword(foundUser.getId(), calendar.getTime(), key);
+            passwordResetRepository.save(passwordReset);
 
-                forgotPasswordRepository.save(forgotPassword);
-
-                sendMail.sendSimpleMessage(foundUser.getEmail(), "New password", baseUrl + "/#/resetPassword?key=" + key);
-            }).start();
+            new Thread(() ->
+                    sendMail.sendSimpleMessage(foundUser.getEmail(), "New password", baseUrl + "/#/passwordReset?key=" + key + "\nThe link is available for 30 minutes.")
+            ).start();
         }
     }
 
     public void resetPassword(PasswordResetDto passwordResetDto) {
-        ForgotPassword forgotPassword = forgotPasswordRepository.findByKey(passwordResetDto.getKey())
+        PasswordReset passwordReset = passwordResetRepository.findByKey(passwordResetDto.getKey())
                 .orElseThrow(() -> new NotFoundException("Invalid key"));
+
+        if (passwordReset.getExpiration().before(new Date())) {
+            passwordResetRepository.delete(passwordReset);
+            throw new BadRequestException("Link expired");
+        }
 
         if (!passwordResetDto.getNewPassword().equals(passwordResetDto.getConfirmPassword())) {
             throw new BadRequestException("Two password not match");
@@ -70,10 +74,10 @@ public class PasswordResetService {
             throw new BadRequestException("Password should be at least 8 character");
         }
 
-        Optional<User> user = userRepository.findById(forgotPassword.getUserId());
+        Optional<User> user = userRepository.findById(passwordReset.getUserId());
 
         if (user.isEmpty()) {
-            forgotPasswordRepository.delete(forgotPassword);
+            passwordResetRepository.delete(passwordReset);
             throw new NotFoundException("User not found");
         }
 
@@ -81,6 +85,6 @@ public class PasswordResetService {
 
         userToUpdate.setPassword(passwordEncoder.encode(passwordResetDto.getNewPassword()));
 
-        forgotPasswordRepository.delete(forgotPassword);
+        passwordResetRepository.delete(passwordReset);
     }
 }

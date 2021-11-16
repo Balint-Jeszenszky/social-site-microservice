@@ -14,7 +14,7 @@ export class ValidateRegistrationComponent implements OnInit {
     constructor(private registerService: RegisterService, private route: ActivatedRoute) { }
 
     ngOnInit(): void {
-        this.route.params.subscribe(params => {
+        this.route.queryParams.subscribe(params => {
             const key: string = params['key'];
             this.registerService.getRegisterValidate({key}).subscribe(
                 res => {

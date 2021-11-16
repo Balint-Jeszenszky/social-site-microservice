@@ -131,7 +131,7 @@ paths:
         description: Login credentials
       tags:
         - login
-  /forgotPassword:
+  /passwordReset:
     post:
       summary: ''
       operationId: post-forgotPassword
@@ -145,7 +145,7 @@ paths:
               $ref: '#/components/schemas/ForgotPasswordDto'
         description: Password reset by email
       tags:
-        - forgot-password
+        - password-reset
       description: Send email with password reset link
     put:
       summary: ''
@@ -164,6 +164,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PasswordResetDto'
+      tags:
+        - password-reset
+    parameters: []
   /login/refresh:
     post:
       summary: ''
@@ -439,4 +442,4 @@ tags:
   - name: register
   - name: user-management
   - name: login
-  - name: forgot-password
+  - name: password-reset

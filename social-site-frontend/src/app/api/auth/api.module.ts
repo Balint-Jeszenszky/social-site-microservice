@@ -7,7 +7,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { RegisterService } from './services/register.service';
 import { UserManagementService } from './services/user-management.service';
 import { LoginService } from './services/login.service';
-import { ForgotPasswordService } from './services/forgot-password.service';
+import { PasswordResetService } from './services/password-reset.service';
 
 /**
  * Module that provides all services and configuration.
@@ -20,7 +20,7 @@ import { ForgotPasswordService } from './services/forgot-password.service';
     RegisterService,
     UserManagementService,
     LoginService,
-    ForgotPasswordService,
+    PasswordResetService,
     ApiConfiguration
   ],
 })

@@ -24,6 +24,7 @@ import { FindFriendsComponent } from './components/friends/find-friends/find-fri
 import { ListFriendsComponent } from './components/friends/list-friends/list-friends.component';
 import { FriendsComponent } from './components/friends/friends.component';
 import { PendingFriendsComponent } from './components/friends/pending-friends/pending-friends.component';
+import { PasswordResetComponent } from './components/auth/password-reset/password-reset.component';
 
 const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -47,7 +48,8 @@ const API_INTERCEPTOR_PROVIDER: Provider = {
     FindFriendsComponent,
     ListFriendsComponent,
     FriendsComponent,
-    PendingFriendsComponent
+    PendingFriendsComponent,
+    PasswordResetComponent
   ],
   imports: [
     BrowserModule,

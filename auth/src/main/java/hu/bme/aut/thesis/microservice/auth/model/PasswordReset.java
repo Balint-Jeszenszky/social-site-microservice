@@ -3,9 +3,9 @@ package hu.bme.aut.thesis.microservice.auth.model;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "ForgotPassword")
-@Table(name = "forgot_password")
-public class ForgotPassword {
+@Entity(name = "PasswordReset")
+@Table(name = "password_reset")
+public class PasswordReset {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,10 +21,10 @@ public class ForgotPassword {
     @Column(name = "key", updatable = false, unique = true)
     private String key;
 
-    public ForgotPassword() {
+    public PasswordReset() {
     }
 
-    public ForgotPassword(Integer userId, Date expiration, String key) {
+    public PasswordReset(Integer userId, Date expiration, String key) {
         this.userId = userId;
         this.expiration = expiration;
         this.key = key;

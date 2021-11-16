@@ -1,6 +1,6 @@
 package hu.bme.aut.thesis.microservice.auth.controller;
 
-import hu.bme.aut.thesis.microservice.auth.api.ForgotPasswordApi;
+import hu.bme.aut.thesis.microservice.auth.api.PasswordResetApi;
 import hu.bme.aut.thesis.microservice.auth.models.ForgotPasswordDto;
 import hu.bme.aut.thesis.microservice.auth.models.PasswordResetDto;
 import hu.bme.aut.thesis.microservice.auth.service.PasswordResetService;
@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class ForgotPasswordController implements ForgotPasswordApi {
+public class PasswordResetController implements PasswordResetApi {
 
     @Autowired
     private PasswordResetService passwordResetService;

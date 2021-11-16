@@ -10,11 +10,12 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { ForgotPasswordDto } from '../models/forgot-password-dto';
+import { PasswordResetDto } from '../models/password-reset-dto';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ForgotPasswordService extends BaseService {
+export class PasswordResetService extends BaseService {
   constructor(
     config: ApiConfiguration,
     http: HttpClient
@@ -23,27 +24,23 @@ export class ForgotPasswordService extends BaseService {
   }
 
   /**
-   * Path part for operation postForgotPassword
+   * Path part for operation putForgotPassword
    */
-  static readonly PostForgotPasswordPath = '/forgotPassword';
+  static readonly PutForgotPasswordPath = '/passwordReset';
 
   /**
-   * Password reset by email
+   * Reset the password with the key
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `postForgotPassword()` instead.
+   * To access only the response body, use `putForgotPassword()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  postForgotPassword$Response(params?: {
-
-    /**
-     * Password reset by email
-     */
-    body?: ForgotPasswordDto
+  putForgotPassword$Response(params?: {
+    body?: PasswordResetDto
   }): Observable<StrictHttpResponse<void>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ForgotPasswordService.PostForgotPasswordPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, PasswordResetService.PutForgotPasswordPath, 'put');
     if (params) {
       rb.body(params.body, 'application/json');
     }
@@ -60,7 +57,61 @@ export class ForgotPasswordService extends BaseService {
   }
 
   /**
-   * Password reset by email
+   * Reset the password with the key
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `putForgotPassword$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  putForgotPassword(params?: {
+    body?: PasswordResetDto
+  }): Observable<void> {
+
+    return this.putForgotPassword$Response(params).pipe(
+      map((r: StrictHttpResponse<void>) => r.body as void)
+    );
+  }
+
+  /**
+   * Path part for operation postForgotPassword
+   */
+  static readonly PostForgotPasswordPath = '/passwordReset';
+
+  /**
+   * Send email with password reset link
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `postForgotPassword()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  postForgotPassword$Response(params?: {
+
+    /**
+     * Password reset by email
+     */
+    body?: ForgotPasswordDto
+  }): Observable<StrictHttpResponse<void>> {
+
+    const rb = new RequestBuilder(this.rootUrl, PasswordResetService.PostForgotPasswordPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'text',
+      accept: '*/*'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      })
+    );
+  }
+
+  /**
+   * Send email with password reset link
    *
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `postForgotPassword$Response()` instead.

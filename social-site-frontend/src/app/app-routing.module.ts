@@ -7,6 +7,7 @@ import { EditProfileComponent } from './components/profile/edit-profile/edit-pro
 import { ProfileComponent } from './components/profile/profile.component';
 import { ValidateRegistrationComponent } from './components/auth/validate-registration/validate-registration.component';
 import { FriendsComponent } from './components/friends/friends.component';
+import { PasswordResetComponent } from './components/auth/password-reset/password-reset.component';
 
 const routes: Routes = [
     { path: '', component: FeedComponent, data: { requiresLogin: true, redirectTo: '/auth' }, canActivate: [ AccessGuard ] },
@@ -15,7 +16,8 @@ const routes: Routes = [
     { path: 'profile/:username', component: ProfileComponent, data: { requiresLogin: true, redirectTo: '/auth' }, canActivate: [ AccessGuard ] },
     { path: 'editProfile', component: EditProfileComponent, data: { requiresLogin: true, redirectTo: '/auth' }, canActivate: [ AccessGuard ] },
     { path: 'validate/:key', component: ValidateRegistrationComponent, data: { requiresLogout: true, redirectTo: '/' }, canActivate: [ AccessGuard ] },
-    { path: 'friends', component: FriendsComponent, data: { requiresLogin: true, redirectTo: '/auth' }, canActivate: [ AccessGuard ] }
+    { path: 'friends', component: FriendsComponent, data: { requiresLogin: true, redirectTo: '/auth' }, canActivate: [ AccessGuard ] },
+    { path: 'passwordReset', component: PasswordResetComponent, data: { requiresLogout: true, redirectTo: '/' }, canActivate: [ AccessGuard ] }
 ];
 
 @NgModule({
