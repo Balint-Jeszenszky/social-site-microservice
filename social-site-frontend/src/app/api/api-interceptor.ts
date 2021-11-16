@@ -14,11 +14,13 @@ export class ApiInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // Apply the headers
-        req = req.clone({
-            setHeaders: {
-                'Authorization': `Bearer ${this.userService.getAccessToken()}`
-            }
-        });
+        if (this.userService.getAccessToken()) {
+            req = req.clone({
+                setHeaders: {
+                    'Authorization': `Bearer ${this.userService.getAccessToken()}`
+                }
+            });
+        }
 
         // Also handle errors globally
         return next.handle(req).pipe(
