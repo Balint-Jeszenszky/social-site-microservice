@@ -6,3 +6,7 @@
     text-decoration: none;
     color: #ffffff;
 }
+
+.no-padding {
+    padding: 0;
+}

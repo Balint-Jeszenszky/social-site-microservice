@@ -9,15 +9,11 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class NavbarComponent implements OnInit {
     loggedIn: boolean = false;
-    username: string = '';
 
     constructor(private userService: UserService, private router: Router) { }
 
     ngOnInit(): void {
         this.userService.isLoggedIn().subscribe(loggedIn => this.loggedIn = loggedIn);
-        this.userService.getCurrentUser().subscribe(user => {
-            this.username = user?.username || '';
-        });
     }
 
     onLogout() {

@@ -10,6 +10,7 @@ import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
 import hu.bme.aut.thesis.microservice.auth.service.util.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -51,9 +52,13 @@ public class PasswordResetService {
 
             passwordResetRepository.save(passwordReset);
 
-            new Thread(() ->
-                    sendMail.sendSimpleMessage(foundUser.getEmail(), "New password", baseUrl + "/#/passwordReset?key=" + key + "\nThe link is available for 30 minutes.")
-            ).start();
+            new Thread(() -> {
+                try {
+                    sendMail.sendSimpleMessage(foundUser.getEmail(), "New password", baseUrl + "/#/passwordReset?key=" + key + "\nThe link is available for 30 minutes.");
+                } catch (MailException e) {
+                    passwordResetRepository.deleteById(passwordReset.getId());
+                }
+            }).start();
         }
     }
 

@@ -142,13 +142,15 @@ public class UserService {
             throw new BadRequestException("Error: Email is already in use!");
         }
 
+        String username = registerDto.getUsername().toLowerCase();
+
         Pattern usernamePattern = Pattern.compile("^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
-        Matcher usernameMatcher = usernamePattern.matcher(registerDto.getUsername());
+        Matcher usernameMatcher = usernamePattern.matcher(username);
         if (!usernameMatcher.matches()) {
             throw new BadRequestException("Error: Username should be 4-20 character of letters, . or _ with no double . or _!");
         }
 
-        if (userRepository.existsByUsername(registerDto.getUsername())) {
+        if (userRepository.existsByUsername(username)) {
             throw new BadRequestException("Error: Username is already taken!");
         }
 
@@ -157,7 +159,7 @@ public class UserService {
         }
 
         User user = new User(
-                registerDto.getUsername(),
+                username,
                 registerDto.getFirstname(),
                 registerDto.getLastname(),
                 registerDto.getEmail(),

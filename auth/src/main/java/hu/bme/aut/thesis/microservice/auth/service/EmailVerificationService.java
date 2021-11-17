@@ -8,6 +8,7 @@ import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
 import hu.bme.aut.thesis.microservice.auth.service.util.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,6 +49,13 @@ public class EmailVerificationService {
 
         emailVerificationRepository.save(emailVerification);
 
-        sendMail.sendSimpleMessage(email, "Registration", baseUrl + "/#/validate?key=" + key);
+        new Thread(() -> {
+            try {
+                sendMail.sendSimpleMessage(email, "Registration", baseUrl + "/#/validate?key=" + key);
+            } catch (MailException e) {
+                userRepository.deleteById(userId);
+                emailVerificationRepository.deleteById(emailVerification.getId());
+            }
+        }).start();
     }
 }

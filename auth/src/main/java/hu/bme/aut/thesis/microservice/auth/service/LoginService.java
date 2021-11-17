@@ -16,6 +16,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
 import java.util.NoSuchElementException;
 
 @Service
@@ -35,7 +36,7 @@ public class LoginService {
 
         try {
             authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername().toLowerCase(), loginRequest.getPassword()));
         } catch (AuthenticationException e) {
             throw new UnauthorizedException("User not found");
         }
