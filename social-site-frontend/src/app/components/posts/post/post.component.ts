@@ -18,6 +18,7 @@ export class PostComponent implements OnInit, OnDestroy {
     text: string = '';
     processingStatus: number = 0;
     likeColor: string = '';
+    showComments: boolean = false;
 
     constructor(
         private userService: UserService,
@@ -28,7 +29,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.userService.getCurrentUser().subscribe(u => {
-            this.editable = u?.id === this.post?.user.id;
+            this.editable = u?.id === this.post?.user.id && this.post?.user.id !== undefined;
         });
 
         if (this.post?.processedMedia === false) {
@@ -110,4 +111,13 @@ export class PostComponent implements OnInit, OnDestroy {
         }
     }
 
+    toggleCommentSection() {
+        this.showComments = !this.showComments;
+    }
+
+    commentsChanged(n: number) {
+        if (this.post) {
+            this.post.comments += n;
+        }
+    }
 }

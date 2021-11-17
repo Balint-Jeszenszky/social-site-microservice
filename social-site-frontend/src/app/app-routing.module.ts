@@ -15,7 +15,7 @@ const routes: Routes = [
     { path: 'profile', component: ProfileComponent, data: { requiresLogin: true, redirectTo: '/auth' }, canActivate: [ AccessGuard ] },
     { path: 'profile/:username', component: ProfileComponent, data: { requiresLogin: true, redirectTo: '/auth' }, canActivate: [ AccessGuard ] },
     { path: 'editProfile', component: EditProfileComponent, data: { requiresLogin: true, redirectTo: '/auth' }, canActivate: [ AccessGuard ] },
-    { path: 'validate/:key', component: ValidateRegistrationComponent, data: { requiresLogout: true, redirectTo: '/' }, canActivate: [ AccessGuard ] },
+    { path: 'validate', component: ValidateRegistrationComponent, data: { requiresLogout: true, redirectTo: '/' }, canActivate: [ AccessGuard ] },
     { path: 'friends', component: FriendsComponent, data: { requiresLogin: true, redirectTo: '/auth' }, canActivate: [ AccessGuard ] },
     { path: 'passwordReset', component: PasswordResetComponent, data: { requiresLogout: true, redirectTo: '/' }, canActivate: [ AccessGuard ] }
 ];

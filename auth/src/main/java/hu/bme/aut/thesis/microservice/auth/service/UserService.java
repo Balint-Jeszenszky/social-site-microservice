@@ -69,6 +69,20 @@ public class UserService {
         return user.get();
     }
 
+    public User getPublicUserById(Integer id) {
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isEmpty() || !user.get().isAcceptedEmail()) {
+            throw new NotFoundException("User not found");
+        }
+
+        User publicUser = user.get();
+        publicUser.setEmail("");
+        publicUser.setPassword("");
+
+        return publicUser;
+    }
+
     public User editUser(Integer id, UpdateUserDto updateUserDto) {
         UserDetailsImpl loggedInUser = loggedInUserService.getLoggedInUser();
 

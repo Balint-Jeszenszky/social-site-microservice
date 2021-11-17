@@ -368,6 +368,8 @@ components:
           type: integer
         liked:
           type: boolean
+        comments:
+          type: integer
         mediaName:
           type: string
         processedMedia:
@@ -379,6 +381,7 @@ components:
         - created
         - likes
         - liked
+        - comments
     UserDetailsDto:
       title: UserDetailsDto
       type: object
@@ -423,13 +426,13 @@ components:
           type: integer
         postId:
           type: integer
-        userId:
-          type: integer
+        user:
+          $ref: '#/components/schemas/UserDetailsDto'
       required:
         - text
         - id
         - postId
-        - userId
+        - user
     NewCommentDto:
       title: NewCommentDto
       type: object

@@ -21,7 +21,7 @@ public class PublicUserDetailsController implements PublicUserApi {
 
     @Override
     public ResponseEntity<PublicUserDetailsDto> getPublicUser(Integer id) {
-        return new ResponseEntity(UserMapper.INSTANCE.userToPublicUserDetailsDto(userService.getUserById(id)), HttpStatus.OK);
+        return new ResponseEntity(UserMapper.INSTANCE.userToPublicUserDetailsDto(userService.getPublicUserById(id)), HttpStatus.OK);
     }
 
     @Override

@@ -1,1 +1,12 @@
-<p>comment-section works!</p>
+<div>
+    <app-comment *ngFor="let comment of comments" [comment]="comment" (commentDeleted)="commentDeleted($event)"></app-comment>
+    <form (ngSubmit)="onComment()">
+        <div class="flex-items-center margin-top">
+            <mat-form-field appearance="fill" class="input-full-width">
+                <mat-label>Comment</mat-label>
+                <input matInput placeholder="Write a comment..." name="comment" [(ngModel)]="comment">
+            </mat-form-field>
+            <button mat-raised-button color="primary" type="submit" class="margin-left">Login</button>
+        </div>
+    </form>
+</div>

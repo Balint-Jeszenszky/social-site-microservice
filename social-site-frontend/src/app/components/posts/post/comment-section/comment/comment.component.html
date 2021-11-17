@@ -1,1 +1,18 @@
-<p>comment works!</p>
+<mat-card class="comment-card">
+    <div class="flex-space-between">
+        <div>
+            <b>{{ comment?.user?.firstname }} {{ comment?.user?.lastname}}</b><span> ({{ comment?.user?.username }})</span><br>
+        </div>
+        <div>
+            <mat-icon *ngIf="editable && !editing" class="pointer" (click)="onEdit()">edit</mat-icon>
+            <mat-icon *ngIf="editable && !editing" class="pointer" (click)="onDelete()">delete</mat-icon>
+            <mat-icon *ngIf="editable && editing" class="pointer" (click)="onSave()">save</mat-icon>
+            <mat-icon *ngIf="editable && editing" class="pointer" (click)="onCancelEdit()">cancel</mat-icon>
+        </div>
+    </div>
+    <span *ngIf="!editing">{{ comment?.text }}</span>
+    <mat-form-field appearance="fill" class="input-full-width" *ngIf="editing">
+        <mat-label>Edit comment</mat-label>
+        <input matInput placeholder="Edit the comment..." name="comment" [(ngModel)]="text">
+    </mat-form-field>
+</mat-card>
