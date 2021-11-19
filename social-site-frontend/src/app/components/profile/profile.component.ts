@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PublicUserDetailsDto, UserDetailsDto } from 'src/app/api/auth/models';
 import { UserManagementService } from 'src/app/api/auth/services';
+import { DeleteSocialService } from 'src/app/api/social/services';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -13,11 +15,15 @@ export class ProfileComponent implements OnInit {
     user?: UserDetailsDto | PublicUserDetailsDto;
     personalProfile: boolean = false;
     userNotFound: boolean = false;
+    deletable: boolean = false;
 
     constructor(
         private userService: UserService,
         private userManagementService: UserManagementService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private deleteSocialService: DeleteSocialService,
+        private router: Router,
+        private snackBar: MatSnackBar
     ) { }
 
     ngOnInit(): void {
@@ -27,6 +33,7 @@ export class ProfileComponent implements OnInit {
                 this.userManagementService.getPublicUserFindUsername({ username }).subscribe(
                     res => {
                         this.user = res;
+                        this.deletable = this.userService.isAdmin();
                     },
                     err => {
                         this.userNotFound = true;
@@ -39,5 +46,28 @@ export class ProfileComponent implements OnInit {
                 });
             }
         });
+    }
+
+    deleteUser() {
+        if (this.user) {
+            const userId = this.user.id;
+            if (confirm('Delete profile?')) {
+                this.deleteSocialService.deleteDeleteUserId({userId}).subscribe(
+                    res => {
+                        this.userManagementService.deleteUserId({ id: userId }).subscribe(
+                            res => {
+                                this.router.navigate(['/']);
+                            },
+                            err => {
+                                this.snackBar.open(err.error, 'Ok');
+                            }
+                        );
+                    },
+                    err => {
+                        this.snackBar.open(err.error, 'Ok');
+                    }
+                )
+            }
+        }
     }
 }

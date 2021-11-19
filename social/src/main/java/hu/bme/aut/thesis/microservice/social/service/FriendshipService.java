@@ -98,17 +98,4 @@ public class FriendshipService {
 
         return friendship.isPresent();
     }
-
-    public void deleteAllFriendsForCurrentUser() {
-        Integer userId = loggedInUserService.getLoggedInUser().getId();
-
-        List<Friendship> friendships = friendshipRepository.findAllByUserId(userId);
-
-        //friendshipRepository.deleteAll(friendships);
-
-        // TODO @Transactional not working for some reason, fix it!
-        for (Friendship friendship : friendships) {
-            friendshipRepository.delete(friendship);
-        }
-    }
 }

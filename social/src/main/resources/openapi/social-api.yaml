@@ -238,8 +238,13 @@ paths:
       description: remove like from post
       tags:
         - like
-  /delete:
-    parameters: []
+  '/delete/{userId}':
+    parameters:
+      - schema:
+          type: integer
+        name: userId
+        in: path
+        required: true
     delete:
       summary: ''
       operationId: delete-delete-userId
@@ -396,12 +401,18 @@ components:
           type: string
         email:
           type: string
+        roles:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
       required:
         - id
         - username
         - firstname
         - lastname
         - email
+        - roles
     MediaStatusDto:
       title: MediaStatusDto
       type: object

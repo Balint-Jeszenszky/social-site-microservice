@@ -2,6 +2,7 @@ package hu.bme.aut.thesis.microservice.social.repository;
 
 import hu.bme.aut.thesis.microservice.social.model.Friendship;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -25,9 +26,9 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Integer>
     @Query("select f from Friendship f where f.pending = true and (f.firstUserId = :userId or f.secondUserId = :userId)")
     List<Friendship> findPendingForUser(@Param("userId") Integer userId);
 
-//    @Modifying
-//    @Query("delete from Friendship f where f.firstUserId = :userId or f.secondUserId = :userId")
-//    void deleteAllFriendsByUserId(@Param("userId") Integer userId);
+    @Modifying
+    @Query("delete from Friendship f where f.firstUserId = :userId or f.secondUserId = :userId")
+    void deleteAllFriendsByUserId(@Param("userId") Integer userId);
 
     @Query("select f from Friendship f where f.firstUserId = :userId or f.secondUserId = :userId")
     List<Friendship> findAllByUserId(Integer userId);

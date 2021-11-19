@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
@@ -30,6 +31,7 @@ public class JwtUtils {
                 .setSubject((userDetails.getUsername()))
                 .setIssuedAt(new Date())
                 .claim("type", "access")
+                .claim("roles", userDetails.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toList()))
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();

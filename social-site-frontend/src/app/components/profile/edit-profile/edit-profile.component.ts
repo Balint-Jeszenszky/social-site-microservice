@@ -62,7 +62,7 @@ export class EditProfileComponent implements OnInit {
 
     onDelete() {
         if (confirm('Delete profile?')) {
-            this.deleteSocialService.deleteDeleteUserId().subscribe(
+            this.deleteSocialService.deleteDeleteUserId({userId: this.id}).subscribe(
                 res => {
                     this.userManagementService.deleteUserId({ id: this.id }).subscribe(
                         res => {

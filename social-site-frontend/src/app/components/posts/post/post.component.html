@@ -1,9 +1,11 @@
 <mat-card *ngIf="post" class="post-card">
     <div class="flex-space-between">
-        <h2 class="username">{{ post.user.firstname }} {{ post.user.lastname }} ({{ post.user.username }})</h2>
+        <a [routerLink]="'/profile/' + post.user.username" class="user-link">
+            <h2 class="username">{{ post.user.firstname }} {{ post.user.lastname }} ({{ post.user.username }})</h2>
+        </a>
         <div>
             <mat-icon *ngIf="editable && !editing" class="pointer" (click)="editPost()">edit</mat-icon>
-            <mat-icon *ngIf="editable && !editing" class="pointer" (click)="deletePost()">delete</mat-icon>
+            <mat-icon *ngIf="deletable && !editing" class="pointer" (click)="deletePost()">delete</mat-icon>
             <mat-icon *ngIf="editable && editing" class="pointer" (click)="savePost()">save</mat-icon>
             <mat-icon *ngIf="editable && editing" class="pointer" (click)="cancelEditPost()">cancel</mat-icon>
         </div>

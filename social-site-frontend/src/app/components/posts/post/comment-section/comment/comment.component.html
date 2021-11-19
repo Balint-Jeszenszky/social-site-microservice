@@ -5,7 +5,7 @@
         </div>
         <div>
             <mat-icon *ngIf="editable && !editing" class="pointer" (click)="onEdit()">edit</mat-icon>
-            <mat-icon *ngIf="editable && !editing" class="pointer" (click)="onDelete()">delete</mat-icon>
+            <mat-icon *ngIf="deletable && !editing" class="pointer" (click)="onDelete()">delete</mat-icon>
             <mat-icon *ngIf="editable && editing" class="pointer" (click)="onSave()">save</mat-icon>
             <mat-icon *ngIf="editable && editing" class="pointer" (click)="onCancelEdit()">cancel</mat-icon>
         </div>

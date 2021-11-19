@@ -59,8 +59,4 @@ public class LikeService {
     public void deleteAllLikesFromPost(Integer postId) {
         likeRepository.deleteAllByPostId(postId);
     }
-
-    public void deleteAllLikesFromUser(Integer userId) {
-        likeRepository.deleteAllByUserId(userId);
-    }
 }

@@ -6,6 +6,7 @@ import hu.bme.aut.thesis.microservice.social.model.Post;
 import hu.bme.aut.thesis.microservice.social.models.NewPostDto;
 import hu.bme.aut.thesis.microservice.social.models.PostDto;
 import hu.bme.aut.thesis.microservice.social.models.UserDetailsDto;
+import hu.bme.aut.thesis.microservice.social.service.CommentService;
 import hu.bme.aut.thesis.microservice.social.service.LikeService;
 import hu.bme.aut.thesis.microservice.social.service.PostService;
 import hu.bme.aut.thesis.microservice.social.service.UserDetailsService;
@@ -29,6 +30,9 @@ public class PostController implements PostApi {
     @Autowired
     private LikeService likeService;
 
+    @Autowired
+    private CommentService commentService;
+
     @Override
     public ResponseEntity<Void> deletePostPostId(Integer postId) {
         postService.deletePost(postId);
@@ -38,12 +42,12 @@ public class PostController implements PostApi {
 
     @Override
     public ResponseEntity<List<PostDto>> getPostAll() {
-        return new ResponseEntity(mapUsersAndLikesToPosts(postService.getPosts()), HttpStatus.OK);
+        return new ResponseEntity(mapDataToPosts(postService.getPosts()), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<PostDto>> getPostAllUserId(Integer userId) {
-        return new ResponseEntity(mapUsersAndLikesToPosts(postService.getPostsByUserId(userId)), HttpStatus.OK);
+        return new ResponseEntity(mapDataToPosts(postService.getPostsByUserId(userId)), HttpStatus.OK);
     }
 
     @Override
@@ -53,6 +57,9 @@ public class PostController implements PostApi {
         PostDto postDto = PostMapper.INSTANCE.postToPostDto(post);
 
         postDto.setUser(userDetailsService.getUserDetailsById(post.getUserId()).get());
+        postDto.setLikes(0);
+        postDto.setComments(0);
+        postDto.setLiked(false);
 
         return new ResponseEntity(postDto, HttpStatus.CREATED);
     }
@@ -68,12 +75,13 @@ public class PostController implements PostApi {
         return new ResponseEntity(postDto, HttpStatus.OK);
     }
 
-    private List<PostDto> mapUsersAndLikesToPosts(List<Post> posts) {
+    private List<PostDto> mapDataToPosts(List<Post> posts) {
         return posts.stream().map(p -> {
             PostDto postDto = PostMapper.INSTANCE.postToPostDto(p);
             postDto.setUser(userDetailsService.getUserDetailsById(p.getUserId()).orElse(new UserDetailsDto().username("unknown user")));
             postDto.setLikes(likeService.getLikesOfPost(p.getId()));
             postDto.setLiked(likeService.isLikedByUser(p.getId()));
+            postDto.setComments(commentService.getCommentsOfPost(p.getId()));
             return postDto;
         }).collect(Collectors.toList());
     }

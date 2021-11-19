@@ -295,12 +295,18 @@ components:
           type: string
         email:
           type: string
+        roles:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
       required:
         - id
         - username
         - firstname
         - lastname
         - email
+        - roles
     RegisterDto:
       title: RegisterDto
       type: object

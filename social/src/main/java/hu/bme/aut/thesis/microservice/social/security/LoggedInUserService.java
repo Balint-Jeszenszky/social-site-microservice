@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class LoggedInUserService {
@@ -18,6 +19,6 @@ public class LoggedInUserService {
     public boolean isAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        return authorities.contains("ROLE_ADMIN");
+        return authorities.stream().map(a -> a.getAuthority()).collect(Collectors.toList()).contains("ROLE_ADMIN");
     }
 }

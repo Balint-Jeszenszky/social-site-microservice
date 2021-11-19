@@ -14,6 +14,7 @@ export class PostComponent implements OnInit, OnDestroy {
     private timerId?: number;
     @Input() post?: PostDto;
     editable: boolean = false;
+    deletable: boolean = false;
     editing: boolean = false;
     text: string = '';
     processingStatus: number = 0;
@@ -30,6 +31,7 @@ export class PostComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.userService.getCurrentUser().subscribe(u => {
             this.editable = u?.id === this.post?.user.id && this.post?.user.id !== undefined;
+            this.deletable = this.editable || this.userService.isAdmin();
         });
 
         if (this.post?.processedMedia === false) {

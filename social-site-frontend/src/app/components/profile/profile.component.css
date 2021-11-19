@@ -8,3 +8,7 @@
 .small-icon {
     font-size: 1rem;
 }
+
+.pointer {
+    cursor: pointer;
+}

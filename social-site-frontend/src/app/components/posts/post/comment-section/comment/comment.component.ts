@@ -12,6 +12,7 @@ export class CommentComponent implements OnInit {
     @Input() comment?: CommentDto;
     @Output() commentDeleted: EventEmitter<CommentDto> = new EventEmitter<CommentDto>();
     editable: boolean = false;
+    deletable: boolean = false;
     editing: boolean = false;
     text: string = '';
 
@@ -20,6 +21,7 @@ export class CommentComponent implements OnInit {
     ngOnInit(): void {
         this.userService.getCurrentUser().subscribe(u => {
             this.editable = u?.id === this.comment?.user.id && this.comment?.user.id !== undefined;
+            this.deletable = this.editable || this.userService.isAdmin();
         });
     }
 

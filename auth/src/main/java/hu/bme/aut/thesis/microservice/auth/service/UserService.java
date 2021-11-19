@@ -40,9 +40,9 @@ public class UserService {
     private LoggedInUserService loggedInUserService;
 
     public void deleteUserById(Integer id) {
-        UserDetailsImpl loggedInUser = loggedInUserService.getLoggedInUser();
+        Integer userId = loggedInUserService.getLoggedInUser().getId();
 
-        if (!loggedInUser.getId().equals(id) && !loggedInUser.getAuthorities().contains(ERole.ROLE_ADMIN)) {
+        if (!userId.equals(id) && !loggedInUserService.isAdmin()) {
             throw new ForbiddenException("Wrong userId");
         }
 
@@ -54,9 +54,9 @@ public class UserService {
     }
 
     public User getUserById(Integer id) {
-        UserDetailsImpl loggedInUser = loggedInUserService.getLoggedInUser();
+        Integer userId = loggedInUserService.getLoggedInUser().getId();
 
-        if (!loggedInUser.getId().equals(id) && !loggedInUser.getAuthorities().contains(ERole.ROLE_ADMIN)) {
+        if (!userId.equals(id) && !loggedInUserService.isAdmin()) {
             throw new ForbiddenException("Wrong userId");
         }
 
@@ -84,9 +84,9 @@ public class UserService {
     }
 
     public User editUser(Integer id, UpdateUserDto updateUserDto) {
-        UserDetailsImpl loggedInUser = loggedInUserService.getLoggedInUser();
+        Integer userId = loggedInUserService.getLoggedInUser().getId();
 
-        if (!loggedInUser.getId().equals(id) && !loggedInUser.getAuthorities().contains(ERole.ROLE_ADMIN)) {
+        if (!userId.equals(id) && !loggedInUserService.isAdmin()) {
             throw new ForbiddenException("Wrong userId");
         }
 
@@ -172,6 +172,8 @@ public class UserService {
 
         if (role.isEmpty()) {
             createDefaultRoles();
+            roles.add(roleRepository.findByName(ERole.ROLE_ADMIN)
+                    .orElseThrow(() -> new InternalServerErrorException("Error: Role is not found.")));
         }
 
         roles.add(roleRepository.findByName(ERole.ROLE_USER)

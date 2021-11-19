@@ -5,12 +5,12 @@ import hu.bme.aut.thesis.microservice.social.controller.exceptions.NotFoundExcep
 import hu.bme.aut.thesis.microservice.social.model.Post;
 import hu.bme.aut.thesis.microservice.social.models.MediaStatusDto;
 import hu.bme.aut.thesis.microservice.social.models.NewPostDto;
-import hu.bme.aut.thesis.microservice.social.repository.FriendshipRepository;
 import hu.bme.aut.thesis.microservice.social.repository.PostRepository;
 import hu.bme.aut.thesis.microservice.social.security.LoggedInUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,8 +40,8 @@ public class PostService {
     public List<Post> getPostsByUserId(Integer userId) {
         Integer loggedInUserId = loggedInUserService.getLoggedInUser().getId();
 
-        if (!loggedInUserId.equals(userId) && !friendshipService.areFriends(loggedInUserId, userId)) {
-            throw new ForbiddenException("Users not friends");
+        if (!loggedInUserId.equals(userId) && !friendshipService.areFriends(loggedInUserId, userId) && !loggedInUserService.isAdmin()) {
+            return Collections.emptyList();
         }
 
         return postRepository.getPostsByUserIdOrderByCreatedDesc(userId);
@@ -92,7 +92,7 @@ public class PostService {
             throw new NotFoundException("Post not found");
         }
 
-        if (!loggedInUserService.getLoggedInUser().getId().equals(post.get().getUserId()) || loggedInUserService.isAdmin()) {
+        if (!loggedInUserService.getLoggedInUser().getId().equals(post.get().getUserId()) && !loggedInUserService.isAdmin()) {
             throw new ForbiddenException("No access to post");
         }
 
@@ -118,19 +118,5 @@ public class PostService {
             post.setProcessedMedia(true);
         }
         postRepository.save(post);
-    }
-
-    public void deleteAllPostsForCurrentUser() {
-        Integer userId = loggedInUserService.getLoggedInUser().getId();
-
-        likeService.deleteAllLikesFromUser(userId);
-
-        List<Post> posts = postRepository.getPostsByUserId(userId);
-
-        for (Post post : posts) {
-            likeService.deleteAllLikesFromPost(post.getId());
-        }
-
-        postRepository.deleteAll(posts);
     }
 }

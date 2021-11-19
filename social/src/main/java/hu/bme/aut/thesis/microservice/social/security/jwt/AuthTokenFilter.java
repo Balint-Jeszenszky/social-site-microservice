@@ -37,7 +37,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                     userDetailsDto.getUsername(),
                     userDetailsDto.getFirstname(),
                     userDetailsDto.getLastname(),
-                    userDetailsDto.getEmail()
+                    userDetailsDto.getEmail(),
+                    userDetailsDto.getRoles()
             );
 
             UsernamePasswordAuthenticationToken authentication =

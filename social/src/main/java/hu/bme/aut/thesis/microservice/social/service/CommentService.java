@@ -31,11 +31,9 @@ public class CommentService {
 
         Integer userId = loggedInUserService.getLoggedInUser().getId();
 
-        if (!comment.getUserId().equals(userId)) {
+        if (!comment.getUserId().equals(userId) && !loggedInUserService.isAdmin()) {
             throw new ForbiddenException("Wrong user");
         }
-
-        post.setComments(post.getComments() - 1);
 
         postRepository.save(post);
 
@@ -51,15 +49,17 @@ public class CommentService {
 
         Post post = postRepository.findById(newCommentDto.getPostId()).orElseThrow(() -> new NotFoundException("Post not found"));
 
-        Comment comment = new Comment(userId,post.getId(), newCommentDto.getText());
+        Comment comment = new Comment(userId, post.getId(), newCommentDto.getText());
 
         commentRepository.save(comment);
-
-        post.setComments(post.getComments() + 1);
 
         postRepository.save(post);
 
         return comment;
+    }
+
+    public Integer getCommentsOfPost(Integer postId) {
+        return commentRepository.countCommentsByPostId(postId);
     }
 
     public Comment editComment(Integer commentId, NewCommentDto newCommentDto) {

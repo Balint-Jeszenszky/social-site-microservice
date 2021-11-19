@@ -24,7 +24,7 @@ export class DeleteSocialService extends BaseService {
   /**
    * Path part for operation deleteDeleteUserId
    */
-  static readonly DeleteDeleteUserIdPath = '/delete';
+  static readonly DeleteDeleteUserIdPath = '/delete/{userId}';
 
   /**
    * Delete everithing connected to user
@@ -34,11 +34,13 @@ export class DeleteSocialService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  deleteDeleteUserId$Response(params?: {
+  deleteDeleteUserId$Response(params: {
+    userId: number;
   }): Observable<StrictHttpResponse<void>> {
 
     const rb = new RequestBuilder(this.rootUrl, DeleteSocialService.DeleteDeleteUserIdPath, 'delete');
     if (params) {
+      rb.path('userId', params.userId, {});
     }
 
     return this.http.request(rb.build({
@@ -60,7 +62,8 @@ export class DeleteSocialService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  deleteDeleteUserId(params?: {
+  deleteDeleteUserId(params: {
+    userId: number;
   }): Observable<void> {
 
     return this.deleteDeleteUserId$Response(params).pipe(
