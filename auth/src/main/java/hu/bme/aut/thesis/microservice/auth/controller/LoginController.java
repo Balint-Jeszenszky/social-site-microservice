@@ -23,7 +23,7 @@ public class LoginController implements LoginApi {
 
     @Override
     public ResponseEntity<UserDetailsDto> postLoginDetails(AccessTokenDto body) {
-        UserDetailsDto userDetails = loginService.getUserDetailsByAccessToken(body);
+        UserDetailsDto userDetails = loginService.getUserDetailsByAccessToken(body.getAccessToken());
 
         return new ResponseEntity(userDetails, HttpStatus.OK);
     }

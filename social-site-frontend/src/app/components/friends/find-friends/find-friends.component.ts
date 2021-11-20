@@ -26,7 +26,6 @@ export class FindFriendsComponent implements OnInit {
         if (this.query.length > 2) {
             this.userManagementService.getPublicUserSearchQuery({ query: this.query }).subscribe(res => {
                 this.users = res;
-                console.log(res)
             });
         } else {
             this.users = [];

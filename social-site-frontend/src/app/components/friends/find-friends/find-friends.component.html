@@ -1,7 +1,7 @@
 <div>
     <mat-form-field appearance="fill" class="input-full-width">
         <mat-label>Username</mat-label>
-        <input matInput placeholder="Username" name="username" [(ngModel)]="query" (keydown)="search()">
+        <input matInput placeholder="Username" name="username" [(ngModel)]="query" (keyup)="search()">
     </mat-form-field>
 
     <table mat-table [dataSource]="users">

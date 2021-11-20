@@ -16,9 +16,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Locale;
-import java.util.NoSuchElementException;
-
 @Service
 public class LoginService {
 
@@ -79,14 +76,12 @@ public class LoginService {
         return newTokenDto;
     }
 
-    public UserDetailsDto getUserDetailsByAccessToken(AccessTokenDto body) {
-        if (!jwtUtils.validateJwtToken(body.getAccessToken())) {
+    public UserDetailsDto getUserDetailsByAccessToken(String token) {
+        if (!jwtUtils.validateJwtToken(token)) {
             throw new UnauthorizedException("Wrong access token");
         }
 
-        String username = jwtUtils.getUserNameFromJwtToken(body.getAccessToken());
-
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchElementException("User not found"));
+        User user = jwtUtils.getUserFromJwtToken(token);
 
         return UserMapper.INSTANCE.userToUserDetailsDto(user);
     }
