@@ -35,7 +35,7 @@ export class PostComponent implements OnInit, OnDestroy {
         });
 
         if (this.post?.processedMedia === false) {
-            this.timerId = window.setInterval(() => this.updateProcessingStatus(), 500);
+            this.timerId = window.setInterval(() => this.updateProcessingStatus(), 1000);
         }
 
         if (this.post?.liked) {
@@ -51,13 +51,12 @@ export class PostComponent implements OnInit, OnDestroy {
 
     updateProcessingStatus() {
         if (this.post) {
-            const needFilename = !this.post.mediaName;
-            this.mediaService.getStatus(this.post.id, needFilename).subscribe(res => {
-                this.post!.processedMedia = res.status === MediaStatusEnum[MediaStatusEnum.AVAILABLE];
+            this.mediaService.getStatus(this.post.id).subscribe(res => {
                 this.processingStatus = res.progress;
                 if (res.name && this.post) {
                     this.post.mediaName = res.name;
                 }
+                this.post!.processedMedia = res.status === MediaStatusEnum[MediaStatusEnum.AVAILABLE];
             });
             if (this.post!.processedMedia) {
                 clearInterval(this.timerId);
@@ -95,6 +94,17 @@ export class PostComponent implements OnInit, OnDestroy {
 
     hasVideo() {
         return this.post?.mediaName?.endsWith('.mp4');
+    }
+
+    hasFile() {
+        return this.post?.mediaName && !this.hasImage() && !this.hasVideo();
+    }
+
+    getFileIcon() {
+        if (this.post?.mediaName) {
+            return `assets/${this.post.mediaName.split('.').pop()}-file.svg`;
+        }
+        return '';
     }
 
     onLike() {

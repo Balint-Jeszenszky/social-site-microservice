@@ -18,10 +18,14 @@
     </mat-form-field>
     <img *ngIf="post.processedMedia && hasImage()" [src]="'/api/media/media/' + post.mediaName" class="w-100">
     <video *ngIf="post.processedMedia && hasVideo()" [src]="'/api/media/media/' + post.mediaName" class="w-100" controls controlsList="nodownload"></video>
+    <div *ngIf="post.processedMedia && hasFile()" class="flex-align-center">
+        <img [src]="getFileIcon()" class="file-icon">
+        <a [href]="'/api/media/media/' + post.mediaName" target="_blank" class="download-link margin-left">Download attached file</a>
+    </div>
     <p *ngIf="post.processedMedia === false">Processing: {{ processingStatus.toFixed(2) }}%
         <mat-progress-bar mode="determinate" [value]="processingStatus"></mat-progress-bar>
     </p>
-    <div class="flex-content-between">
+    <div class="flex-space-between">
         <div class="flex-align-center margin-top" (click)="onLike()">
             <mat-icon class="pointer" [color]="likeColor">thumb_up</mat-icon><span class="margin-left">{{ post.likes }} likes</span>
         </div>

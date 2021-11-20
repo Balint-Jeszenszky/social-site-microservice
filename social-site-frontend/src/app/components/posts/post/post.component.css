@@ -37,12 +37,16 @@
     margin-top: 0.5rem;
 }
 
-.flex-content-between {
-    display: flex;
-    justify-content: space-between;
-}
-
 .user-link {
     text-decoration: none;
     color: black;
+}
+
+.file-icon {
+    width: 3rem
+}
+
+.download-link {
+    text-decoration: none;
+    color: blue;
 }

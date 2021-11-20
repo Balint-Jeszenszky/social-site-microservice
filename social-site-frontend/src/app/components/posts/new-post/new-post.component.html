@@ -5,8 +5,8 @@
             <textarea matInput placeholder="Write the post here" name="text" [(ngModel)]="text"></textarea>
         </mat-form-field>
         <button mat-raised-button color="primary" type="submit" class="margin-right">Post</button>
-        <input #input hidden type="file" id="file-input" (change)="onFileSelected($event)" />
-        <button mat-raised-button color="primary" type="button" (click)="input.click()">
+        <input #input hidden type="file" accept=".jpeg,.jpg,.png,.mp4,.mov,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.pdf,.txt" id="file-input" (change)="onFileSelected($event)" />
+        <button mat-raised-button matTooltip="Accepted files: jpeg, jpg, png, mp4, mov, doc, docx, ppt, pptx, xls, xlsx, pdf, txt" color="primary" type="button" (click)="input.click()">
             <mat-icon class="pointer">attach_file</mat-icon>
             Attach media
         </button>

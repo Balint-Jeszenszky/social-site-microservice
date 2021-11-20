@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const material = [
     MatToolbarModule,
@@ -23,15 +24,16 @@ const material = [
     MatProgressSpinnerModule,
     MatIconModule,
     MatTableModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatTooltipModule
 ];
 
 @NgModule({
-  imports: [
-    material
-  ],
-  exports: [
-    material
-  ]
+    imports: [
+        material
+    ],
+    exports: [
+        material
+    ]
 })
 export class MaterialModule { }

@@ -19,7 +19,8 @@ export default function deleteMedia() {
                 return res.sendStatus(404);
             }
 
-            const mediaPath = (path.parse(post.filename).ext === '.jpg') ? 'images' : 'videos';
+            const ext = path.parse(post.filename).ext;
+            const mediaPath = (ext === '.jpg') ? 'images' : (ext === '.mp4') ? 'videos' : 'files';
 
             await fs.rm(path.join('media', mediaPath, post.filename));
 
@@ -29,6 +30,7 @@ export default function deleteMedia() {
 
         } catch (e) {
             console.log(e);
+            return res.sendStatus(500);
         }
     }
 }

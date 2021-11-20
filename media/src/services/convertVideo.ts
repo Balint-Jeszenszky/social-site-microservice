@@ -56,6 +56,7 @@ export default function convertVideo(filepath: string, dest: string, postId: num
             .on('error', async (err) => {
                 clearTimeout(tid);
                 await fs.rm(filepath);
+                await fs.rm(dest);
                 console.log('Cannot process video: ' + err.message);
                 setFailed(postId);
             });

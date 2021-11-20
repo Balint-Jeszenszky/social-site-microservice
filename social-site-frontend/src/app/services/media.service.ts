@@ -16,7 +16,7 @@ export class MediaService {
         return this.http.post<UploadResponseDto>(`${this.baseUrl}/upload`, formData);
     }
 
-    getStatus(postId: number, needFilename: boolean): Observable<ProcessingStatusDto> {
-        return this.http.get<ProcessingStatusDto>(`${this.baseUrl}/status/${postId}`, { params: { needFilename } });
+    getStatus(postId: number): Observable<ProcessingStatusDto> {
+        return this.http.get<ProcessingStatusDto>(`${this.baseUrl}/status/${postId}`);
     }
 }

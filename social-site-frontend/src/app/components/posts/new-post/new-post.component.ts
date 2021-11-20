@@ -48,6 +48,15 @@ export class NewPostComponent implements OnInit {
         const element = event.currentTarget as HTMLInputElement;
         const fileList: FileList | null = element.files;
         if (fileList) {
+            const acceptedFiles = ['jpeg', 'jpg', 'png', 'mp4', 'mov', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'pdf', 'txt'];
+            if (!acceptedFiles.includes(fileList[0].name.split('.').pop() || '')) {
+                alert(`Accepted file types: ${acceptedFiles.join(', ')}`);
+                return;
+            }
+            if (fileList[0].size > 1024**2*256) {
+                alert('Max file size: 256 MB');
+                return;
+            }
             this.selectedFile = fileList[0];
             this.filename = fileList[0].name;
         }
