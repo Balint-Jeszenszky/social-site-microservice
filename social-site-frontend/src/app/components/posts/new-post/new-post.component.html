@@ -2,14 +2,18 @@
     <form (ngSubmit)="post()">
         <mat-form-field class="new-post-full-width" appearance="fill">
             <mat-label>New post</mat-label>
-            <textarea matInput placeholder="Write the post here" name="text" [(ngModel)]="text"></textarea>
+            <textarea [disabled]="posting" matInput placeholder="Write the post here" name="text" [(ngModel)]="text"></textarea>
         </mat-form-field>
-        <button mat-raised-button color="primary" type="submit" class="margin-right">Post</button>
-        <input #input hidden type="file" accept=".jpeg,.jpg,.png,.mp4,.mov,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.pdf,.txt" id="file-input" (change)="onFileSelected($event)" />
-        <button mat-raised-button matTooltip="Accepted files: jpeg, jpg, png, mp4, mov, doc, docx, ppt, pptx, xls, xlsx, pdf, txt" color="primary" type="button" (click)="input.click()">
+        <button mat-raised-button [disabled]="posting" color="primary" type="submit" class="margin-right">Post</button>
+        <input #input hidden type="file" [disabled]="posting" accept=".jpeg,.jpg,.png,.mp4,.mov,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.pdf,.txt" id="file-input" (change)="onFileSelected($event)" />
+        <button mat-raised-button [disabled]="posting" matTooltip="Accepted files: jpeg, jpg, png, mp4, mov, doc, docx, ppt, pptx, xls, xlsx, pdf, txt" color="primary" type="button" (click)="input.click()">
             <mat-icon class="pointer">attach_file</mat-icon>
             Attach media
         </button>
         <p>{{ filename }}</p>
+        <div *ngIf="posting">
+            Uploading: {{ progress.toFixed(2) }}%
+            <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+        </div>
     </form>
 </mat-card>

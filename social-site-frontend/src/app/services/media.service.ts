@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProcessingStatusDto } from './dto/processing-status-dto';
@@ -12,8 +12,8 @@ export class MediaService {
 
     constructor(private http: HttpClient) { }
 
-    uploadFile(formData: FormData): Observable<UploadResponseDto> {
-        return this.http.post<UploadResponseDto>(`${this.baseUrl}/upload`, formData);
+    uploadFile(formData: FormData): Observable<HttpEvent<UploadResponseDto>> {
+        return this.http.post<UploadResponseDto>(`${this.baseUrl}/upload`, formData, { reportProgress: true, observe: 'events' });
     }
 
     getStatus(postId: number): Observable<ProcessingStatusDto> {
