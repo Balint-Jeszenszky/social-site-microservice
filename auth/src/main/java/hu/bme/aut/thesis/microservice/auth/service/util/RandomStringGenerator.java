@@ -6,13 +6,17 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class RandomStringGenerator {
+    private static SecureRandom secureRandom;
+
     public static String generate(Integer length) {
         String chrs = "0123456789abcdefghijklmnopqrstuvwxyz-_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        SecureRandom secureRandom;
-        try {
-            secureRandom = SecureRandom.getInstanceStrong();
-        } catch (NoSuchAlgorithmException e) {
-            throw new InternalServerErrorException(e.getMessage());
+
+        if (secureRandom == null) {
+            try {
+                secureRandom = SecureRandom.getInstance("SHA1PRNG");
+            } catch (NoSuchAlgorithmException e) {
+                throw new InternalServerErrorException(e.getMessage());
+            }
         }
 
         return secureRandom.ints(length, 0, chrs.length())

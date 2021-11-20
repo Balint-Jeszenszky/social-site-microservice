@@ -14,6 +14,7 @@ import org.springframework.mail.MailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
@@ -36,11 +37,15 @@ public class PasswordResetService {
     @Value("${auth.app.baseUrl}")
     private String baseUrl;
 
+    @Transactional
     public void sendResetMail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
 
+        passwordResetRepository.deleteExpiredKeys();
+
         if (user.isPresent()) {
             User foundUser = user.get();
+            passwordResetRepository.deleteByUserId(foundUser.getId());
 
             String key = RandomStringGenerator.generate(32);
 

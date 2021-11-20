@@ -5,5 +5,6 @@ export interface UserDetailsDto {
   firstname: string;
   id: number;
   lastname: string;
+  roles: Array<string>;
   username: string;
 }
