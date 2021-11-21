@@ -5,7 +5,7 @@ import { setFailed, setProcessed, setProcessingStarted } from './postService';
 
 export default async function convertImage(filepath: string, dest: string, postId: number) {
     try {
-        setProcessingStarted(postId, `${path.parse(filepath).name}.jpg`);
+        await setProcessingStarted(postId, `${path.parse(filepath).name}.jpg`);
 
         const {width, height} = await sharp(filepath).metadata();
 
@@ -33,13 +33,13 @@ export default async function convertImage(filepath: string, dest: string, postI
 
         await fs.rm(filepath);
 
-        setProcessed(postId);
+        await setProcessed(postId);
         
         return true;
     } catch (e) {
         console.log(e);
         await fs.rm(filepath);
-        setFailed(postId);
+        await setFailed(postId);
         return false;
     }
 }

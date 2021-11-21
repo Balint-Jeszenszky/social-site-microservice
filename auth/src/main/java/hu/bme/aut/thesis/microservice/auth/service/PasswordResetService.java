@@ -39,7 +39,7 @@ public class PasswordResetService {
 
     @Transactional
     public void sendResetMail(String email) {
-        Optional<User> user = userRepository.findByEmail(email);
+        Optional<User> user = userRepository.findByEmail(email.toLowerCase());
 
         passwordResetRepository.deleteExpiredKeys();
 

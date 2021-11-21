@@ -12,7 +12,6 @@ import hu.bme.aut.thesis.microservice.auth.models.UpdateUserDto;
 import hu.bme.aut.thesis.microservice.auth.repository.RoleRepository;
 import hu.bme.aut.thesis.microservice.auth.repository.UserRepository;
 import hu.bme.aut.thesis.microservice.auth.security.service.LoggedInUserService;
-import hu.bme.aut.thesis.microservice.auth.security.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -90,7 +89,9 @@ public class UserService {
             throw new ForbiddenException("Wrong userId");
         }
 
-        validateEmail(updateUserDto.getEmail());
+        String email = updateUserDto.getEmail().toLowerCase();
+
+        validateEmail(email);
 
         Optional<User> user = userRepository.findById(id);
 
@@ -100,7 +101,7 @@ public class UserService {
 
         User userToUpdate = user.get();
 
-        if (!userToUpdate.getEmail().equals(updateUserDto.getEmail()) && userRepository.existsByEmail(updateUserDto.getEmail())) {
+        if (!userToUpdate.getEmail().equals(email) && userRepository.existsByEmail(email)) {
             throw new BadRequestException("Error: Email is already in use!");
         }
 
@@ -123,8 +124,8 @@ public class UserService {
             userToUpdate.setPassword(encodedNewPassword);
         }
 
-        if (!userToUpdate.getEmail().equals(updateUserDto.getEmail())) {
-            emailVerificationService.sendVerificationEmail(userToUpdate.getId(), updateUserDto.getEmail());
+        if (!userToUpdate.getEmail().equals(email)) {
+            emailVerificationService.sendVerificationEmail(userToUpdate.getId(), email);
         }
 
         userToUpdate.setFirstname(updateUserDto.getFirstname());
@@ -136,9 +137,10 @@ public class UserService {
     }
 
     public User registerUser(RegisterDto registerDto) {
-        validateEmail(registerDto.getEmail());
+        String email = registerDto.getEmail().toLowerCase();
+        validateEmail(email);
 
-        if (userRepository.existsByEmail(registerDto.getEmail())) {
+        if (userRepository.existsByEmail(email)) {
             throw new BadRequestException("Error: Email is already in use!");
         }
 
@@ -162,7 +164,7 @@ public class UserService {
                 username,
                 registerDto.getFirstname(),
                 registerDto.getLastname(),
-                registerDto.getEmail(),
+                email,
                 passwordEncoder.encode(registerDto.getPassword())
         );
 
@@ -183,7 +185,7 @@ public class UserService {
 
         userRepository.save(user);
 
-        emailVerificationService.sendVerificationEmail(user.getId(), user.getEmail());
+        emailVerificationService.sendVerificationEmail(user.getId(), email);
 
         return user;
     }

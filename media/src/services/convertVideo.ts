@@ -39,26 +39,26 @@ export default function convertVideo(filepath: string, dest: string, postId: num
             .audioFrequency(audioProps.sampleRate)
             .audioCodec('aac')
             .output(`${dest}/${path.parse(filepath).name}.mp4`)
-            .on('start', function (commandLine) {
+            .on('start', async (commandLine) => {
                 console.log('Spawned Ffmpeg with command: ' + commandLine);
-                setProcessingStarted(postId, `${path.parse(filepath).name}.mp4`);
+                await setProcessingStarted(postId, `${path.parse(filepath).name}.mp4`);
             })
-            .on('progress', function (progress) {
-                setProgress(postId, progress.percent);
+            .on('progress', async (progress) => {
+                await setProgress(postId, progress.percent);
                 console.log('Processing: ' + progress.percent + '% done');
             })
             .on('end', async () => {
                 clearTimeout(tid);
                 await fs.rm(filepath);
                 console.log('Transcoding succeeded !');
-                setProcessed(postId);
+                await setProcessed(postId);
             })
             .on('error', async (err) => {
                 clearTimeout(tid);
                 await fs.rm(filepath);
                 await fs.rm(dest);
                 console.log('Cannot process video: ' + err.message);
-                setFailed(postId);
+                await setFailed(postId);
             });
 
         command.run();
