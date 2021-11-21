@@ -406,6 +406,8 @@ components:
           uniqueItems: true
           items:
             type: string
+        profilePicture:
+          type: string
       required:
         - id
         - username

@@ -3,6 +3,7 @@ package hu.bme.aut.thesis.microservice.auth.controller;
 import hu.bme.aut.thesis.microservice.auth.api.UserApi;
 import hu.bme.aut.thesis.microservice.auth.mapper.UserMapper;
 import hu.bme.aut.thesis.microservice.auth.model.User;
+import hu.bme.aut.thesis.microservice.auth.models.ProfilePictureDto;
 import hu.bme.aut.thesis.microservice.auth.models.UpdateUserDto;
 import hu.bme.aut.thesis.microservice.auth.models.UserDetailsDto;
 import hu.bme.aut.thesis.microservice.auth.service.UserService;
@@ -31,6 +32,13 @@ public class UserController implements UserApi {
         UserDetailsDto userDetailsDto = UserMapper.INSTANCE.userToUserDetailsDto(user);
 
         return new ResponseEntity(userDetailsDto, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> patchUserId(Integer id, ProfilePictureDto body) {
+        userService.updateProfilePicture(id, body.getName());
+
+        return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
     @Override

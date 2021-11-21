@@ -1,7 +1,8 @@
 <div>
     <div *ngIf="user">
         <div class="text-center">
-            <img class="profile-img" src="https://via.placeholder.com/300x300?text=Profile+pic" alt="">
+            <img *ngIf="!user.profilePicture" class="profile-img" src="/assets/profile_placeholder.png" (click)="onPictureClick()">
+            <img *ngIf="user.profilePicture" class="profile-img" [src]="'/api/media/profilePicture/' + user.profilePicture + '.jpg'" (click)="onPictureClick()">
             <h1>{{ user?.firstname }} {{ user?.lastname }}</h1>
             <p>{{ user?.username }}</p>
             <a *ngIf="personalProfile" routerLink="/editProfile">Edit profile<mat-icon class="small-icon">edit</mat-icon></a>

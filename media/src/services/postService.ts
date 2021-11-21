@@ -15,7 +15,6 @@ export async function setProcessed(postId: number) {
     const post = await Post.findOne({postId});
     if (post) {
         post.status = MediaStatusEnum.AVAILABLE;
-        console.log(post);
         await post.save();
         await notifySocialService(postId, post.status, post.filename);
     }

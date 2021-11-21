@@ -102,7 +102,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
     getFileIcon() {
         if (this.post?.mediaName) {
-            return `assets/${this.post.mediaName.split('.').pop()}-file.svg`;
+            return `/assets/${this.post.mediaName.split('.').pop()}-file.svg`;
         }
         return '';
     }

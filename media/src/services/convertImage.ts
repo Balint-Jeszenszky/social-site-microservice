@@ -20,9 +20,9 @@ export default async function convertImage(filepath: string, dest: string, postI
             let w, h;
             if (width > height) {
                 w = maxSize;
-                h = Math.round(height * maxSize / width);
+                h = Math.floor(height * maxSize / width);
             } else {
-                w = Math.round(width * maxSize / height);
+                w = Math.floor(width * maxSize / height);
                 h = maxSize;
             }
 
@@ -38,6 +38,7 @@ export default async function convertImage(filepath: string, dest: string, postI
         return true;
     } catch (e) {
         console.log(e);
+        await fs.rm(filepath);
         setFailed(postId);
         return false;
     }

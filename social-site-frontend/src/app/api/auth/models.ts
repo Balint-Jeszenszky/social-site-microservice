@@ -9,3 +9,4 @@ export { RefreshTokenDto } from './models/refresh-token-dto';
 export { PublicUserDetailsDto } from './models/public-user-details-dto';
 export { AccessTokenDto } from './models/access-token-dto';
 export { PasswordResetDto } from './models/password-reset-dto';
+export { ProfilePictureDto } from './models/profile-picture-dto';

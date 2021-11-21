@@ -15,6 +15,7 @@ type AccessTokenPayload = {
     providedIn: 'root'
 })
 export class UserService {
+    private _userDetails?: UserDetailsDto;
     private user: ReplaySubject<UserDetailsDto | undefined> = new ReplaySubject();
     private loggedIn: ReplaySubject<boolean> = new ReplaySubject();
     private accessToken?: string;
@@ -27,11 +28,13 @@ export class UserService {
         const userDetails = localStorage.getItem(this.userDetailsKey);
         if (userDetails) {
             const user: LoginDetailsDto = JSON.parse(userDetails);
+            this._userDetails = user.userDetails;
             this.setCurrentUser(user);
         }
     }
 
     setCurrentUser(user: LoginDetailsDto): void {
+        this._userDetails = user.userDetails;
         this.user.next(user.userDetails);
         this.accessToken = user.accessToken;
         this.refreshToken = user.refreshToken;
@@ -41,6 +44,7 @@ export class UserService {
     }
 
     setCurrentUserDetails(user: UserDetailsDto) {
+        this._userDetails = user;
         this.user.next(user);
         const userDetails = localStorage.getItem(this.userDetailsKey);
         if (userDetails) {
@@ -60,6 +64,7 @@ export class UserService {
 
     logout(): void {
         localStorage.removeItem(this.userDetailsKey);
+        this._userDetails = undefined;
         this.accessToken = undefined;
         this.refreshToken = undefined;
         this.accessTokenPayload = undefined;
@@ -100,6 +105,14 @@ export class UserService {
 
     isAdmin(): boolean {
         return !!this.accessTokenPayload?.roles.includes("ROLE_ADMIN");
+    }
+
+    profilePictureChange(name?: string) {
+        if (this._userDetails) {
+            this._userDetails.profilePicture = name;
+        }
+        
+        this.user.next(this._userDetails);
     }
 
     private parseAccessTokenPayload(accessToken: string): AccessTokenPayload {

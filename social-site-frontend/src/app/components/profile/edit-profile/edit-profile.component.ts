@@ -20,7 +20,7 @@ export class EditProfileComponent implements OnInit {
     confirmPassword: string = '';
 
     constructor(
-        private userService: UserService, 
+        private userService: UserService,
         private userManagementService: UserManagementService,
         private router: Router,
         private snackBar: MatSnackBar,

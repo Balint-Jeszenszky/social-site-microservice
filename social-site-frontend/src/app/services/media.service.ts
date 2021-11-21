@@ -19,4 +19,12 @@ export class MediaService {
     getStatus(postId: number): Observable<ProcessingStatusDto> {
         return this.http.get<ProcessingStatusDto>(`${this.baseUrl}/status/${postId}`);
     }
+
+    uploadProfilePicture(userId: number, formData: FormData): Observable<UploadResponseDto> {
+        return this.http.post<UploadResponseDto>(`${this.baseUrl}/profilePicture/${userId}`, formData);
+    }
+
+    deleteProfilePicture(userId: number): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/profilePicture/${userId}`);
+    }
 }

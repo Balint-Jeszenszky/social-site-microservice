@@ -5,6 +5,7 @@ export interface UserDetailsDto {
   firstname: string;
   id: number;
   lastname: string;
+  profilePicture?: string;
   roles: Array<string>;
   username: string;
 }

@@ -9,6 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { ProfilePictureDto } from '../models/profile-picture-dto';
 import { PublicUserDetailsDto } from '../models/public-user-details-dto';
 import { UpdateUserDto } from '../models/update-user-dto';
 import { UserDetailsDto } from '../models/user-details-dto';
@@ -177,6 +178,59 @@ export class UserManagementService extends BaseService {
   }): Observable<void> {
 
     return this.deleteUserId$Response(params).pipe(
+      map((r: StrictHttpResponse<void>) => r.body as void)
+    );
+  }
+
+  /**
+   * Path part for operation patchUserId
+   */
+  static readonly PatchUserIdPath = '/user/{id}';
+
+  /**
+   * Change profile picture
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `patchUserId()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  patchUserId$Response(params: {
+    id: number;
+    body?: ProfilePictureDto
+  }): Observable<StrictHttpResponse<void>> {
+
+    const rb = new RequestBuilder(this.rootUrl, UserManagementService.PatchUserIdPath, 'patch');
+    if (params) {
+      rb.path('id', params.id, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'text',
+      accept: '*/*'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      })
+    );
+  }
+
+  /**
+   * Change profile picture
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `patchUserId$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  patchUserId(params: {
+    id: number;
+    body?: ProfilePictureDto
+  }): Observable<void> {
+
+    return this.patchUserId$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
     );
   }

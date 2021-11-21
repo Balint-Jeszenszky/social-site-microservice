@@ -64,7 +64,7 @@ export class NewPostComponent implements OnInit {
         const fileList: FileList | null = element.files;
         if (fileList) {
             const acceptedFiles = ['jpeg', 'jpg', 'png', 'mp4', 'mov', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'pdf', 'txt'];
-            if (!acceptedFiles.includes(fileList[0].name.split('.').pop() || '')) {
+            if (!acceptedFiles.includes(fileList[0].name.split('.').pop()?.toLowerCase() || '')) {
                 alert(`Accepted file types: ${acceptedFiles.join(', ')}`);
                 return;
             }

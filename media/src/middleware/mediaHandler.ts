@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
+import path from "path";
 import convertImage from "../services/convertImage";
 import convertVideo from "../services/convertVideo";
-import fs from "fs";
+import createDir from "../services/createDirectory";
 import saveFile from "../services/saveFile";
 
 export default function mediaHandler() {
@@ -45,14 +46,6 @@ export default function mediaHandler() {
             }
         }
 
-        return res.status(202).json({processed});
-    }
-}
-
-function createDir(name: string) {
-    try {
-        fs.accessSync(name);
-    } catch (e) {
-        fs.mkdirSync(name);
+        return res.status(202).json({processed, name: path.parse(req.file.path).name});
     }
 }

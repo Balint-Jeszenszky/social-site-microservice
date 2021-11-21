@@ -27,6 +27,7 @@ import { PendingFriendsComponent } from './components/friends/pending-friends/pe
 import { PasswordResetComponent } from './components/auth/password-reset/password-reset.component';
 import { CommentComponent } from './components/posts/post/comment-section/comment/comment.component';
 import { CommentSectionComponent } from './components/posts/post/comment-section/comment-section.component';
+import { ProfilePictureEditSheetComponent } from './components/profile/profile-picture-edit-sheet/profile-picture-edit-sheet.component';
 
 const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -53,7 +54,8 @@ const API_INTERCEPTOR_PROVIDER: Provider = {
     PendingFriendsComponent,
     PasswordResetComponent,
     CommentComponent,
-    CommentSectionComponent
+    CommentSectionComponent,
+    ProfilePictureEditSheetComponent
   ],
   imports: [
     BrowserModule,

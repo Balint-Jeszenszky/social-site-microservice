@@ -218,4 +218,18 @@ public class UserService {
         }
         return userRepository.searchUser(query);
     }
+
+    public void updateProfilePicture(Integer id, String name) {
+        Integer loggedInUserId = loggedInUserService.getLoggedInUser().getId();
+
+        if (!loggedInUserId.equals(id) && !loggedInUserService.isAdmin()) {
+            throw new ForbiddenException("Wrong user");
+        }
+
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found"));
+
+        user.setProfilePicture(name);
+
+        userRepository.save(user);
+    }
 }

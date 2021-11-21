@@ -1,0 +1,5 @@
+<mat-action-list>
+    <input #input hidden type="file" accept=".jpeg,.jpg,.png" id="file-input" (change)="onFileSelected($event)" />
+    <button mat-list-item (click)="input.click()">Upload new picture</button>
+    <button mat-list-item (click)="deletePicture()">Delete picture</button>
+</mat-action-list>

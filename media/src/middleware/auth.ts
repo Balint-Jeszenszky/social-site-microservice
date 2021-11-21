@@ -1,7 +1,6 @@
 import axios from "axios";
 import { NextFunction, Request, Response } from "express";
 
-
 export default function auth() {
     const AUTH_URL = process.env.AUTH_SERVER;
 
@@ -20,7 +19,10 @@ export default function auth() {
 
         try {
             const response = await axios.post(AUTH_URL, {accessToken: token});
-            res.locals.userDetails = response.data;
+            const userDetails = response.data;
+            res.locals.userDetails = userDetails;
+            res.locals.isAdmin = userDetails.roles.includes('ROLE_ADMIN');
+            
             return next();
         } catch (e) {
             console.log(e);

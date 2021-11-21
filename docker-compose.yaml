@@ -39,6 +39,8 @@ services:
       - "traefik.http.routers.root.rule=Path(`/`)"
       - "traefik.http.routers.static.entrypoints=web"
       - "traefik.http.routers.static.rule=Path(`/{[\\.a-zA-Z0-9]+\\.{1}(js|css|ico|html){1}}`)"
+      - "traefik.http.routers.assets.entrypoints=web"
+      - "traefik.http.routers.assets.rule=PathPrefix(`/assets`)"
     networks:
       - web
       

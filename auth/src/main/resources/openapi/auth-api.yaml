@@ -90,6 +90,20 @@ paths:
               $ref: '#/components/schemas/UpdateUserDto'
       tags:
         - user-management
+    patch:
+      summary: ''
+      operationId: patch-user-id
+      responses:
+        '202':
+          description: Accepted
+      description: Change profile picture
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfilePictureDto'
+      tags:
+        - user-management
   /register/validate:
     get:
       summary: Your GET endpoint
@@ -300,6 +314,8 @@ components:
           uniqueItems: true
           items:
             type: string
+        profilePicture:
+          type: string
       required:
         - id
         - username
@@ -416,6 +432,8 @@ components:
           type: string
         lastname:
           type: string
+        profilePicture:
+          type: string
       required:
         - id
         - username
@@ -443,6 +461,12 @@ components:
         - newPassword
         - confirmPassword
         - key
+    ProfilePictureDto:
+      title: ProfilePictureDto
+      type: object
+      properties:
+        name:
+          type: string
   securitySchemes: {}
 tags:
   - name: register
