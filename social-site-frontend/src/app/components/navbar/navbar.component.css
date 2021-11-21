@@ -5,8 +5,13 @@
 .page-name {
     text-decoration: none;
     color: #ffffff;
+    word-spacing: 5px;
 }
 
 .no-padding {
     padding: 0;
+}
+
+i {
+    color: #ff5252;
 }

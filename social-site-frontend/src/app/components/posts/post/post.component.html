@@ -1,8 +1,13 @@
 <mat-card *ngIf="post" class="post-card">
     <div class="flex-space-between">
-        <a [routerLink]="'/profile/' + post.user.username" class="user-link">
-            <h2 class="username">{{ post.user.firstname }} {{ post.user.lastname }} ({{ post.user.username }})</h2>
-        </a>
+        <div class="flex-align-center">
+            <img *ngIf="!post.user.profilePicture" src="/assets/profile_placeholder_small.png">
+            <img *ngIf="post.user.profilePicture" [src]="'/api/media/profilePicture/' + post.user.profilePicture + '_small.jpg'">
+            <a [routerLink]="'/profile/' + post.user.username" class="user-link">
+                <h2 class="username">{{ post.user.firstname }} {{ post.user.lastname }}</h2>
+                <span>({{ post.user.username }})</span> - <small>{{ post.created | date : 'yyyy. MM. dd. HH:mm' }}</small>
+            </a>
+        </div>
         <div>
             <mat-icon *ngIf="editable && !editing" class="pointer" (click)="editPost()">edit</mat-icon>
             <mat-icon *ngIf="deletable && !editing" class="pointer" (click)="deletePost()">delete</mat-icon>
@@ -10,7 +15,6 @@
             <mat-icon *ngIf="editable && editing" class="pointer" (click)="cancelEditPost()">cancel</mat-icon>
         </div>
     </div>
-    <small>{{ post.created | date : 'yyyy. MM. dd. HH:mm' }}</small>
     <p *ngIf="!editing">{{ post.text }}</p>
     <mat-form-field *ngIf="editing" class="full-width" appearance="fill">
         <mat-label>Edit post</mat-label>

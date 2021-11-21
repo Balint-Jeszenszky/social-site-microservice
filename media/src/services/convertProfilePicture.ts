@@ -33,7 +33,7 @@ export default async function convertProfilePicture(filepath: string, dest: stri
 
         await fs.rm(filepath);
 
-        setProcessed(userId, path.parse(filepath).name);
+        await setProcessed(userId, path.parse(filepath).name);
         
         return true;
     } catch (e) {
